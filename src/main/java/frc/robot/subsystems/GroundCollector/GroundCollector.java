@@ -28,23 +28,23 @@ public class GroundCollector extends SubsystemBase {
   public GroundCollector(){
 
     pivotMotor = new Kraken(pivotConsants.pivotMotorID);//make a new motor
-    //pivotEncoder = new CANcoder(pivotConsants.pivotEncoderID);//make a new encoder
+    pivotEncoder = new CANcoder(pivotConsants.pivotEncoderID);//make a new encoder
 
     lowerLimitSwitch = new DigitalInput(pivotConsants.lowerLimitSwitchPort);//make a new lower limit switch
     upperLimitSwitch = new DigitalInput(pivotConsants.upperLimitSwitchPort);//make a new upper limit switch
 
-    //pivotMotor.addEncoder(pivotEncoder);//add the encoder
+    pivotMotor.addEncoder(pivotEncoder);//add the encoder
     //set PID values
     //pivotMotor.setPIDValues(pivotConsants.kP, pivotConsants.kI, pivotConsants.kD, pivotConsants.kS, pivotConsants.kV, pivotConsants.kA, pivotConsants.kG);
 
     pivotMotor.setCoastMode();//stop motor 
 
     pivotMotor.setMotorCurrentLimits(0);//set current limit 
-    //pivotMotor.setSoftLimits(pivotConsants.softLimitMinPosition, pivotConsants.softLimitMaxPosition);//set limits for motor
+    pivotMotor.setSoftLimits(pivotConsants.softLimitMinPosition, pivotConsants.softLimitMaxPosition);//set limits for motor
 
     desiredSetpoint = pivotConsants.homePosition;//sets desiredSetpoint to the needed position
-    //pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
-    //pivotMotor.setDesiredEncoderPosition(desiredSetpoint);//sets the encoder to desiredSetpoint
+    pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
+    pivotMotor.setDesiredEncoderPosition(desiredSetpoint);//sets the encoder to desiredSetpoint
   }
 
   public void pivotMotorSpin(){
@@ -91,7 +91,9 @@ public class GroundCollector extends SubsystemBase {
   }  
 
   //if the pivot is crossing the beambreak, stop the pivot from moving forwards
-
+  //public Boolean stopPivot(){
+    //if (pivotMotor >= )
+  //}
 
   //makes a new collector motor
   public void collector(){
