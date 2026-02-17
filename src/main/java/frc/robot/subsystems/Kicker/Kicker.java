@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.Kicker;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.utils.Kraken;
@@ -11,8 +12,13 @@ import frc.utils.Kraken;
 public class Kicker extends SubsystemBase {
   private Kraken bottomKickerMotor;
   private Kraken topKickerMotor;
+  private DigitalInput beamBreak;
+  private double motorVelocity;
+  private boolean motorSpinning;
   /** Creates a new Kicker. */
   public Kicker() {
+    beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);
+    
     bottomKickerMotor  = new Kraken(Constants.KickerConstansts.bottomKickerMotorIDConstants);
     topKickerMotor = new Kraken(Constants.KickerConstansts.topKickerMotorIDConstants);
   }
@@ -33,6 +39,15 @@ public class Kicker extends SubsystemBase {
   public void stopMotors() {
     bottomKickerMotor.stopMotor();
     topKickerMotor.stopMotor();
+  }
+
+  public boolean getSensorValue() {
+    if (motorVelocity == 0) {
+      motorSpinning = false;
+    } else {
+      motorSpinning = true;
+    }
+    return motorSpinning;
   }
 
   @Override

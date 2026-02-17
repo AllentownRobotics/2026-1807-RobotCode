@@ -24,4 +24,8 @@ public final class Constants {
     public static final int  bottomKickerMotorIDConstants = 2;
     public static final double bottomKickerSpeed = 0.15;
   }
+
+  public static class SensorIDs {
+    public static final int sensorID = 0;
+  }
 }

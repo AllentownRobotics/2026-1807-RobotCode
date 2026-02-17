@@ -7,7 +7,10 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ExpelFuel;
+import frc.robot.commands.KickFuel;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Kicker.Kicker;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -21,10 +24,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Kicker m_kicker = new Kicker();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final ExpelFuel m_expelFuel = new ExpelFuel(m_kicker);
+  private final KickFuel m_kickFuel = new KickFuel(m_kicker);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -49,6 +55,8 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_kicker.setDefaultCommand(m_kickFuel);
+    m_kicker.setDefaultCommand(m_expelFuel);
   }
 
   /**
