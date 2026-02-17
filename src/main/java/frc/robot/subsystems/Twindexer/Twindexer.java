@@ -25,9 +25,9 @@ public class Twindexer extends SubsystemBase {
   /**
    * this is how to write method/variable descriptions :)
    */
-  public TwindexerSubsystem() {
+  public Twindexer() {
     twindexerPIDController = new PIDController(Constants.TwindexerConstants.kp, Constants.TwindexerConstants.ki, Constants.TwindexerConstants.kd);
-    twindexerMotor = new Kraken(Constants.MotorIDs.twindexerID);
+    twindexerMotor = new Kraken(Constants.MotorIDs.twindexerMotor);
     twindexerMotor.setCoastMode();
   }
   /**
