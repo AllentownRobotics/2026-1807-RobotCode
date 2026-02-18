@@ -21,6 +21,8 @@ public final class Constants {
     public static final double kp = 0.1;
     public static final double ki = 0;
     public static final double kd = 0;
+    //should these be moved to a sensor id class instead?
+    public static final int fullBeambreak = 2;
   }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;

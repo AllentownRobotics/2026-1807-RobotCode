@@ -5,6 +5,7 @@
 package frc.robot.subsystems.Twindexer;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -14,6 +15,7 @@ public class Twindexer extends SubsystemBase {
   /** Creates a new TwindexerSubsystem. */
   private final Kraken twindexerMotor;
   private final PIDController twindexerPIDController;
+  private final DigitalInput hopperFullBeambreak;
   /**
    * True if the twindexer is spinning, and false if it is not spinning.
    */
@@ -23,9 +25,14 @@ public class Twindexer extends SubsystemBase {
    */
   private double twindexerSpeed;
   /**
+   * Detects if the hopper is full of fuel by periodically getting values from a beambreak at the top of the hopper.
+   */
+  private boolean isHopperFull;
+  /**
    * this is how to write method/variable descriptions :)
    */
   public Twindexer() {
+    hopperFullBeambreak = new DigitalInput(Constants.TwindexerConstants.fullBeambreak);
     twindexerPIDController = new PIDController(Constants.TwindexerConstants.kp, Constants.TwindexerConstants.ki, Constants.TwindexerConstants.kd);
     twindexerMotor = new Kraken(Constants.MotorIDs.twindexerMotor);
     twindexerMotor.setCoastMode();
@@ -75,9 +82,11 @@ public class Twindexer extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    isHopperFull = !hopperFullBeambreak.get();
     twindexerSpeed = twindexerMotor.getVelocity();
     isTwindexerSpinning = getTwindexerSpinning();
     //displays whether or not the twindexer is spinning as a boolean
-    SmartDashboard.putBoolean("Twindexer is spinning", isTwindexerSpinning);
+    SmartDashboard.putBoolean("Twindexer is spinning: ", isTwindexerSpinning);
+    SmartDashboard.putBoolean("Is the hopper full: ", isHopperFull);
   }
 }
