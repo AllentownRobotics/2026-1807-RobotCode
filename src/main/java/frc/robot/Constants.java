@@ -19,7 +19,7 @@ public final class Constants {
   public static class pivotConsants{
 
     public static final int pivotMotorID = 1; //change according to motor id number - pivot motor ID number
-    public static final int pivotEncoderID = 1; //change according to encoder id number - pivot encoder ID number
+    public static final int pivotEncoderID = 4; //change according to encoder id number - pivot encoder ID number
 
     public static final int lowerLimitSwitchPort = 0;//change according to limit switch port - pivot lower limit switch port number
     public static final int upperLimitSwitchPort = 8;//change according to limit switch port - pivot upper limit switch port number
@@ -34,7 +34,7 @@ public final class Constants {
     public static final double kG = 0;//change if needed
 
     public static final double startPosition = 0;//change according to start position - pivot start position
-    public static final double intakePosition = 0.5;//change according to intake position - pivot intake position
+    public static final double intakePosition = 5.5;//change according to intake position - pivot intake position
 
     public static final double homePosition = 0;//change according to position - desired position of the pivot
     public static final double positionTolerance = 0;//change according to position tolerance - pivot position tolerance
@@ -45,6 +45,7 @@ public final class Constants {
 
   public static class collectorConstants{
     public static final int collectorMotorID = 1;//change according to motor id number - collector motor ID number
+    public static final int collectorMotorSpeed = 1;//change according to collector motor speed
   }
 
   public static class controllerConstants{

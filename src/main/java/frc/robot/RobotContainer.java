@@ -11,6 +11,7 @@ import frc.robot.commands.pivotOutCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -25,7 +26,6 @@ public class RobotContainer {
    private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
    //private final pivotOutCommand m_GroundCollectionCommand = new pivotOutCommand(m_GroundCollectionSubsystem);
    private final CommandXboxController m_xboxController = new CommandXboxController(0);
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
