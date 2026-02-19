@@ -24,10 +24,8 @@ public class GroundCollector extends SubsystemBase {
   private double desiredSetpoint;//set pivot encoder position
   private DigitalInput lowerLimitSwitch, upperLimitSwitch;//establishes the 2 pivot limit switches
   private Kraken collectorMotor;//establishes the collector motor
-  private PIDController feedbackLoop = new PIDController(pivotConsants.kP, pivotConsants.kI, pivotConsants.kD);
-  private double gain;
-  private double collectorSpeed = 0;
-
+  private PIDController feedbackLoop = new PIDController(pivotConsants.kP, pivotConsants.kI, pivotConsants.kD);//establishes pid constants
+  private double gain;//establishes constant for pid loop
 
   public GroundCollector(){
 
@@ -54,7 +52,7 @@ public class GroundCollector extends SubsystemBase {
     pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
     //pivotMotor.setDesiredEncoderPosition(desiredSetpoint);//sets the encoder to desiredSetpoint
   }
-
+  //pid loop for motor speed
   public void pivotMotorSpin(){
     //pivotMotor.setMotorSpeed(
       //feedbackLoop.calculate(
@@ -65,24 +63,21 @@ public class GroundCollector extends SubsystemBase {
       pivotMotor.getPosition()
     );
     pivotMotor.setMotorSpeed(-gain);
-
+    //if lower limit and upper limit switch is reached, set pivot motor speed to 0
     if (isLowerLimitSwitchReached() || isUpperLimitSwitchReached()){
       pivotMotor.setMotorSpeed(0);
     }
   }
-//if the pivot is crossing the limit switch, stop the pivot from moving forwards
-  public void setPivotPosition(){
-   
-  }
+  //stops the motor
   public void stopPivotMotor(){
-    pivotMotor.stopMotor();//stops the motor
+    pivotMotor.stopMotor();
   }
   //sets the encoder position
   public void setPivotPosition(double setpoint){
     desiredSetpoint = setpoint;
     feedbackLoop.setSetpoint(setpoint);
   }
-
+  //adjusts position of pivot incrimentally
   public void adjustPositionIncrimentally(double increment){
     desiredSetpoint += increment;
     pivotMotor.setDesiredEncoderPosition(desiredSetpoint);
@@ -123,7 +118,7 @@ public class GroundCollector extends SubsystemBase {
       if (isLowerLimitSwitchReached()){
         collectorMotor.setMotorSpeed(Constants.collectorConstants.collectorMotorSpeed);
       } else{
-        collectorMotor.setMotorSpeed(0);;
+        collectorMotor.setMotorSpeed(0);
       }
     }
   

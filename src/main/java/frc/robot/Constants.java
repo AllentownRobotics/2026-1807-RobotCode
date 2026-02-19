@@ -45,11 +45,11 @@ public final class Constants {
 
   public static class collectorConstants{
     public static final int collectorMotorID = 1;//change according to motor id number - collector motor ID number
-    public static final int collectorMotorSpeed = 1;//change according to collector motor speed
+    public static final int collectorMotorSpeed = 1;//change according to collector motor speed - collector motor speed
   }
 
   public static class controllerConstants{
-    public static final int controllerPort = 1;//change according to controller number
+    public static final int controllerPort = 1;//change according to controller number - controller ID number
   }
 
 }

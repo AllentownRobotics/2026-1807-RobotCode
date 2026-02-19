@@ -42,10 +42,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+   //when pressing y on controller, the pivot motor spins to intake position
     m_xboxController.y().whileTrue(
       new pivotOutCommand(m_GroundCollectionSubsystem)
     );
-
+    //when pressing x on controller, the pivot motor spins to home position
     m_xboxController.x().whileTrue(
       new pivotInCommand(m_GroundCollectionSubsystem)
     );
