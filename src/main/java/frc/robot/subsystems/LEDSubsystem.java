@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import java.util.EnumMap;
 
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.blinkinConstants;
 
@@ -19,6 +20,9 @@ public class LEDSubsystem extends SubsystemBase {
     //make a new spark for blinkin
     blinkin = new Spark(blinkinConstants.blinkinID);
     //put blinkin constants on the pattern map
+
+    blinkin = new Spark(blinkinConstants.blinkinID);
+
     patternmap.put(blinkinConstants.LEDPatterns.OFF, blinkinConstants.off);
     patternmap.put(blinkinConstants.LEDPatterns.IDLE, blinkinConstants.defaultColor);
     patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUB, blinkinConstants.alignedWithHub);
