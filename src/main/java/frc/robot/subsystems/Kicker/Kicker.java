@@ -47,7 +47,7 @@ public class Kicker extends SubsystemBase {
     } else {
       motorSpinning = true;
     }
-    return motorSpinning;
+    return beamBreak.get();
   }
 
   @Override

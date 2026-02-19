@@ -19,8 +19,8 @@ public final class Constants {
 
   public static class KickerConstansts {
     public static final int topKickerMotorIDConstants = 1;
-    public static final double topKickerMotorSpeedKick = -0.15;
-    public static final double topKickerMotorSpeedExpel = 0.15;
+    public static final double topKickerMotorSpeedKick = -0.2;
+    public static final double topKickerMotorSpeedExpel = 0.2;
     public static final int  bottomKickerMotorIDConstants = 2;
     public static final double bottomKickerSpeed = 0.15;
   }
