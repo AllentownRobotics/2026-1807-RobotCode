@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems.Twindexer;
+package frc.robot.subsystems.TwindexerSubsys;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.utils.Kraken;
 
-public class Twindexer extends SubsystemBase {
+public class TwindexerSubsys extends SubsystemBase {
   /** Creates a new TwindexerSubsystem. */
   private final Kraken twindexerMotor;
   private final PIDController twindexerPIDController;
@@ -31,7 +31,7 @@ public class Twindexer extends SubsystemBase {
   /**
    * this is how to write method/variable descriptions :)
    */
-  public Twindexer() {
+  public TwindexerSubsys() {
     hopperFullBeambreak = new DigitalInput(Constants.TwindexerConstants.fullBeambreak);
     twindexerPIDController = new PIDController(Constants.TwindexerConstants.kp, Constants.TwindexerConstants.ki, Constants.TwindexerConstants.kd);
     twindexerMotor = new Kraken(Constants.MotorIDs.twindexerMotor);
