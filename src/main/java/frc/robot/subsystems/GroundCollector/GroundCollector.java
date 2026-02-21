@@ -62,7 +62,7 @@ public class GroundCollector extends SubsystemBase {
     gain = feedbackLoop.calculate(
       pivotMotor.getPosition()
     );
-    pivotMotor.setMotorSpeed(-gain);
+    pivotMotor.setMotorSpeed(gain);
     //if lower limit and upper limit switch is reached, set pivot motor speed to 0
     if (isLowerLimitSwitchReached() || isUpperLimitSwitchReached()){
       pivotMotor.setMotorSpeed(0);
