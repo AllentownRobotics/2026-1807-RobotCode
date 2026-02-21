@@ -23,14 +23,18 @@ public class collectorCommands extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  //starts collector motor
+  /**
+   *starts collector motor
+   */
   public void execute() {
     groundCollectionSubsystem.collectorMotorSpin();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  //stops collector motor
+  /**
+   *stops collector motor
+   */
   public void end(boolean interrupted) {
     groundCollectionSubsystem.stopCollectorMotor(0);
   }

@@ -19,21 +19,27 @@ public class pivotInCommand extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  //sets pivot position at the start
+  /**
+   *sets pivot position at the start
+   */
   public void initialize() {
     groundCollectionSubsystem.setPivotPosition(pivotConsants.startPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  //spins the pivot motor
+  /**
+   *spins the pivot motor
+   */
   public void execute() {
     groundCollectionSubsystem.pivotMotorSpin();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  //stops the pivot motor
+  /**
+   *stops the pivot motor
+   */
   public void end(boolean interrupted) {
     groundCollectionSubsystem.stopPivotMotor();
   }
