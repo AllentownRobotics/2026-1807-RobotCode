@@ -4,10 +4,16 @@
 
 package frc.robot.subsystems.Climb;
 
+import static edu.wpi.first.units.Units.Volts;
+
+import java.util.function.BooleanSupplier;
+
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
 import frc.utils.Kraken;
 
@@ -43,7 +49,7 @@ public class Climb extends SubsystemBase {
     leftClimbMotor.setMotorCurrentLimits(0);
     leftClimbMotor.setSoftLimits(ClimbConstants.softLimitMinPosition, ClimbConstants.softLimitMaxPosition);
 
-    desiredSetpoint = ClimbConstants.climbDesiredSetpoint;
+    desiredSetpoint = ClimbConstants.climbHomePosition;
     climbEncoder.setPosition(0);
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
@@ -51,6 +57,34 @@ public class Climb extends SubsystemBase {
   public void setClimbSpeed(double speed){
     rightClimbMotor.setMotorSpeed(speed);
   }
+
+  public void setClimbSetpoint(double setpoint){
+    desiredSetpoint = setpoint;
+    leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
+  }
+
+  public void adjustPositionIncremently(double increment){
+    desiredSetpoint += increment;
+    leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
+  }
+
+  public double getClimbPositionInInches(){
+    return leftClimbMotor.getPosition();
+  }
+
+  public BooleanSupplier isAtPosition(double targetPosition) {
+    double currentPosition = getClimbPositionInInches();
+    if ( (targetPosition - Constants.ClimbConstants.positionTolerance >= currentPosition ) && 
+         (targetPosition + Constants.ClimbConstants.positionTolerance <= currentPosition)) {
+      return () -> true;
+    }
+    return () -> false;
+  }
+
+  public void stopClimb(){
+    leftClimbMotor.setVolts(Voltage.ofBaseUnits(0, Volts));
+  }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

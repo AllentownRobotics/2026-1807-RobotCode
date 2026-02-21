@@ -22,11 +22,14 @@ public final class Constants {
     public static final int rightClimbMotorID = 0;
     public static final int climbCANCoderID = 0;
 
+    public static final double L1Position = 0;
+    public static final double L2Position = 0;
+    public static final double L3Position = 0;
     public static final double positionTolerance = 0;
     public static final double softLimitMinPosition = 0;
     public static final double softLimitMaxPosition = 0;
     public static final double incrementMeasurement = 0;
-    public static final double climbDesiredSetpoint = 0;
+    public static final double climbHomePosition = 0;
 
     // Climb Motor PID
     public static final double CLIMB_P = 0;

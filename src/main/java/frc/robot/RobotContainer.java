@@ -4,11 +4,22 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.ClimbCMDs.ClimbIncrement;
+import frc.robot.commands.ClimbCMDs.ClimbToHome;
+import frc.robot.commands.ClimbCMDs.ClimbToL1;
+import frc.robot.commands.ClimbCMDs.ClimbToL2;
+import frc.robot.commands.ClimbCMDs.ClimbToL3;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Climb.Climb;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -21,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final Climb climbSubsystem = new Climb();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -28,6 +40,19 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    NamedCommands.registerCommand("ClimbToHome", new ClimbToHome(climbSubsystem));
+    NamedCommands.registerCommand("ClimbToL1", new ClimbToL1(climbSubsystem));
+    NamedCommands.registerCommand("ClimbToL2", new ClimbToL2(climbSubsystem));
+    NamedCommands.registerCommand("ClimbToL3", new ClimbToL3(climbSubsystem));
+    NamedCommands.registerCommand("ClimbWaitForL1", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L1Position)));
+    NamedCommands.registerCommand("ClimbWaitForL2", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L2Position)));
+    NamedCommands.registerCommand("ClimbWaitForL3", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L3Position)));
+    NamedCommands.registerCommand("ClimbWaitForHome", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
+
+    NamedCommands.registerCommand("Climb to L1", new ClimbToL1(climbSubsystem));
+    NamedCommands.registerCommand("Climb to L2", new ClimbToL2(climbSubsystem));
+    NamedCommands.registerCommand("Climb to L3", new ClimbToL3(climbSubsystem));
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -42,6 +67,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    //Need to do this still 
+    
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
