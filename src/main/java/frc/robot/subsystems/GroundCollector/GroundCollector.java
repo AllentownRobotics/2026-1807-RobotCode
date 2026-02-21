@@ -28,7 +28,6 @@ public class GroundCollector extends SubsystemBase {
   private double gain;//establishes constant for pid loop
 
   public GroundCollector(){
-
     pivotMotor = new Kraken(pivotConsants.pivotMotorID);//make a new motor
     pivotEncoder = new CANcoder(pivotConsants.pivotEncoderID);//make a new encoder
 
@@ -52,7 +51,9 @@ public class GroundCollector extends SubsystemBase {
     pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
     //pivotMotor.setDesiredEncoderPosition(desiredSetpoint);//sets the encoder to desiredSetpoint
   }
-  //pid loop for motor speed
+  /**
+   *pid loop for motor speed
+   */
   public void pivotMotorSpin(){
     //pivotMotor.setMotorSpeed(
       //feedbackLoop.calculate(
@@ -63,39 +64,62 @@ public class GroundCollector extends SubsystemBase {
       pivotMotor.getPosition()
     );
     pivotMotor.setMotorSpeed(gain);
-    //if lower limit and upper limit switch is reached, set pivot motor speed to 0
+    /**
+     *if lower limit and upper limit switch is reached, set pivot motor speed to 0
+     */
     if (isintakeLimitSwitchReached() || ishomeLimitSwitchReached()){
       pivotMotor.setMotorSpeed(0);
     }
   }
-  //stops the motor
+  /**
+   *stops the motor
+   */
   public void stopPivotMotor(){
     pivotMotor.stopMotor();
   }
-  //sets the encoder position
+  /**
+   * sets the encoder position
+   * @param setpoint
+   */
   public void setPivotPosition(double setpoint){
     desiredSetpoint = setpoint;
     feedbackLoop.setSetpoint(setpoint);
   }
-  //adjusts position of pivot incrimentally
+  /**
+   * adjusts position of pivot incrimentally
+   * @param increment
+   */
   public void adjustPositionIncrimentally(double increment){
     desiredSetpoint += increment;
     pivotMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
- //gets position of the pivot
+ /**
+  * gets position of the pivot
+  * @return position of pivot motor
+  */
   public double getPivotPositionInInches(){
     return pivotMotor.getPosition();
   }
-  //gets true/false if the lower limit switch is reached
+  /**
+   * gets true/false if the lower limit switch is reached
+   * @return true or false if limit switch is broken
+   */
   public boolean isintakeLimitSwitchReached(){
     return intakeLimitSwitch.get();
   }
-  //gets true/false if the lower limit switch is reached
+  
+  /**
+   * gets true/false if the lower limit switch is reached
+   * @return true or false if limit switch is broken
+   */
   public boolean ishomeLimitSwitchReached(){
     return homeLimitSwitch.get();
   }
-
-  //if the pivot is at a certain desired position, return true, otherwise return false
+  /**
+   * if the pivot is at a certain desired position, return true, otherwise return false
+   * @param targetPosition
+   * @return true or false if the pivot is at a certain position
+   */
   public BooleanSupplier isAtPosition(double targetPosition){
     double currentPosition = getPivotPositionInInches();
     if((targetPosition - Constants.pivotConsants.positionTolerance >= currentPosition)&&(targetPosition + Constants.pivotConsants.positionTolerance <= currentPosition)){
@@ -104,21 +128,28 @@ public class GroundCollector extends SubsystemBase {
    return () -> false;
   }  
 
-  //sets collector motor speed
+  /**
+   * sets collector motor speed
+   */
   public void collectorMotorSpin(){
     collectorMotor.setMotorSpeed(0.1);//change motor speed
   }
-  //stops collector motor
+  /**
+   * stops collector motor
+   */
   public void stopCollectorMotor(double speed){
     collectorMotor.setBrakeMode();
 
   }
-//only start the collector motor when the pivot reaches its intake position
+    /**
+     * only start the collector motor when the pivot reaches its intake position,
+     * when limit switches stop the pivot, the collector starts spinning
+     */
     public void startCollectorMotor(){
       if (isintakeLimitSwitchReached()){
         collectorMotor.setMotorSpeed(Constants.collectorConstants.collectorMotorSpeed);
       } else{
-        collectorMotor.setMotorSpeed(0);
+        collectorMotor.setMotorSpeed(0);//keep as 0 - stops motor
       }
     }
   
