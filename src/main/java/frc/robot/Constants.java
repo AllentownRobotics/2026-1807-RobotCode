@@ -16,4 +16,33 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
+  public static class ClimbConstants {
+    public static final int leftClimbMotorID = 0;
+    public static final int rightClimbMotorID = 0;
+    public static final int climbCANCoderID = 0;
+
+    public static final double positionTolerance = 0;
+    public static final double softLimitMinPosition = 0;
+    public static final double softLimitMaxPosition = 0;
+    public static final double incrementMeasurement = 0;
+    public static final double climbDesiredSetpoint = 0;
+
+    // Climb Motor PID
+    public static final double CLIMB_P = 0;
+    public static final double CLIMB_I = 0;
+    public static final double CLIMB_D = 0;
+    public static final double CLIMB_SFF = 0; // static feedforward
+    public static final double CLIMB_VFF = 0; // velocity feedforward
+    public static final double CLIMB_AFF = 0; // acceleration feedforward
+    public static final double CLIMB_GFF = 0; // gravity feedforward 0.296
+    public static final double CLIMB_MIN_OUTPUT = -1;
+    public static final double CLIMB_MAX_OUTPUT = 1;
+
+    public static final double climbGearing = 0; // inches
+    public static final double climbSprocketRadius = 0;
+    public static final double climbSprocketCircumference = 0; // inches
+    public static final double climbEncoderToMechanismRatio = 0;
+
+  }
 }
