@@ -22,7 +22,7 @@ public class GroundCollector extends SubsystemBase {
   private Kraken pivotMotor;//establishes the pivot motor
   private CANcoder pivotEncoder;//establishes the pivot encoder
   private double desiredSetpoint;//set pivot encoder position
-  private DigitalInput lowerLimitSwitch, upperLimitSwitch;//establishes the 2 pivot limit switches
+  private DigitalInput intakeLimitSwitch, homeLimitSwitch;//establishes the 2 pivot limit switches
   private Kraken collectorMotor;//establishes the collector motor
   private PIDController feedbackLoop = new PIDController(pivotConsants.kP, pivotConsants.kI, pivotConsants.kD);//establishes pid constants
   private double gain;//establishes constant for pid loop
@@ -32,8 +32,8 @@ public class GroundCollector extends SubsystemBase {
     pivotMotor = new Kraken(pivotConsants.pivotMotorID);//make a new motor
     pivotEncoder = new CANcoder(pivotConsants.pivotEncoderID);//make a new encoder
 
-    lowerLimitSwitch = new DigitalInput(pivotConsants.lowerLimitSwitchPort);//make a new lower limit switch
-    upperLimitSwitch = new DigitalInput(pivotConsants.upperLimitSwitchPort);//make a new upper limit switch
+    intakeLimitSwitch = new DigitalInput(pivotConsants.intakeLimitSwitchPort);//make a new lower limit switch
+    homeLimitSwitch = new DigitalInput(pivotConsants.homeLimitSwitchPort);//make a new upper limit switch
 
     pivotMotor.addEncoder(pivotEncoder);//add the encoder
 
@@ -64,7 +64,7 @@ public class GroundCollector extends SubsystemBase {
     );
     pivotMotor.setMotorSpeed(gain);
     //if lower limit and upper limit switch is reached, set pivot motor speed to 0
-    if (isLowerLimitSwitchReached() || isUpperLimitSwitchReached()){
+    if (isintakeLimitSwitchReached() || ishomeLimitSwitchReached()){
       pivotMotor.setMotorSpeed(0);
     }
   }
@@ -87,12 +87,12 @@ public class GroundCollector extends SubsystemBase {
     return pivotMotor.getPosition();
   }
   //gets true/false if the lower limit switch is reached
-  public boolean isLowerLimitSwitchReached(){
-    return lowerLimitSwitch.get();
+  public boolean isintakeLimitSwitchReached(){
+    return intakeLimitSwitch.get();
   }
   //gets true/false if the lower limit switch is reached
-  public boolean isUpperLimitSwitchReached(){
-    return upperLimitSwitch.get();
+  public boolean ishomeLimitSwitchReached(){
+    return homeLimitSwitch.get();
   }
 
   //if the pivot is at a certain desired position, return true, otherwise return false
@@ -115,7 +115,7 @@ public class GroundCollector extends SubsystemBase {
   }
 //only start the collector motor when the pivot reaches its intake position
     public void startCollectorMotor(){
-      if (isLowerLimitSwitchReached()){
+      if (isintakeLimitSwitchReached()){
         collectorMotor.setMotorSpeed(Constants.collectorConstants.collectorMotorSpeed);
       } else{
         collectorMotor.setMotorSpeed(0);

@@ -21,8 +21,8 @@ public final class Constants {
     public static final int pivotMotorID = 1; //change according to motor id number - pivot motor ID number
     public static final int pivotEncoderID = 4; //change according to encoder id number - pivot encoder ID number
 
-    public static final int lowerLimitSwitchPort = 0;//change according to limit switch port - pivot lower limit switch port number
-    public static final int upperLimitSwitchPort = 8;//change according to limit switch port - pivot upper limit switch port number
+    public static final int intakeLimitSwitchPort = 0;//change according to limit switch port - pivot lower limit switch port number
+    public static final int homeLimitSwitchPort = 8;//change according to limit switch port - pivot upper limit switch port number
 
     //PID values for pivot
     public static final double kP = 0.1;//change according to pid value
