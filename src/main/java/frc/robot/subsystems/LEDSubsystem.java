@@ -16,11 +16,13 @@ public class LEDSubsystem extends SubsystemBase {
   Spark blinkin;
 
   EnumMap<blinkinConstants.LEDPatterns, Double> patternmap = new EnumMap<>(blinkinConstants.LEDPatterns.class);
+  /**
+     *put blinkin constants on the pattern map
+     */
   public LEDSubsystem() {
     //make a new spark for blinkin
     blinkin = new Spark(blinkinConstants.blinkinID);
-    //put blinkin constants on the pattern map
-
+    
     blinkin = new Spark(blinkinConstants.blinkinID);
 
     patternmap.put(blinkinConstants.LEDPatterns.OFF, blinkinConstants.off);

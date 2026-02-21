@@ -19,7 +19,9 @@ public final class Constants {
 
   public static class blinkinConstants{
     public static final int blinkinID = 0;
-    //sets LED patterns
+    /**
+     *sets LED patterns
+     */
     public enum LEDPatterns{
       OFF(off),
       IDLE(defaultColor),
