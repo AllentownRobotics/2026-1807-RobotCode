@@ -17,7 +17,7 @@ public class TwindexerSubsys extends SubsystemBase {
   private final PIDController twindexerPIDController;
   private final DigitalInput hopperFullBeambreak;
   /**
-   * True if the twindexer is spinning, and false if it is not spinning.
+   * Returns true if the twindexer is spinning, and false if it is not spinning.
    */
   private boolean isTwindexerSpinning;
   /**
@@ -25,12 +25,9 @@ public class TwindexerSubsys extends SubsystemBase {
    */
   private double twindexerSpeed;
   /**
-   * Detects if the hopper is full of fuel by periodically getting values from a beambreak at the top of the hopper.
+   * Returns true if hopper beambreak is broken, and false if it is not broken.
    */
   private boolean isHopperFull;
-  /**
-   * this is how to write method/variable descriptions :)
-   */
   public TwindexerSubsys() {
     hopperFullBeambreak = new DigitalInput(Constants.TwindexerConstants.fullBeambreak);
     twindexerPIDController = new PIDController(Constants.TwindexerConstants.kp, Constants.TwindexerConstants.ki, Constants.TwindexerConstants.kd);
@@ -46,7 +43,6 @@ public class TwindexerSubsys extends SubsystemBase {
 
   /**
    * Sets twindexer motor to a desired speed using our PID setpoint and values.
-   * @param speed the motor speed as a double
    */
   public void setTwindexerSpeed() {
     twindexerMotor.setMotorSpeed(
@@ -71,6 +67,8 @@ public class TwindexerSubsys extends SubsystemBase {
   }
 
   public void stopTwindexer() {
+    // Commented code is using PID to stop the twindexer (currently not necessary because motor is on coast mode).
+    //
     // twindexerMotor.setMotorSpeed(
     //   twindexerPIDController.calculate(
     //     twindexerMotor.getVelocity(), 0
@@ -85,8 +83,9 @@ public class TwindexerSubsys extends SubsystemBase {
     isHopperFull = !hopperFullBeambreak.get();
     twindexerSpeed = twindexerMotor.getVelocity();
     isTwindexerSpinning = getTwindexerSpinning();
-    //displays whether or not the twindexer is spinning as a boolean
+    //Displays whether or not the twindexer is spinning as a boolean.
     SmartDashboard.putBoolean("Twindexer is spinning: ", isTwindexerSpinning);
+    //Displays whether or not the hopper beambreak is broken as a boolean.
     SmartDashboard.putBoolean("Is the hopper full: ", isHopperFull);
   }
 }
