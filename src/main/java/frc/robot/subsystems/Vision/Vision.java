@@ -32,7 +32,7 @@ public class Vision extends SubsystemBase {
   Pose2d climbPose, trenchPose;
   boolean climbTv, trenchTv;
   
-
+ 
   /** Creates a new vision. */
   public Vision() {
     climbTable.getEntry("priorityid").setNumber(-1);
