@@ -16,4 +16,9 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static class VisionConstants {
+    public static final int xDistanceDeadzone = 0;
+    public static final int yDistanceDeadzone = 0;
+    public static final int angleDeadzone = 0;
+  }
 }
