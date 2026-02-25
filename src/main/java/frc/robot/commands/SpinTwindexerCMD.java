@@ -11,33 +11,33 @@ import frc.robot.subsystems.TwindexerSubsys.TwindexerSubsys;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class SpinTwindexerCMD extends Command {
   /** Creates a new SpinTwindexerCMD. */
-  public TwindexerSubsys twindexerSubsystem;
-  public SpinTwindexerCMD(TwindexerSubsys twindexerSubsystem) {
+  public TwindexerSubsys twindexerSubsys;
+  public SpinTwindexerCMD(TwindexerSubsys twindexerSubsys) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.twindexerSubsystem = twindexerSubsystem;
-    addRequirements(twindexerSubsystem);
+    this.twindexerSubsys = twindexerSubsys;
+    addRequirements(twindexerSubsys);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //sets twindexer motor's desired speed (PID setpoint)
-    twindexerSubsystem.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
+    // Sets motor's desired speed.
+    twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //spins motor and continuously tries to meet desired speed (aka spins motor at a set speed)
-    twindexerSubsystem.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
-    twindexerSubsystem.setTwindexerSpeed();
+    // Spins motor to continuously reach desired speed using PID.
+    twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
+    twindexerSubsys.setTwindexerSpeed();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //stops motor when command ends
-    twindexerSubsystem.stopTwindexer();
+    // Stops motor when command ends.
+    twindexerSubsys.stopTwindexer();
   }
 
   // Returns true when the command should end.
