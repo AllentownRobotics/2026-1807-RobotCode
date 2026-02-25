@@ -5,7 +5,9 @@
 package frc.robot.subsystems.Vision;
 
 import edu.wpi.first.hal.MatchInfoData;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.jni.WPIMathJNI;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -17,13 +19,61 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsys extends SubsystemBase {
   Limelight[] limelights;
-
+  double x;
+  double y;
+  double z;
+  double pitch;
+  double yaw;
+  double roll;
   /** Creates a new Vision. */
   public VisionSubsys() {
     limelights = new Limelight[]{
 
     };
+  }
 
+  public Pose3d robotPose3dFieldSpace() {
+    x = 0;
+    y = 0;
+    z = 0;
+    pitch = 0;
+    yaw = 0;
+    roll = 0;
+    Pose3d robotPose = new Pose3d();
+    int cameras = 0;
+    for(Limelight limelight:limelights){
+      if (limelight.hasTarget()) {
+        x += limelight.botPoseFieldSpace()[0];
+        y += limelight.botPoseFieldSpace()[1];
+        z += limelight.botPoseFieldSpace()[2];
+        pitch += limelight.botPoseFieldSpace()[4];
+        yaw += limelight.botPoseFieldSpace()[5];
+        roll += limelight.botPoseFieldSpace()[3];
+        cameras++;
+      }
+    }
+    x /= cameras;
+    y /= cameras;
+    z /= cameras;
+    pitch /= cameras;
+    yaw /= cameras;
+    roll /= cameras;
+
+    return new Pose3d(
+      x,
+      y,
+      z,
+      new Rotation3d(
+        roll,
+        pitch,
+        yaw
+      )
+    );
+
+  }
+
+  public Pose2d robotPose2dFieldSpace() {
+    return robotPose3dFieldSpace().toPose2d();
   }
 
   @Override
@@ -128,7 +178,7 @@ public class VisionSubsys extends SubsystemBase {
      * Average tag distance from camera,
      * Average tag area(percentage of image)
      */
-    public double[] robotPoseFieldSpace() {
+    public double[] botPoseFieldSpace() {
       return robotPoseFieldSpace.getDoubleArray(new double[0]);
     }
 
