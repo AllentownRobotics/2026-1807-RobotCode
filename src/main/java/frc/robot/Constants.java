@@ -18,7 +18,7 @@ public final class Constants {
   }
 
   public static class blinkinConstants{
-    public static final int blinkinID = 0;
+    public static final int blinkinID = 12;
     /**
      *sets LED patterns
      */
@@ -40,7 +40,7 @@ public final class Constants {
       }
     }
 
-    public static final double off = 0;//change after color is confirmed
+    public static final double off = -0.89;//change after color is confirmed
     public static final double defaultColor = 0;//change after color is confirmed
     public static final double alignedWithHub = 0;//change after color is confirmed
     public static final double climbCompleteRed = 0;//change after color is confirmed

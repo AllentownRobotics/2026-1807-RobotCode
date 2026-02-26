@@ -13,7 +13,7 @@ import frc.robot.Constants.blinkinConstants;
 
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LEDSubsystem. */
-  Spark blinkin;
+  Spark blinkin; 
 
   EnumMap<blinkinConstants.LEDPatterns, Double> patternmap = new EnumMap<>(blinkinConstants.LEDPatterns.class);
   /**
@@ -23,8 +23,6 @@ public class LEDSubsystem extends SubsystemBase {
     //make a new spark for blinkin
     blinkin = new Spark(blinkinConstants.blinkinID);
     
-    blinkin = new Spark(blinkinConstants.blinkinID);
-
     patternmap.put(blinkinConstants.LEDPatterns.OFF, blinkinConstants.off);
     patternmap.put(blinkinConstants.LEDPatterns.IDLE, blinkinConstants.defaultColor);
     patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUB, blinkinConstants.alignedWithHub);
