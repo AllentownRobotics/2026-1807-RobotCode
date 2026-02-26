@@ -17,8 +17,59 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static class VisionConstants {
-    public static final int xDistanceDeadzone = 0;
-    public static final int yDistanceDeadzone = 0;
-    public static final int angleDeadzone = 0;
+   
+    public static final double targetingClimbTranslationOffset = 0;
+    public static final double targetingClimbTopBottomTranslationOffset = 0;
+    public static final double targetingTrenchTranslationOffset = 0;
+    public static final double targetingTrenchTopBottomTranslationOffset = 0;
+    
+    public static final double rotation_kP = 0; 
+    public static final double rotation_kI = 0;
+    public static final double rotation_kD = 0; 
+
+    public static final double translation_kP = 0;
+    public static final double translation_kI = 0; 
+    public static final double translation_kD = 0; 
+
+    public static final double ytranslation_kP = 0;
+    public static final double ytranslation_kI = 0; 
+    public static final double ytranslation_kD = 0; 
+    
+    public static final double rotationTargetingSpeed = 0;
+
+    public static final double translationTargetingSpeed = 0;
+
+    public static final double xDistanceDeadzone = 0;
+    public static final double yLDistanceDeadzone = 0;
+    public static final double angleDeadzone = 0;
+
+
+    // limelight configs (center of lens) relative to center bottom of the robot (bottom of the wheels)
+    // camera view: robot pose in target space
+
+    // forward, right, and up are in meters
+    // roll, pitch, and yaw are in degrees
+
+    public static final double hopperLLForward = 0;
+    public static final double hopperLLRight =  0;
+    public static final double hopperLLUp = 0;
+    public static final double hopperLLRoll = 0;
+    public static final double hopperLLPitch = 0;
+    public static final double hopperLLYaw = 0;
+
+    public static final double frontLLForward = 0; 
+    public static final double frontLLRight = 0; 
+    public static final double frontLLUp = 0;
+    public static final double frontLLRoll = 0;
+    public static final double frontLLPitch = 0;
+    public static final double frontLLYaw = 0;
+
+    public static final double backLLForward = 0;
+    public static final double backLLRight = 0;
+    public static final double backLLUp = 0;
+    public static final double backLLRoll = 0;
+    public static final double backLLPitch = 0;
+    public static final double backLLYaw = 0;
+
   }
 }

@@ -53,6 +53,7 @@ public class Vision extends SubsystemBase {
     }
     
     int climbExists = climbTv ? 1 : 0;
+
     Pose2d newClimbPose = climbPose.times(climbExists);
 
     Translation2d translationPoseClimb = newClimbPose.getTranslation();
@@ -116,7 +117,7 @@ public class Vision extends SubsystemBase {
     double angle = Math.abs(trenchPose.getRotation().getDegrees() - climbPose2d.getRotation().getDegrees());
 
     boolean trenchXInRange = (xDistance <= VisionConstants.xDistanceDeadzone);
-    boolean trenchYInRange = (yDistance <= VisionConstants.yDistanceDeadzone);
+    boolean trenchYInRange = (yDistance <= VisionConstants.yLDistanceDeadzone);
     boolean trenchRotInRange = (angle <= VisionConstants.angleDeadzone);
     
     boolean isTrenchInRange = trenchXInRange && trenchYInRange && trenchRotInRange;
