@@ -16,6 +16,7 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+
   public static class pivotConsants{
 
     public static final int pivotMotorID = 1; //change according to motor id number - pivot motor ID number
@@ -51,5 +52,4 @@ public final class Constants {
   public static class controllerConstants{
     public static final int controllerPort = 1;//change according to controller number - controller ID number
   }
-
 }

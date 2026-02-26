@@ -31,10 +31,10 @@ public class GroundCollector extends SubsystemBase {
     pivotMotor = new Kraken(pivotConsants.pivotMotorID);//make a new motor
     pivotEncoder = new CANcoder(pivotConsants.pivotEncoderID);//make a new encoder
 
-    intakeLimitSwitch = new DigitalInput(pivotConsants.intakeLimitSwitchPort);//make a new lower limit switch
-    homeLimitSwitch = new DigitalInput(pivotConsants.homeLimitSwitchPort);//make a new upper limit switch
+    intakeLimitSwitch = new DigitalInput(pivotConsants.intakeLimitSwitchPort);//make a new intake limit switch
+    homeLimitSwitch = new DigitalInput(pivotConsants.homeLimitSwitchPort);//make a new home limit switch
 
-    pivotMotor.addEncoder(pivotEncoder);//add the encoder
+    pivotMotor.addEncoder(pivotEncoder);//add the encoder to the motor
 
     collectorMotor = new Kraken(collectorConstants.collectorMotorID);//makes a new collector motor
 
@@ -48,7 +48,9 @@ public class GroundCollector extends SubsystemBase {
     //pivotMotor.setSoftLimits(pivotConsants.softLimitMinPosition, pivotConsants.softLimitMaxPosition);//set limits for motor
 
     //desiredSetpoint = pivotConsants.homePosition;//sets desiredSetpoint to the needed position
+
     pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
+
     //pivotMotor.setDesiredEncoderPosition(desiredSetpoint);//sets the encoder to desiredSetpoint
   }
   /**
@@ -60,68 +62,68 @@ public class GroundCollector extends SubsystemBase {
         //pivotMotor.getPosition()
       //)
     //);
+
     gain = feedbackLoop.calculate(
       pivotMotor.getPosition()
-    );
-    pivotMotor.setMotorSpeed(gain);
-    /**
-     *if lower limit and upper limit switch is reached, set pivot motor speed to 0
+    );//uses PID loop to calculate motor speed
+
+    pivotMotor.setMotorSpeed(gain);//sets speed to value given by PID loop
+
+    /*
+     if lower limit and upper limit switch is reached, set pivot motor speed to 0
      */
-    if (isintakeLimitSwitchReached() || ishomeLimitSwitchReached()){
+    if (isIntakeLimitSwitchReached() || isHomeLimitSwitchReached()){
       pivotMotor.setMotorSpeed(0);
     }
   }
+
   /**
-   *stops the motor
+   *stops the pivot motor
    */
   public void stopPivotMotor(){
     pivotMotor.stopMotor();
   }
+
   /**
-   * sets the encoder position
+   * sets the desired encoder position
    * @param setpoint
    */
   public void setPivotPosition(double setpoint){
     desiredSetpoint = setpoint;
-    feedbackLoop.setSetpoint(setpoint);
+    feedbackLoop.setSetpoint(setpoint);//gives the PID loop the needed setpoint
   }
-  /**
-   * adjusts position of pivot incrimentally
-   * @param increment
-   */
-  public void adjustPositionIncrimentally(double increment){
-    desiredSetpoint += increment;
-    pivotMotor.setDesiredEncoderPosition(desiredSetpoint);
-  }
+
  /**
-  * gets position of the pivot
+  * gets angle of the pivot in degrees
   * @return position of pivot motor
   */
-  public double getPivotPositionInInches(){
-    return pivotMotor.getPosition();
-  }
-  /**
-   * gets true/false if the lower limit switch is reached
-   * @return true or false if limit switch is broken
-   */
-  public boolean isintakeLimitSwitchReached(){
-    return intakeLimitSwitch.get();
+  public double getPivotPosition(){
+    return pivotMotor.getPosition() * 360;//converts rotations into degrees
   }
   
   /**
-   * gets true/false if the lower limit switch is reached
-   * @return true or false if limit switch is broken
+   * returns true/false if the intake limit switch is reached
+   * @return true or false if limit switch is pressed
    */
-  public boolean ishomeLimitSwitchReached(){
-    return homeLimitSwitch.get();
+  public boolean isIntakeLimitSwitchReached(){
+    return intakeLimitSwitch.get();//gets state of digital imput as boolean
   }
+  
+  /**
+   * gets true/false if the home limit switch is reached
+   * @return true or false if limit switch is pressed
+   */
+  public boolean isHomeLimitSwitchReached(){
+    return homeLimitSwitch.get();//gets state of digital imput as boolean
+  }
+
   /**
    * if the pivot is at a certain desired position, return true, otherwise return false
    * @param targetPosition
    * @return true or false if the pivot is at a certain position
    */
   public BooleanSupplier isAtPosition(double targetPosition){
-    double currentPosition = getPivotPositionInInches();
+    double currentPosition = getPivotPosition();
     if((targetPosition - Constants.pivotConsants.positionTolerance >= currentPosition)&&(targetPosition + Constants.pivotConsants.positionTolerance <= currentPosition)){
     return () -> true;
     }
@@ -134,22 +136,23 @@ public class GroundCollector extends SubsystemBase {
   public void collectorMotorSpin(){
     collectorMotor.setMotorSpeed(0.1);//change motor speed
   }
+
   /**
    * stops collector motor
    */
   public void stopCollectorMotor(double speed){
     collectorMotor.setBrakeMode();
-
   }
-    /**
-     * only start the collector motor when the pivot reaches its intake position,
-     * when limit switches stop the pivot, the collector starts spinning
-     */
+
+  /**
+    * only start the collector motor when the pivot reaches its intake position,
+    * when limit switches stop the pivot, the collector starts spinning
+    */
     public void startCollectorMotor(){
-      if (isintakeLimitSwitchReached()){
-        collectorMotor.setMotorSpeed(Constants.collectorConstants.collectorMotorSpeed);
-      } else{
-        collectorMotor.setMotorSpeed(0);//keep as 0 - stops motor
+      if (!isIntakeLimitSwitchReached()){//checking if the intake limit switch is not pressed
+        collectorMotor.setMotorSpeed(Constants.collectorConstants.collectorMotorSpeed);//sets the collector speed if its pressed
+      } else {
+        collectorMotor.setMotorSpeed(0);//otherwise keep as 0 - stops motor
       }
     }
   
@@ -164,6 +167,5 @@ public class GroundCollector extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-
 
 }
