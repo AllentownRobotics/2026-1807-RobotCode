@@ -11,10 +11,10 @@ import frc.robot.commands.ExpelFuel;
 import frc.robot.commands.KickFuel;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Kicker.KickerSubsys;
+import frc.utils.ButtonBoard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -32,6 +32,8 @@ public class RobotContainer {
   private final ExpelFuel m_expelFuel = new ExpelFuel(m_kicker);
   private final KickFuel m_kickFuel = new KickFuel(m_kicker);
 
+  final ButtonBoard m_buttonboard = new ButtonBoard(0);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -47,6 +49,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+  //Trigger value = m_buttonboard.getButton(0);
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
@@ -54,11 +57,16 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    //m_driverController.b().whileTrue(new KickFuel(m_kicker));
+    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    m_driverController.b().whileTrue(new KickFuel(m_kicker));
     m_kicker.setDefaultCommand(m_kickFuel);
     m_driverController.a().whileTrue(m_expelFuel);
-  }
+    m_buttonboard.b12().whileTrue(new ExpelFuel(m_kicker));
+    m_buttonboard.b1().whileTrue(new ExpelFuel(m_kicker));
+    m_buttonboard.b2().whileTrue(new ExpelFuel(m_kicker));
+      
+    }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
