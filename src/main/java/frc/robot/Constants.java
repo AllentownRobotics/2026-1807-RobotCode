@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -15,5 +18,41 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+  }
+  public static class hoodConstants {
+    public static final double hoodkP = 1;
+    public static final double hoodkI = 0;
+    public static final double hoodkD = 0;
+    public static final double hoodkS = 0;
+    public static final double hoodkV = 0;
+    public static final double hoodkA = 0;
+    public static final double hoodkG = 0;
+  }
+
+  public static class turretConstants {
+    public static final double turretkP = 1;
+    public static final double turretkI = 0;
+    public static final double turretkD = 0;
+    public static final double turretkS = 0;
+    public static final double turretkV = 0;
+    public static final double turretkA = 0;
+    public static final double turretkG = 0;
+
+    // from onshape, calculated the inches in x and y and turned that into meters for pose.
+    public static final Translation2d BLUE_HUB =
+        new Translation2d(
+            Units.inchesToMeters(
+                158.250954 + 47.998092 / 2), // X - distance from blue alliance wall
+            Units.inchesToMeters(161.517500) // Y - centered on field width // 158.84
+            );
+    // from onshape, calculated the inches in x and y and turned that into meters for pose.
+    public static final Translation2d RED_HUB =
+        new Translation2d(
+            Units.inchesToMeters(
+                445.250954
+                    + 47.998092
+                        / 2), // X - mirrored for red side // 158.84          651.22 - 157.84
+            Units.inchesToMeters(161.517500) // Y - same center
+            );
   }
 }
