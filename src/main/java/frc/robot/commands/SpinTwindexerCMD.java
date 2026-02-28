@@ -12,9 +12,11 @@ import frc.robot.subsystems.TwindexerSubsys.TwindexerSubsys;
 public class SpinTwindexerCMD extends Command {
   /** Creates a new SpinTwindexerCMD. */
   public TwindexerSubsys twindexerSubsys;
+
   public SpinTwindexerCMD(TwindexerSubsys twindexerSubsys) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.twindexerSubsys = twindexerSubsys;
+
     addRequirements(twindexerSubsys);
   }
 
@@ -30,6 +32,7 @@ public class SpinTwindexerCMD extends Command {
   public void execute() {
     // Spins motor to continuously reach desired speed using PID.
     twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
+    
     twindexerSubsys.setTwindexerSpeed();
   }
 
