@@ -20,8 +20,8 @@ public class Flywheel extends SubsystemBase {
 
   public Flywheel() {
     flywheelTolerance = 0.1; // rps
-    leftFlywheelKraken = new Kraken(3);
-    rightFlywheelKraken = new Kraken(4);
+    leftFlywheelKraken = new Kraken(103);
+    rightFlywheelKraken = new Kraken(204);
     rightFlywheelKraken.follow(3, MotorAlignmentValue.Aligned);
 
     leftFlywheelKraken.setCoastMode();

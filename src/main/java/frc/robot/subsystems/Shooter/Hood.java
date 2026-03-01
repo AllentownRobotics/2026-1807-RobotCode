@@ -48,8 +48,8 @@ public class Hood extends SubsystemBase {
             Interpolator.forDouble()); // makes a new interpolating table, use case is for degree
     // calculation
 
-    hoodMotor = new Kraken(2); // make constants for this
-    hoodEncoder = new CANcoder(3); // make constants for this
+    hoodMotor = new Kraken(101); // make constants for this
+    hoodEncoder = new CANcoder(201); // make constants for this
     hoodMotor.addEncoder(hoodEncoder);
 
     hoodMotor.setBrakeMode(); // sets break mode when not in use

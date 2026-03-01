@@ -18,13 +18,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.autoAimHub;
+import frc.robot.commands.autoSetHoodAngle;
+import frc.robot.commands.manualSetHoodAngle;
+import frc.robot.commands.setFlywheelVelocity;
+import frc.robot.commands.targetHUB;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Shooter.Flywheel;
+import frc.robot.subsystems.Shooter.Hood;
+import frc.robot.subsystems.Shooter.Turret;
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate =  RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double slowSpeed = 0.5 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -38,6 +45,9 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final Turret turret = new Turret(drivetrain);
+    private final Flywheel flywheel = new Flywheel();
+    private final Hood hood = new Hood(drivetrain);
      /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -74,10 +84,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
+        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -88,6 +98,12 @@ public class RobotContainer {
 
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+        joystick.rightTrigger().whileTrue(new autoAimHub(drivetrain, joystick, turret));
+        turret.setDefaultCommand(new targetHUB(turret));
+        hood.setDefaultCommand(new autoSetHoodAngle(hood));
+        joystick.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
+        joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

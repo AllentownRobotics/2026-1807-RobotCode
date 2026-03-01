@@ -39,7 +39,7 @@ public class autoAimHub extends Command {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
-    thetaController = new PIDController(1, 0, 0);
+    thetaController = new PIDController(0.02, 0, 0);
     thetaController.enableContinuousInput(-180, 180);
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.

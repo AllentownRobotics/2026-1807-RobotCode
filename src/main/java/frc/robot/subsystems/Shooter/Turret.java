@@ -30,18 +30,19 @@ public class Turret extends SubsystemBase {
   private double turretTolerance; // put in constants
   private double targetY;
   private double targetX;
+  private double robotHeading;
 
   public Turret(CommandSwerveDrivetrain drive) {
     this.drive = drive;
     targetTurretState = 0.2; // degrees
-    turretMotor = new Kraken(1); // make constants for this
-    turretEncoder = new CANcoder(2); // make constants for this
+    turretMotor = new Kraken(100); // make constants for this
+    turretEncoder = new CANcoder(200); // make constants for this
     turretMotor.addEncoder(turretEncoder);
 
     turretMotor.setBrakeMode();
 
     turretMotor.setRotorToSensorRatio(1);
-    turretMotor.setSensorToMechanismRatio(54); // needs to be changed
+    turretMotor.setSensorToMechanismRatio(1); // needs to be changed
     // turretMotor.setMotorCurrentLimits(40);     MAKE SURE TO SET THIS BEFORE TESTING
 
     turretMotor.setPIDValues(
@@ -77,12 +78,16 @@ public class Turret extends SubsystemBase {
     }
     // current absolute encoder reading
     currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+    robotHeading = drive.getState().Pose.getRotation().getDegrees();
+
     /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
      * robot heading allows you to get a robot relative angle*/
     targetTurretState =
         Math.toDegrees(
             Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX())
                 - drive.getPigeon2().getRotation2d().getRadians());
+
+    
     // only allows angles between -pi to +pi because every angle after that can be reprsensted by a
     // smaller angle in that interval
     targetTurretState = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(targetTurretState)));
@@ -99,6 +104,7 @@ public class Turret extends SubsystemBase {
     SmartDashboard.putNumber("posetargetY", drive.getState().Pose.getY());
     SmartDashboard.putNumber("targetX", targetX);
     SmartDashboard.putNumber("targetY", targetY);
+    SmartDashboard.putNumber("Pidgeon reading", robotHeading);
   }
 
   public double getTargetTurretAngle(){
