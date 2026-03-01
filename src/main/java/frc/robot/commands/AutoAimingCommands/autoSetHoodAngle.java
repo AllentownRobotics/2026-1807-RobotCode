@@ -2,20 +2,20 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.AutoAimingCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter.Turret;
+import frc.robot.subsystems.Shooter.Hood;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class targetHUB extends Command {
+public class autoSetHoodAngle extends Command {
+  /** Creates a new manualSetHoodAngle. */
+  Hood hood;
 
-  private Turret turret;
+  public autoSetHoodAngle(Hood hood) {
 
-  /** Creates a new targetHUB. */
-  public targetHUB(Turret turret) {
-    this.turret = turret;
-    addRequirements(turret);
+    this.hood = hood;
+    addRequirements(hood);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,12 +26,14 @@ public class targetHUB extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    turret.trackHUB();
+    hood.setHoodAutomaticallyFromDistance();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    hood.setHoodToHome();
+  }
 
   // Returns true when the command should end.
   @Override

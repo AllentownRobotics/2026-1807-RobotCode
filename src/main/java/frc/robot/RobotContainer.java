@@ -9,6 +9,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,11 +19,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.autoAimHub;
-import frc.robot.commands.autoSetHoodAngle;
 import frc.robot.commands.manualSetHoodAngle;
 import frc.robot.commands.setFlywheelVelocity;
-import frc.robot.commands.targetHUB;
+import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
+import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
+import frc.robot.commands.AutoAimingCommands.autoSetHoodAngle;
+import frc.robot.commands.AutoAimingCommands.targetHUB;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter.Flywheel;
@@ -52,9 +54,9 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public RobotContainer() {
+        NamedCommands.registerCommand("autoAimHub", new AutonAutoAimHub(drivetrain, turret));
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
-
         configureBindings();
     }
 
@@ -84,10 +86,10 @@ public class RobotContainer {
             drivetrain.applyRequest(() -> idle).ignoringDisable(true)
         );
 
-        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
-        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        // ));
+        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.b().whileTrue(drivetrain.applyRequest(() ->
+            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        ));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
@@ -99,32 +101,17 @@ public class RobotContainer {
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        joystick.rightTrigger().whileTrue(new autoAimHub(drivetrain, joystick, turret)); // IT WORKSSSSSSSSSSSSSSSSSSSSSSSSSSS
+        joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); // IT WORKSSSSSSSSSSSSSSSSSSSSSSSSSSS
         turret.setDefaultCommand(new targetHUB(turret));
         hood.setDefaultCommand(new autoSetHoodAngle(hood));
         joystick.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
         joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
+        joystick.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        // // Simple drive forward auton
-        // final var idle = new SwerveRequest.Idle();
-        // return Commands.sequence(
-        //     // Reset our field centric heading to match the robot
-        //     // facing away from our alliance station wall (0 deg).
-        //     drivetrain.runOnce(() -> drivetrain.seedFieldCentric(Rotation2d.kZero)),
-        //     // Then slowly drive forward (away from us) for 5 seconds.
-        //     drivetrain.applyRequest(() ->
-        //         drive.withVelocityX(0.5)
-        //             .withVelocityY(0)
-        //             .withRotationalRate(0)
-        //     )
-        //     .withTimeout(5.0),
-        //     // Finally idle for the rest of auton
-        //     drivetrain.applyRequest(() -> idle)
-        // );
         return autoChooser.getSelected();
     }
 }

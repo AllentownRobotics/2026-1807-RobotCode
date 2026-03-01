@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.AutoAimingCommands;
 
 import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
@@ -18,7 +18,7 @@ import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter.Turret;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class autoAimHub extends Command {
+public class TeleopAutoAimHub extends Command {
   /** Creates a new autoAimHUB. */
   CommandSwerveDrivetrain drivetrain;
   CommandXboxController driverController;
@@ -30,7 +30,7 @@ public class autoAimHub extends Command {
   private double MaxAngularRate;
   private double rotationRate;
 
-  public autoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, Turret turret) {
+  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, Turret turret) {
     this.drivetrain = drivetrain;
     this.driverController = driverController;
     this.turret = turret;
@@ -56,6 +56,7 @@ public class autoAimHub extends Command {
   @Override
   public void initialize() {
     thetaController.reset(); // doing a whole lot of resetting
+    SmartDashboard.putBoolean("Did this command start?", true);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
