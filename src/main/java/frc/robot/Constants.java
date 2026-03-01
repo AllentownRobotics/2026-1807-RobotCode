@@ -55,4 +55,10 @@ public final class Constants {
             Units.inchesToMeters(161.517500) // Y - same center
             );
   }
+
+  public static class AimingConstants{
+      public static final double driveHubAutoAimkP = 0.05;  // fine tune more
+      public static final double driveHubAutoAimkI = 0.0033; // fine tune more 
+      public static final double driveHubAutoAimkD = 0;   // fine tune more
+  }
 }
