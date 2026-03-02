@@ -101,12 +101,12 @@ public class RobotContainer {
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-        joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); // IT WORKSSSSSSSSSSSSSSSSSSSSSSSSSSS
-        turret.setDefaultCommand(new targetHUB(turret));
-        hood.setDefaultCommand(new autoSetHoodAngle(hood));
-        joystick.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
-        joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
-        joystick.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
+        joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); 
+        // turret.setDefaultCommand(new targetHUB(turret));
+        // hood.setDefaultCommand(new autoSetHoodAngle(hood));
+        // joystick.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
+        // joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
+        // joystick.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

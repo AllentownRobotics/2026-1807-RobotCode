@@ -62,7 +62,7 @@ public class TeleopAutoAimHub extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // compensate for robot facing the right direction
+    // compensate for robot facing the right direction.
     targetHubAngle = turret.getTargetTurretAngle() + 180;
     
     // calculate the PID gains we need, feed that in for our turning rate to turn to a specific position
@@ -81,9 +81,9 @@ public class TeleopAutoAimHub extends Command {
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
     // add Driver feedback here
-    if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 5){
-        // make LEDS turn green here, or any sort of bright color to signify it has been targetted. 
-    }
+    // if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 5){
+    //     // make LEDS turn green here, or any sort of bright color to signify it has been targetted. 
+    // }
   }
 
   // Called once the command ends or is interrupted.

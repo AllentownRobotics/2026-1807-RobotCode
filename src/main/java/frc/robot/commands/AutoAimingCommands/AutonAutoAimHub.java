@@ -54,7 +54,7 @@ public class AutonAutoAimHub extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    thetaController.reset(); // doing a whole lot of resetting
+    thetaController.reset(); 
     SmartDashboard.putBoolean("this command has started", true);
   }
 
@@ -88,7 +88,7 @@ public class AutonAutoAimHub extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    System.out.println("this command ran");
+    // System.out.println("this command ran");
   }
 
   // Returns true when the command should end.
