@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.Vision;
 
+import java.util.Optional;
+
 import edu.wpi.first.hal.MatchInfoData;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -15,6 +17,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class VisionSubsys extends SubsystemBase {
@@ -28,11 +31,12 @@ public class VisionSubsys extends SubsystemBase {
   /** Creates a new Vision. */
   public VisionSubsys() {
     limelights = new Limelight[]{
-
+      new Limelight("limelight")
     };
   }
 
-  public Pose3d robotPose3dFieldSpace() {
+
+  public Optional<Pose3d> robotPose3dFieldSpace() {
     x = 0;
     y = 0;
     z = 0;
@@ -58,27 +62,40 @@ public class VisionSubsys extends SubsystemBase {
     pitch /= cameras;
     yaw /= cameras;
     roll /= cameras;
-
-    return new Pose3d(
-      x,
-      y,
-      z,
-      new Rotation3d(
-        roll,
-        pitch,
-        yaw
+    if(cameras > 0){
+    return Optional.of(
+      new Pose3d(
+        x,
+        y,
+        z,
+        new Rotation3d(
+          roll,
+          pitch,
+          yaw
+        )
       )
     );
-
+    } else {
+      return Optional.empty();
+    }
   }
 
-  public Pose2d robotPose2dFieldSpace() {
-    return robotPose3dFieldSpace().toPose2d();
+  public Optional<Pose2d> robotPose2dFieldSpace() {
+    if(robotPose3dFieldSpace().isPresent()){
+      return Optional.of(robotPose3dFieldSpace().get().toPose2d());
+    } else {
+      return Optional.empty();
+    }
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    if (robotPose2dFieldSpace().isPresent()){
+      SmartDashboard.putNumber("Robot x", robotPose2dFieldSpace().get().getX());
+      SmartDashboard.putNumber("Robot y", robotPose2dFieldSpace().get().getY());
+      SmartDashboard.putNumber("Robot Yaw", robotPose2dFieldSpace().get().getRotation().getDegrees());
+    }
   }
 
   public class Limelight extends SubsystemBase {
@@ -87,11 +104,11 @@ public class VisionSubsys extends SubsystemBase {
 
     /**
      * Creates a new Limelight
-     * @param name , the hosname of the limelight, exclude the "limelight-" from the name
+     * @param name , the hosname of the limelight
      */
     public Limelight(String name) {
 
-      table = NetworkTableInstance.getDefault().getTable("limelight-"+name);
+      table = NetworkTableInstance.getDefault().getTable(name);
 
       tx = table.getEntry("tx");
 
