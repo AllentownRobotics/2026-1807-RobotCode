@@ -19,6 +19,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -54,7 +55,7 @@ public class VisionSubsys extends SubsystemBase {
   public ArrayList<double[]> robotPose2dFieldSpace() {
     ArrayList<double[]> poses = new ArrayList<double[]>();
     for(double[] pose3d: robotPose3dFieldSpace()) {
-      poses.add(new double[]{pose3d[0], pose3d[1], pose3d[5], pose3d[7]});
+      poses.add(new double[]{pose3d[0], pose3d[1], pose3d[5], Timer.getTimestamp() - pose3d[7]/1000.0});
     }
     return poses;
   }
@@ -182,8 +183,8 @@ public class VisionSubsys extends SubsystemBase {
       return targetPoseRobotSpace.getDoubleArray(new double[0]);
     }
 
-    public double latency() {
-      return targetPoseRobotSpace.getDoubleArray(new double[0])[7];
+    public double timestamp() {
+      return Timer.getTimestamp() - targetPoseRobotSpace.getDoubleArray(new double[0])[7]/1000.0;
     }
 
   }
