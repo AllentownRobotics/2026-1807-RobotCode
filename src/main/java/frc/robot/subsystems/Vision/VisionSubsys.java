@@ -4,11 +4,14 @@
 
 package frc.robot.subsystems.Vision;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import edu.wpi.first.hal.MatchInfoData;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.jni.WPIMathJNI;
 import edu.wpi.first.networktables.NetworkTable;
@@ -19,82 +22,51 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class VisionSubsys extends SubsystemBase {
   Limelight[] limelights;
-  double x;
-  double y;
-  double z;
-  double pitch;
-  double yaw;
-  double roll;
+  ArrayList<Double> x,y,z,pitch,yaw,roll;
+
+  CommandSwerveDrivetrain drivetrain;
   /** Creates a new Vision. */
-  public VisionSubsys() {
+  public VisionSubsys(CommandSwerveDrivetrain drivetrain) {
     limelights = new Limelight[]{
       new Limelight("limelight")
     };
+
+    this.drivetrain = drivetrain;
   }
 
 
-  public Optional<Pose3d> robotPose3dFieldSpace() {
-    x = 0;
-    y = 0;
-    z = 0;
-    pitch = 0;
-    yaw = 0;
-    roll = 0;
-    Pose3d robotPose = new Pose3d();
-    int cameras = 0;
+  public ArrayList<double[]> robotPose3dFieldSpace() {
+
+    ArrayList<double[]> poses = new ArrayList<double[]>();
+
     for(Limelight limelight:limelights){
       if (limelight.hasTarget()) {
-        x += limelight.botPoseFieldSpace()[0];
-        y += limelight.botPoseFieldSpace()[1];
-        z += limelight.botPoseFieldSpace()[2];
-        pitch += limelight.botPoseFieldSpace()[4];
-        yaw += limelight.botPoseFieldSpace()[5];
-        roll += limelight.botPoseFieldSpace()[3];
-        cameras++;
+        poses.add(limelight.botPoseFieldSpace());
       }
     }
-    x /= cameras;
-    y /= cameras;
-    z /= cameras;
-    pitch /= cameras;
-    yaw /= cameras;
-    roll /= cameras;
-    if(cameras > 0){
-    return Optional.of(
-      new Pose3d(
-        x,
-        y,
-        z,
-        new Rotation3d(
-          roll,
-          pitch,
-          yaw
-        )
-      )
-    );
-    } else {
-      return Optional.empty();
-    }
+    return poses;
   }
 
-  public Optional<Pose2d> robotPose2dFieldSpace() {
-    if(robotPose3dFieldSpace().isPresent()){
-      return Optional.of(robotPose3dFieldSpace().get().toPose2d());
-    } else {
-      return Optional.empty();
+  public ArrayList<double[]> robotPose2dFieldSpace() {
+    ArrayList<double[]> poses = new ArrayList<double[]>();
+    for(double[] pose3d: robotPose3dFieldSpace()) {
+      poses.add(new double[]{pose3d[0], pose3d[1], pose3d[5], pose3d[7]});
     }
+    return poses;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (robotPose2dFieldSpace().isPresent()){
-      SmartDashboard.putNumber("Robot x", robotPose2dFieldSpace().get().getX());
-      SmartDashboard.putNumber("Robot y", robotPose2dFieldSpace().get().getY());
-      SmartDashboard.putNumber("Robot Yaw", robotPose2dFieldSpace().get().getRotation().getDegrees());
+    for(double[] pose: robotPose2dFieldSpace()) {
+      drivetrain.addVisionMeasurement(
+        new Pose2d(pose[0], pose[1], Rotation2d.fromDegrees(pose[2])),
+        pose[3]
+        );
     }
   }
 
@@ -208,6 +180,10 @@ public class VisionSubsys extends SubsystemBase {
      */
     public double[] targetPoseRobotSpace() {
       return targetPoseRobotSpace.getDoubleArray(new double[0]);
+    }
+
+    public double latency() {
+      return targetPoseRobotSpace.getDoubleArray(new double[0])[7];
     }
 
   }
