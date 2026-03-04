@@ -21,7 +21,7 @@ public class LEDSubsystem extends SubsystemBase {
      */
   public LEDSubsystem() {
     //make a new spark for blinkin
-    blinkin = new Spark(blinkinConstants.blinkinID);
+    blinkin = new Spark(blinkinConstants.blinkinID);// blinkin is never used, nothing sets anything to the blinkin
     
     patternmap.put(blinkinConstants.LEDPatterns.OFF, blinkinConstants.off);
     patternmap.put(blinkinConstants.LEDPatterns.IDLE, blinkinConstants.defaultColor);
@@ -30,11 +30,11 @@ public class LEDSubsystem extends SubsystemBase {
     patternmap.put(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, blinkinConstants.climbCompleteBlue);
     patternmap.put(blinkinConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION, blinkinConstants.pivotAtIntakePosition);
     patternmap.put(blinkinConstants.LEDPatterns.PIVOT_AT_HOME_POSITION, blinkinConstants.pivotAtHomePosition);
-    patternmap.put(blinkinConstants.LEDPatterns.FUEL_READY_TO_SHOOT, blinkinConstants.fuelInTwindexer);
+    patternmap.put(blinkinConstants.LEDPatterns.FUEL_READY_TO_SHOOT, blinkinConstants.fuelReadyToShoot);
     patternmap.put(blinkinConstants.LEDPatterns.FUEL_IN_TWINDEXER, blinkinConstants.fuelInTwindexer);
     patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION, blinkinConstants.alignedWithHumanPlayerStation);
 
-  }
+  }                               
 
   @Override
   public void periodic() {
