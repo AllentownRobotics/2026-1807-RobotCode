@@ -16,8 +16,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
 public class Vision extends SubsystemBase {
-  NetworkTable climbTable = NetworkTableInstance.getDefault().getTable("Whatever this is called");
-  NetworkTable trenchTable = NetworkTableInstance.getDefault().getTable("Whatever this is called");
+  NetworkTable climbTable = NetworkTableInstance.getDefault().getTable("limelight-back");
+  NetworkTable trenchTable = NetworkTableInstance.getDefault().getTable("limelight-back");
 
   double climbRot;
   double climbTX;
