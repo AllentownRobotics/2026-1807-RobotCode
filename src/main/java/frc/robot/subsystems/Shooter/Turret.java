@@ -35,24 +35,24 @@ public class Turret extends SubsystemBase {
   public Turret(CommandSwerveDrivetrain drive) {
     this.drive = drive;
     targetTurretState = 0.2; // degrees
-    turretMotor = new Kraken(100); // make constants for this
-    turretEncoder = new CANcoder(200); // make constants for this
-    turretMotor.addEncoder(turretEncoder);
+    // turretMotor = new Kraken(100); // make constants for this
+    // turretEncoder = new CANcoder(200); // make constants for this
+    // turretMotor.addEncoder(turretEncoder);
 
-    turretMotor.setBrakeMode();
+    // turretMotor.setBrakeMode();
 
-    turretMotor.setRotorToSensorRatio(1);
-    turretMotor.setSensorToMechanismRatio(1); // needs to be changed
+    // turretMotor.setRotorToSensorRatio(1);
+    // turretMotor.setSensorToMechanismRatio(1); // needs to be changed
     // turretMotor.setMotorCurrentLimits(40);     MAKE SURE TO SET THIS BEFORE TESTING
 
-    turretMotor.setPIDValues(
-        Constants.turretConstants.turretkP,
-        Constants.turretConstants.turretkI,
-        Constants.turretConstants.turretkD,
-        Constants.turretConstants.turretkS,
-        Constants.turretConstants.turretkV,
-        Constants.turretConstants.turretkA,
-        Constants.turretConstants.turretkG);
+    // turretMotor.setPIDValues(
+    //     Constants.turretConstants.turretkP,
+    //     Constants.turretConstants.turretkI,
+    //     Constants.turretConstants.turretkD,
+    //     Constants.turretConstants.turretkS,
+    //     Constants.turretConstants.turretkV,
+    //     Constants.turretConstants.turretkA,
+    //     Constants.turretConstants.turretkG);
   }
   /**
    * Calculates the field Relative angle to the hub using a hard coded hub constant then subtracts
@@ -119,7 +119,7 @@ public class Turret extends SubsystemBase {
         targetY = Constants.turretConstants.BLUE_HUB.getY();
       }
     }
-    currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+    // currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
      * robot heading allows you to get a robot relative angle*/
     targetTurretState =

@@ -63,7 +63,7 @@ public class TeleopAutoAimHub extends Command {
   @Override
   public void execute() {
     // compensate for robot facing the right direction.
-    targetHubAngle = turret.getTargetTurretAngle() + 180;
+    targetHubAngle = turret.getTargetTurretAngle();
     
     // calculate the PID gains we need, feed that in for our turning rate to turn to a specific position
     double thetaCalculation = thetaController.calculate(-drivetrain.getState().Pose.getRotation().getDegrees(), -targetHubAngle);
@@ -71,7 +71,7 @@ public class TeleopAutoAimHub extends Command {
     rotationRate = thetaCalculation;
 
     // if statement saying if the difference between our target and current is below 5 degrees, we can stop rotating
-    if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180)  <= 5){
+    if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180)  <= 7){
       rotationRate = 0;
     }
     // applies the request to be able to drive while aiming
@@ -80,7 +80,8 @@ public class TeleopAutoAimHub extends Command {
                                       .withRotationalRate(rotationRate)).execute();
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
-    // add Driver feedback here
+    
+        // add Driver feedback here
     // if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 5){
     //     // make LEDS turn green here, or any sort of bright color to signify it has been targetted. 
     // }

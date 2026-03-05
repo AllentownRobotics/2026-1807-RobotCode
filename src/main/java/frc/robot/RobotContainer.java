@@ -19,16 +19,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.manualSetHoodAngle;
-import frc.robot.commands.setFlywheelVelocity;
+// import frc.robot.commands.manualSetHoodAngle;
+// import frc.robot.commands.setFlywheelVelocity;
 import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
-import frc.robot.commands.AutoAimingCommands.autoSetHoodAngle;
+import frc.robot.commands.AutoAimingCommands.example;
+// import frc.robot.commands.AutoAimingCommands.autoSetHoodAngle;
 import frc.robot.commands.AutoAimingCommands.targetHUB;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Shooter.Flywheel;
-import frc.robot.subsystems.Shooter.Hood;
+// import frc.robot.subsystems.Shooter.Flywheel;
+// import frc.robot.subsystems.Shooter.Hood;
 import frc.robot.subsystems.Shooter.Turret;
 
 public class RobotContainer {
@@ -48,8 +49,8 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final Turret turret = new Turret(drivetrain);
-    private final Flywheel flywheel = new Flywheel();
-    private final Hood hood = new Hood(drivetrain);
+    // private final Flywheel flywheel = new Flywheel();
+    // private final Hood hood = new Hood(drivetrain);
      /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
@@ -102,11 +103,13 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); 
+        joystick.povUp().whileTrue(new example(turret, drivetrain));
         // turret.setDefaultCommand(new targetHUB(turret));
         // hood.setDefaultCommand(new autoSetHoodAngle(hood));
         // joystick.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
         // joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
         // joystick.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
+        // joystick.povUp().whileTrue(new example(drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
