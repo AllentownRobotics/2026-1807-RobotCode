@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
-public class Vision extends SubsystemBase {
+public class AutoVisionSubsys extends SubsystemBase {
   NetworkTable climbTable = NetworkTableInstance.getDefault().getTable("limelight-back");
   NetworkTable trenchTable = NetworkTableInstance.getDefault().getTable("limelight-back");
 
@@ -34,7 +34,7 @@ public class Vision extends SubsystemBase {
   
  
   /** Creates a new vision. */
-  public Vision() {
+  public AutoVisionSubsys() {
     climbTable.getEntry("priorityid").setNumber(-1);
     trenchTable.getEntry("priorityid").setNumber(-1);
   }

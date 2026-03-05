@@ -21,11 +21,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Vision.Vision;
+import frc.robot.subsystems.Vision.AutoVisionSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TargetClimb extends Command {
-  Vision limelight;
+  AutoVisionSubsys limelight;
   double leftRightOffset;
   double topBottomOffset;
 
@@ -47,7 +47,7 @@ public class TargetClimb extends Command {
   static Pose2d previousPose = null;
 
   /** Creates a new TargetClimb. */
-  public TargetClimb(Vision limelight, CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, double leftRightOffset, double topBottomOffset) {
+  public TargetClimb(AutoVisionSubsys limelight, CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, double leftRightOffset, double topBottomOffset) {
     //Declaring 
     this.limelight = limelight;
     this.drivetrain = drivetrain;
