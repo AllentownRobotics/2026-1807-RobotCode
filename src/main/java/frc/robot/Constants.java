@@ -34,10 +34,9 @@ public final class Constants {
     public static final double kA = 0;//change if needed
     public static final double kG = 0;//change if needed
 
-    public static final double startPosition = 0;//change according to start position - pivot start position
     public static final double intakePosition = 5.5;//change according to intake position - pivot intake position
 
-    public static final double homePosition = 0;//change according to position - desired position of the pivot
+    public static final double homePosition = 0;//change according to position - start position of the pivot
     public static final double positionTolerance = 0;//change according to position tolerance - pivot position tolerance
 
     public static final double softLimitMinPosition = 0;//min position that the pivot deploy can go

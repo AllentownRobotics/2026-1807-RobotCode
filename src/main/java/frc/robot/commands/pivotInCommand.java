@@ -23,7 +23,7 @@ public class pivotInCommand extends Command {
    *sets pivot position at the start
    */
   public void initialize() {
-    groundCollectionSubsystem.setPivotPosition(pivotConsants.startPosition);
+    groundCollectionSubsystem.setPivotPosition(pivotConsants.homePosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

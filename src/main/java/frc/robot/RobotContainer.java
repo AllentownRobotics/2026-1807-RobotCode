@@ -5,7 +5,6 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.pivotInCommand;
 import frc.robot.commands.pivotOutCommand;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -54,15 +53,5 @@ public class RobotContainer {
     m_xboxController.x().whileTrue(
       new pivotInCommand(m_GroundCollectionSubsystem)
     );
-  }
-
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
-  public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return Autos.exampleAuto(m_GroundCollectionSubsystem);
   }
 }
