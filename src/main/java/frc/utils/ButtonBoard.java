@@ -43,7 +43,10 @@ public class ButtonBoard {
    */
     public Trigger getTrigger(int buttonId) {
         return triggers[buttonId];  
+    
     }
+
+
     /**
      * Gets the boolean value of the button
      * @return a boolean value representing the state of the button.

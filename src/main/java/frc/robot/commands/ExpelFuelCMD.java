@@ -9,10 +9,10 @@ import frc.robot.Constants;
 import frc.robot.subsystems.Kicker.KickerSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ExpelFuel extends Command {
+public class ExpelFuelCMD extends Command {
   private KickerSubsys kicker;//Establishes the kicker
   /** Creates a new ExpelFuel. */
-  public ExpelFuel(KickerSubsys kicker) {
+  public ExpelFuelCMD(KickerSubsys kicker) {
     this.kicker = kicker;//Instantiates the kicker
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(kicker);

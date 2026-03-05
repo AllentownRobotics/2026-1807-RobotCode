@@ -5,6 +5,7 @@
 package frc.robot.subsystems.Kicker;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.utils.Kraken;
@@ -19,8 +20,8 @@ public class KickerSubsys extends SubsystemBase {
   public KickerSubsys() {
     beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);//Creates a new beam break
     
-    bottomKickerMotor  = new Kraken(Constants.KickerConstansts.bottomKickerMotorIDConstants);//Creates a new bottom kicker motor
-    topKickerMotor = new Kraken(Constants.KickerConstansts.topKickerMotorIDConstants);//Creates a new top kicker motor
+    bottomKickerMotor  = new Kraken(Constants.KickerConstansts.bottomKickerMotorID);//Creates a new bottom kicker motor
+    topKickerMotor = new Kraken(Constants.KickerConstansts.topKickerMotorID);//Creates a new top kicker motor
   }
   /**
    * Kicks the fuel into the turret.
@@ -48,11 +49,6 @@ public class KickerSubsys extends SubsystemBase {
    * Gets the value of the beam break
    */
   public boolean getSensorValue() {
-    if (motorVelocity == 0) {
-      motorSpinning = false;
-    } else {
-      motorSpinning = true;
-    }
     return beamBreak.get();
   }
 

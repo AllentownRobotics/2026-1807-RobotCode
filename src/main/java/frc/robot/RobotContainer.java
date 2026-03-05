@@ -7,8 +7,8 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.ExpelFuel;
-import frc.robot.commands.KickFuel;
+import frc.robot.commands.ExpelFuelCMD;
+import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
@@ -29,8 +29,8 @@ public class RobotContainer {
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-  private final ExpelFuel m_expelFuel = new ExpelFuel(m_kicker);
-  private final KickFuel m_kickFuel = new KickFuel(m_kicker);
+  private final ExpelFuelCMD m_expelFuel = new ExpelFuelCMD(m_kicker);
+  private final KickFuelCMD m_kickFuel = new KickFuelCMD(m_kicker);
 
   final ButtonBoard m_buttonboard = new ButtonBoard(0);
 
@@ -57,14 +57,13 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    m_driverController.b().whileTrue(new KickFuel(m_kicker));
-    m_kicker.setDefaultCommand(m_kickFuel);
-    m_driverController.a().whileTrue(m_expelFuel);
-    m_buttonboard.b12().whileTrue(new ExpelFuel(m_kicker));
-    m_buttonboard.b1().whileTrue(new ExpelFuel(m_kicker));
-    m_buttonboard.b2().whileTrue(new ExpelFuel(m_kicker));
-      
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
+    //m_kicker.setDefaultCommand(m_kickFuel);
+    //m_driverController.a().whileTrue(m_expelFuel);
+    m_buttonboard.b1().whileTrue(m_kickFuel);
+    m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);
+ 
     }
   
 
