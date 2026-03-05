@@ -12,10 +12,31 @@ import frc.robot.Constants;
 import frc.utils.Kraken;
 
 public class TwindexerSubsys extends SubsystemBase {
-  private final Kraken twindexerMotor; // The motor that powers the twindexer.
-  private final PIDController twindexerPIDController; // The PID controller used on the twindexer motor.
-  private final DigitalInput hopperFullBeambreak; // The beambreak at the top of the hopper that returns values representing whether the hopper is full of fuel or not.
+
+  /** 
+   * The motor that powers the twindexer.
+   */
+  private final Kraken twindexerMotor; 
+
+  /** 
+   * The PID controller used on the twindexer motor.
+   */ 
+  private final PIDController twindexerPIDController; 
+
+  /**
+   * The beam break at the top of the hopper that returns values representing whether the hopper is full of fuel or not.
+   */
+  private final DigitalInput hopperFullBeamBreak; 
   
+  /**
+   * The beam break on the right side of the hopper (when looking at it from the front) towards the bottom to detect if there is any fuel in the hopper on this side.
+   */
+  private final DigitalInput rightHopperBeamBreak;
+
+  /**
+   * The beam break on the left side of the hopper (when looking at it from the front) towards the bottom to detect if there is any fuel in the hopper on this side.
+   */
+  private final DigitalInput leftHopperBeamBreak;
   /**
    * Boolean that returns true if the twindexer is spinning, and false if it is not spinning.
    */
@@ -27,13 +48,26 @@ public class TwindexerSubsys extends SubsystemBase {
   private double twindexerSpeed;
 
   /**
-   * Returns true if hopper beambreak is broken, and false if it is not broken.
+   * Returns true if full hopper beam break is broken, and false if it is not broken.
    */
   private boolean isHopperFull;
 
+  /**
+   * Returns true if bottom right hopper beam break is broken, and false if it is not broken.
+   */
+  private boolean rightHopperHasFuel;
+
+  /**
+   * Returns true if bottom left hopper beam break is broken, and false if it is not broken.
+   */
+  private boolean leftHopperHasFuel;
+
   /** Creates a new TwindexerSubsystem. */
   public TwindexerSubsys() {
-    hopperFullBeambreak = new DigitalInput(Constants.TwindexerConstants.fullBeambreakID); // Assigns beambreak ID to hopper beambreak.
+    // Assigns beam break IDs to their corresponding beam breaks.
+    hopperFullBeamBreak = new DigitalInput(Constants.TwindexerConstants.fullBeamBreakID);
+    rightHopperBeamBreak = new DigitalInput(Constants.TwindexerConstants.rightBeamBreakID);
+    leftHopperBeamBreak = new DigitalInput(Constants.TwindexerConstants.leftBeamBreakID);
 
     twindexerPIDController = new PIDController(
       Constants.TwindexerConstants.kp, 
@@ -61,6 +95,16 @@ public class TwindexerSubsys extends SubsystemBase {
         twindexerMotor.getVelocity()
       ) + twindexerMotor.getVelocity()
     );
+  }
+
+  public void autosSetTwindexerSpeed() {
+    if (rightHopperHasFuel || leftHopperHasFuel) {
+      twindexerMotor.setMotorSpeed(
+        twindexerPIDController.calculate(
+          twindexerMotor.getVelocity()
+        ) + twindexerMotor.getVelocity()
+      );
+    }
   }
 
   /**
@@ -92,13 +136,17 @@ public class TwindexerSubsys extends SubsystemBase {
     twindexerMotor.setMotorSpeed(0); // Sets motor speed to 0 - coast mode will let it slow to a stop.
   }
 
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // Gets the value of the beambreak. 
-    // Sets isHopperFull to the opposite value to represent if there is fuel rather than if the beambreak sensor detects the beam.
-    isHopperFull = !hopperFullBeambreak.get();
+    // Gets the value of all three beam breaks. 
+    // Sets variables to the opposite value to represent if there is fuel rather than if the beam break sensor detects the beam.
+    isHopperFull = !hopperFullBeamBreak.get();
+    rightHopperHasFuel = !rightHopperBeamBreak.get();
+    leftHopperHasFuel = !leftHopperBeamBreak.get();
 
     // Gets the velocity/speed of the motor.
     twindexerSpeed = twindexerMotor.getVelocity();
@@ -109,7 +157,7 @@ public class TwindexerSubsys extends SubsystemBase {
     //Displays whether or not the twindexer is spinning as a boolean.
     SmartDashboard.putBoolean("Twindexer is spinning: ", isTwindexerSpinning);
 
-    //Displays whether or not the hopper beambreak is broken as a boolean.
+    //Displays whether or not the hopper beam break is broken as a boolean.
     SmartDashboard.putBoolean("Is the hopper full: ", isHopperFull);
   }
 }

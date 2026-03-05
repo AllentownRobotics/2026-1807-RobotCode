@@ -9,11 +9,11 @@ import frc.robot.Constants;
 import frc.robot.subsystems.TwindexerSubsys.TwindexerSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class SpinTwindexerCMD extends Command {
+public class AutosSpinTwindexerCMD extends Command {
   public TwindexerSubsys twindexerSubsys;
 
-  /** Creates a new SpinTwindexerCMD. */
-  public SpinTwindexerCMD(TwindexerSubsys twindexerSubsys) {
+  /** Creates a new AutosSpinTwindexerCMD. */
+  public AutosSpinTwindexerCMD(TwindexerSubsys twindexerSubsys) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.twindexerSubsys = twindexerSubsys;
 
@@ -29,17 +29,15 @@ public class SpinTwindexerCMD extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Continuously sets the setpoint so that the motor keeps aiming to reach the desired speed.
     twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
-    
-    // Uses PID to set motor speed.
-    twindexerSubsys.setTwindexerSpeed();
+
+    twindexerSubsys.autosSetTwindexerSpeed();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    twindexerSubsys.stopTwindexer(); // Stops motor when command ends.
+    twindexerSubsys.stopTwindexer();
   }
 
   // Returns true when the command should end.

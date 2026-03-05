@@ -18,12 +18,15 @@ public final class Constants {
   }
   public static class TwindexerConstants {
     public static final double desiredTwindexerSpeed = 0.5; // PID setpoint (aka desired motor speed) 
-    //PID values (need to be calibrated):
+    // PID values (need to be calibrated):
     public static final double kp = 0.1;
     public static final double ki = 0;
     public static final double kd = 0;
 
-    public static final int fullBeambreakID = 0; 
+    // Beam break IDs
+    public static final int fullBeamBreakID = 0; 
+    public static final int rightBeamBreakID = 1;
+    public static final int leftBeamBreakID = 2;
   }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;

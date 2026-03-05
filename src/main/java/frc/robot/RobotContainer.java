@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.AutosSpinTwindexerCMD;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.SpinTwindexerCMD;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -29,6 +30,7 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
   private final SpinTwindexerCMD m_SpinTwindexerCMD = new SpinTwindexerCMD(m_twindexerSubsystem);
+  private final AutosSpinTwindexerCMD m_AutosSpinTwindexerCMD = new AutosSpinTwindexerCMD(m_twindexerSubsystem);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -53,8 +55,11 @@ public class RobotContainer {
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     
-    // Final bindings TBD: test binding toggles the SpinTwindexerCMD when A is pressed.
-    m_driverController.a().toggleOnTrue(m_SpinTwindexerCMD);
+    // Final bindings TBD: test binding toggles the SpinTwindexerCMD when X is pressed.
+    m_driverController.x().toggleOnTrue(m_SpinTwindexerCMD);
+
+    // Currently a test binding - this command will be used for autos.
+    m_driverController.y().toggleOnTrue(m_AutosSpinTwindexerCMD);
   }
 
   /**
