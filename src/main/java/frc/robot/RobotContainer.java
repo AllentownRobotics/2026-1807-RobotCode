@@ -61,8 +61,8 @@ public class RobotContainer {
     //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
     //m_kicker.setDefaultCommand(m_kickFuel);
     //m_driverController.a().whileTrue(m_expelFuel);
-    m_buttonboard.b1().whileTrue(m_kickFuel);
-    m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);
+    m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
+    m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they joystick is pressed down it runs the method
  
     }
   
