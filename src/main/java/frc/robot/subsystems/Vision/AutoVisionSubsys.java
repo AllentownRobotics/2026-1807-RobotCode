@@ -1,7 +1,7 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
+/* 
 package frc.robot.subsystems.Vision;
 
 import java.util.Optional;
@@ -33,7 +33,7 @@ public class AutoVisionSubsys extends SubsystemBase {
   boolean climbTv, trenchTv;
   
  
-  /** Creates a new vision. */
+  // Creates a new vision. 
   public AutoVisionSubsys() {
     climbTable.getEntry("priorityid").setNumber(-1);
     trenchTable.getEntry("priorityid").setNumber(-1);
@@ -164,3 +164,4 @@ public class AutoVisionSubsys extends SubsystemBase {
     SmartDashboard.putNumber("trenchTZ", trenchTZ);
   }
 }
+*/

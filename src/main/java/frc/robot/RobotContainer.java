@@ -15,19 +15,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-<<<<<<< HEAD
-import frc.robot.Constants.VisionConstants;
-import frc.robot.commands.TargetingCMDs.TargetClimb;
-import frc.robot.commands.TargetingCMDs.TargetTrench;
-import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Vision.Vision;
-=======
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision.VisionSubsys;
->>>>>>> Alex-Vision
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -45,17 +36,10 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-<<<<<<< HEAD
-    private final Vision visonSubsystem = new Vision();
-
-    public RobotContainer() {
-
-=======
 
     public final VisionSubsys visionSubsystem = new VisionSubsys(drivetrain);
 
     public RobotContainer() {
->>>>>>> Alex-Vision
         configureBindings();
     }
 
@@ -97,17 +81,6 @@ public class RobotContainer {
         joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-<<<<<<< HEAD
-        joystick.rightTrigger().whileTrue(new TargetClimb(visonSubsystem, drivetrain, joystick, 
-            VisionConstants.targetingClimbTranslationOffset, 
-            VisionConstants.targetingClimbTopBottomTranslationOffset));
-
-        joystick.leftTrigger().whileTrue(new TargetTrench(visonSubsystem, drivetrain, joystick, 
-            VisionConstants.targetingTrenchTranslationOffset,
-             VisionConstants.targetingTrenchTopBottomTranslationOffset));         
-
-=======
->>>>>>> Alex-Vision
         // Reset the field-centric heading on left bumper press.
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
