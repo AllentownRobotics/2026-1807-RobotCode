@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -23,8 +24,9 @@ public class VisionSubsys extends SubsystemBase {
   /** Creates a new Vision. */
   public VisionSubsys(CommandSwerveDrivetrain drivetrain) {
     limelights = new Limelight[]{
-      new Limelight("limelight")
+      new Limelight("limelight-test")
     };
+
 
     this.drivetrain = drivetrain;
   }
@@ -45,7 +47,7 @@ public class VisionSubsys extends SubsystemBase {
   public ArrayList<double[]> robotPose2dFieldSpace() {
     ArrayList<double[]> poses = new ArrayList<double[]>();
     for(double[] pose3d: robotPose3dFieldSpace()) {
-      poses.add(new double[]{pose3d[0], pose3d[1], pose3d[5], Timer.getTimestamp() - pose3d[7]/1000.0});
+      poses.add(new double[]{pose3d[0], pose3d[1], pose3d[4], Timer.getTimestamp() - pose3d[7]/1000.0});
     }
     return poses;
   }
@@ -60,6 +62,11 @@ public class VisionSubsys extends SubsystemBase {
           pose[3]
           );
       }
+
+      SmartDashboard.putNumber("x", robotPose2dFieldSpace().get(0)[0]);
+      SmartDashboard.putNumber("y", robotPose2dFieldSpace().get(0)[1]);
+      SmartDashboard.putNumber("z", robotPose2dFieldSpace().get(0)[2]);
+      
     }
   }
 
@@ -100,6 +107,23 @@ public class VisionSubsys extends SubsystemBase {
      * True or false if it sees a target or not.
      */
     public boolean hasTarget() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return table.getEntry("tv").getInteger(0) == 1;
     }
 
@@ -110,6 +134,23 @@ public class VisionSubsys extends SubsystemBase {
      * The id of the aprilTag currently being tracked.
      */
     public int targetID() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return (int) tID.getInteger(0);
     }
 
@@ -120,6 +161,23 @@ public class VisionSubsys extends SubsystemBase {
      * The x angle to the center of the target.
      */
     public double targetX() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return tx.getDouble(0);
     }
 
@@ -130,6 +188,23 @@ public class VisionSubsys extends SubsystemBase {
      * The y angle to the center of the target.
      */
     public double targetY() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return ty.getDouble(0);
     }
 
@@ -140,6 +215,23 @@ public class VisionSubsys extends SubsystemBase {
      * The percentage of the field of view taken up by the current target.
      */
     public double targerArea() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return ta.getDouble(0);
     }
 
@@ -161,6 +253,23 @@ public class VisionSubsys extends SubsystemBase {
      * Average tag area(percentage of image)
      */
     public double[] botPoseFieldSpace() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return robotPoseFieldSpace.getDoubleArray(new double[0]);
     }
 
@@ -172,6 +281,23 @@ public class VisionSubsys extends SubsystemBase {
      * Translation 
      */
     public double[] targetPoseRobotSpace() {
+      tx = table.getEntry("tx");
+
+      ty = table.getEntry("ty");
+
+      ta = table.getEntry("ta");
+
+      if (Alliance.Blue == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      } else {
+        robotPoseFieldSpace = table.getEntry("botpose_orb");
+      }
+
+      tID = table.getEntry("tid");
+
+      targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
       return targetPoseRobotSpace.getDoubleArray(new double[0]);
     }
 
