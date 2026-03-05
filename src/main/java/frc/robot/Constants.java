@@ -14,7 +14,7 @@ package frc.robot;
  */
 public final class Constants {
   public static class MotorIDs {
-    public static final int twindexerMotorID = 1; // Motor ID for twindexer
+    public static final int twindexerMotorID = 2; // Motor ID for twindexer
   }
   public static class TwindexerConstants {
     public static final double desiredTwindexerSpeed = 0.5; // PID setpoint (aka desired motor speed) 
@@ -24,8 +24,8 @@ public final class Constants {
     public static final double kd = 0;
 
     // Beam break IDs
-    public static final int fullBeamBreakID = 0; 
-    public static final int rightBeamBreakID = 1;
+    public static final int fullBeamBreakID = 1; 
+    public static final int rightBeamBreakID = 0;
     public static final int leftBeamBreakID = 2;
   }
   public static class OperatorConstants {

@@ -97,6 +97,9 @@ public class TwindexerSubsys extends SubsystemBase {
     );
   }
 
+  /**
+   * Sets twindexer motor to a desired speed using PID ONLY if one of the beam breaks detects fuel. Used in auto.
+   */
   public void autosSetTwindexerSpeed() {
     if (rightHopperHasFuel || leftHopperHasFuel) {
       twindexerMotor.setMotorSpeed(
@@ -104,6 +107,8 @@ public class TwindexerSubsys extends SubsystemBase {
           twindexerMotor.getVelocity()
         ) + twindexerMotor.getVelocity()
       );
+    } else {
+      twindexerMotor.setMotorSpeed(0);
     }
   }
 
@@ -136,17 +141,15 @@ public class TwindexerSubsys extends SubsystemBase {
     twindexerMotor.setMotorSpeed(0); // Sets motor speed to 0 - coast mode will let it slow to a stop.
   }
 
-
-
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
     // Gets the value of all three beam breaks. 
-    // Sets variables to the opposite value to represent if there is fuel rather than if the beam break sensor detects the beam.
+    // Sets hopper variables to the opposite value to represent on SmartDashboard if there is fuel rather than if the beam break sensor detects the beam.
     isHopperFull = !hopperFullBeamBreak.get();
-    rightHopperHasFuel = !rightHopperBeamBreak.get();
-    leftHopperHasFuel = !leftHopperBeamBreak.get();
+    rightHopperHasFuel = rightHopperBeamBreak.get();
+    leftHopperHasFuel = leftHopperBeamBreak.get();
 
     // Gets the velocity/speed of the motor.
     twindexerSpeed = twindexerMotor.getVelocity();

@@ -29,8 +29,10 @@ public class AutosSpinTwindexerCMD extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Continuously sets the setpoint so that the motor keeps aiming to reach the desired speed.
     twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
 
+    // Uses PID to set motor speed if one or more of the sensors detects fuel in the hopper.
     twindexerSubsys.autosSetTwindexerSpeed();
   }
 
