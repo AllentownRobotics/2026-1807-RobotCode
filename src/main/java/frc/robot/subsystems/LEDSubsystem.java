@@ -5,7 +5,10 @@
 package frc.robot.subsystems;
 
 import java.util.EnumMap;
+import java.util.Optional;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,10 +24,10 @@ public class LEDSubsystem extends SubsystemBase {
      */
   public LEDSubsystem() {
     //make a new spark for blinkin
-    blinkin = new Spark(blinkinConstants.blinkinID);// blinkin is never used, nothing sets anything to the blinkin
+    blinkin = new Spark(blinkinConstants.blinkinID);
     
     patternmap.put(blinkinConstants.LEDPatterns.OFF, blinkinConstants.off);
-    patternmap.put(blinkinConstants.LEDPatterns.IDLE, blinkinConstants.defaultColor);
+    patternmap.put(blinkinConstants.LEDPatterns.IDLE, blinkinConstants.idle);
     patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUB, blinkinConstants.alignedWithHub);
     patternmap.put(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_RED, blinkinConstants.climbCompleteRed);
     patternmap.put(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, blinkinConstants.climbCompleteBlue);
@@ -34,7 +37,29 @@ public class LEDSubsystem extends SubsystemBase {
     patternmap.put(blinkinConstants.LEDPatterns.FUEL_IN_TWINDEXER, blinkinConstants.fuelInTwindexer);
     patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION, blinkinConstants.alignedWithHumanPlayerStation);
 
-  }                               
+    blinkin.set(blinkinConstants.idle);//sets the idle blinkin constant
+  }
+
+  public void setPattern(blinkinConstants.LEDPatterns statePattern){
+    double pattern;//establishes pattern
+
+    pattern = statePattern.value;//states the pattern value
+
+    /*if (statePattern == blinkinConstants.LEDPatterns.CLIMB_COMPLETE){
+      pattern = patternmap.get(statePattern);
+      Optional<Alliance> alliance = DriverStation.getAlliance();
+      if(alliance.isPresent()){
+        if (alliance.get()== Alliance.Red){
+          pattern = patternmap.get(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_RED);
+        }
+        if(alliance.get() == Alliance.Blue){
+          pattern = patternmap.get(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_BLUE);
+        }
+      }
+    }*/
+
+    blinkin.set(pattern);//sets the pattern++
+  }
 
   @Override
   public void periodic() {
