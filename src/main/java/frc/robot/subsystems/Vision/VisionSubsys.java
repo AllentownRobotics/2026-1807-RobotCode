@@ -4,30 +4,20 @@
 
 package frc.robot.subsystems.Vision;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Optional;
-
-import edu.wpi.first.hal.MatchInfoData;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.jni.WPIMathJNI;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class VisionSubsys extends SubsystemBase {
-  Limelight[] limelights;
-  ArrayList<Double> x,y,z,pitch,yaw,roll;
+  private Limelight[] limelights;
 
   CommandSwerveDrivetrain drivetrain;
   /** Creates a new Vision. */
@@ -63,11 +53,13 @@ public class VisionSubsys extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    for(double[] pose: robotPose2dFieldSpace()) {
-      drivetrain.addVisionMeasurement(
-        new Pose2d(pose[0], pose[1], Rotation2d.fromDegrees(pose[2])),
-        pose[3]
-        );
+    if(!robotPose2dFieldSpace().isEmpty()) {
+      for(double[] pose: robotPose2dFieldSpace()) {
+        drivetrain.addVisionMeasurement(
+          new Pose2d(pose[0], pose[1], Rotation2d.fromDegrees(pose[2])),
+          pose[3]
+          );
+      }
     }
   }
 
@@ -108,7 +100,7 @@ public class VisionSubsys extends SubsystemBase {
      * True or false if it sees a target or not.
      */
     public boolean hasTarget() {
-      return table.getEntry("tv").getBoolean(false);
+      return table.getEntry("tv").getInteger(0) == 1;
     }
 
     /**
@@ -181,10 +173,6 @@ public class VisionSubsys extends SubsystemBase {
      */
     public double[] targetPoseRobotSpace() {
       return targetPoseRobotSpace.getDoubleArray(new double[0]);
-    }
-
-    public double timestamp() {
-      return Timer.getTimestamp() - targetPoseRobotSpace.getDoubleArray(new double[0])[7]/1000.0;
     }
 
   }
