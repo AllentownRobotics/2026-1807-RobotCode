@@ -52,16 +52,6 @@ public class TwindexerSubsys extends SubsystemBase {
    */
   private boolean isHopperFull;
 
-  /**
-   * Returns true if bottom right hopper beam break is broken, and false if it is not broken.
-   */
-  private boolean rightHopperHasFuel;
-
-  /**
-   * Returns true if bottom left hopper beam break is broken, and false if it is not broken.
-   */
-  private boolean leftHopperHasFuel;
-
   /** Creates a new TwindexerSubsystem. */
   public TwindexerSubsys() {
     // Assigns beam break IDs to their corresponding beam breaks.
@@ -101,7 +91,7 @@ public class TwindexerSubsys extends SubsystemBase {
    * Sets twindexer motor to a desired speed using PID ONLY if one of the beam breaks detects fuel. Used in auto.
    */
   public void autosSetTwindexerSpeed() {
-    if (rightHopperHasFuel || leftHopperHasFuel) {
+    if (rightHopperBeamBreak.get() || leftHopperBeamBreak.get()) {
       twindexerMotor.setMotorSpeed(
         twindexerPIDController.calculate(
           twindexerMotor.getVelocity()
@@ -145,11 +135,9 @@ public class TwindexerSubsys extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-    // Gets the value of all three beam breaks. 
-    // Sets hopper variables to the opposite value to represent on SmartDashboard if there is fuel rather than if the beam break sensor detects the beam.
+    // Gets the value of the hopper beam break. 
+    // Sets the variable to the opposite value to represent on SmartDashboard if there is fuel rather than if the beam break sensor detects the beam.
     isHopperFull = !hopperFullBeamBreak.get();
-    rightHopperHasFuel = rightHopperBeamBreak.get();
-    leftHopperHasFuel = leftHopperBeamBreak.get();
 
     // Gets the velocity/speed of the motor.
     twindexerSpeed = twindexerMotor.getVelocity();
