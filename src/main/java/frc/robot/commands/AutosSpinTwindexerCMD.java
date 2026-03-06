@@ -23,7 +23,8 @@ public class AutosSpinTwindexerCMD extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed); // Sets motor's desired speed.
+    // Sets motor's desired speed.
+    twindexerSubsys.setTwindexerDesiredSpeed(Constants.TwindexerConstants.desiredTwindexerSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

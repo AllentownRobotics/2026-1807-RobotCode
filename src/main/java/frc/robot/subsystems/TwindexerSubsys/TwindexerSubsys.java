@@ -26,17 +26,13 @@ public class TwindexerSubsys extends SubsystemBase {
   /**
    * The beam break at the top of the hopper that returns values representing whether the hopper is full of fuel or not.
    */
-  private final DigitalInput hopperFullBeamBreak; 
+  private final DigitalInput topHopperBeamBreak; 
   
   /**
-   * The beam break on the right side of the hopper (when looking at it from the front) towards the bottom to detect if there is any fuel in the hopper on this side.
+   * The beam break near the bottom of the hopper that detects if there is any fuel in the hopper on this side.
    */
-  private final DigitalInput rightHopperBeamBreak;
+  private final DigitalInput bottomHopperBeamBreak;
 
-  /**
-   * The beam break on the left side of the hopper (when looking at it from the front) towards the bottom to detect if there is any fuel in the hopper on this side.
-   */
-  private final DigitalInput leftHopperBeamBreak;
   /**
    * Boolean that returns true if the twindexer is spinning, and false if it is not spinning.
    */
@@ -48,23 +44,36 @@ public class TwindexerSubsys extends SubsystemBase {
   private double twindexerSpeed;
 
   /**
-   * Returns true if full hopper beam break is broken, and false if it is not broken.
+   * Returns false if full hopper beam break is broken, and true if it is not broken.
+   */
+  private boolean hopperFullBeamBreak;
+
+  /**
+   * Returns opposite value of hopperFullBeamBreak to display on SmartDashboard.
    */
   private boolean isHopperFull;
+
+  /**
+   * Returns false if bottom hopper beam break is broken, and true if it is not broken.
+   */
+  private boolean bottomFuelBeamBreak;
+  //TODO should bottomFuelBeamBreak have a SmartDashboard counterpart? Could both top and bottom be displayed in like a useful way?
+  //TODO rename twindexer to indexer
 
   /** Creates a new TwindexerSubsystem. */
   public TwindexerSubsys() {
     // Assigns beam break IDs to their corresponding beam breaks.
-    hopperFullBeamBreak = new DigitalInput(Constants.TwindexerConstants.fullBeamBreakID);
-    rightHopperBeamBreak = new DigitalInput(Constants.TwindexerConstants.rightBeamBreakID);
-    leftHopperBeamBreak = new DigitalInput(Constants.TwindexerConstants.leftBeamBreakID);
+    topHopperBeamBreak = new DigitalInput(Constants.TwindexerConstants.topBeamBreakID);
+    bottomHopperBeamBreak = new DigitalInput(Constants.TwindexerConstants.bottomBeamBreakID);
 
+    // Assigns PID constants to PIDController.
     twindexerPIDController = new PIDController(
       Constants.TwindexerConstants.kp, 
       Constants.TwindexerConstants.ki, 
-      Constants.TwindexerConstants.kd);  // Assigns PID constants to PIDController.
+      Constants.TwindexerConstants.kd);
     
-    twindexerMotor = new Kraken(Constants.MotorIDs.twindexerMotorID); // Assigns motor ID to twindexer motor.
+    // Assigns motor ID to twindexer motor.
+    twindexerMotor = new Kraken(Constants.MotorIDs.twindexerMotorID); 
     twindexerMotor.setCoastMode();
   }
 
@@ -72,7 +81,8 @@ public class TwindexerSubsys extends SubsystemBase {
    * Sets the desired speed (setpoint) for the twindexer PID.
    */
   public void setTwindexerDesiredSpeed(double speed) {
-    twindexerPIDController.setSetpoint(Constants.TwindexerConstants.desiredTwindexerSpeed); // Assigns setpoint value to PID controller.
+    // Assigns setpoint value to PID controller.
+    twindexerPIDController.setSetpoint(Constants.TwindexerConstants.desiredTwindexerSpeed);
   }
 
   /**
@@ -83,7 +93,7 @@ public class TwindexerSubsys extends SubsystemBase {
     twindexerMotor.setMotorSpeed(
       twindexerPIDController.calculate(
         twindexerMotor.getVelocity()
-      ) + twindexerMotor.getVelocity()
+      ) + twindexerMotor.getVelocity() //TODO explain additional getVelocity/use variable
     );
   }
 
@@ -91,7 +101,7 @@ public class TwindexerSubsys extends SubsystemBase {
    * Sets twindexer motor to a desired speed using PID ONLY if one of the beam breaks detects fuel. Used in auto.
    */
   public void autosSetTwindexerSpeed() {
-    if (rightHopperBeamBreak.get() || leftHopperBeamBreak.get()) {
+    if (bottomHopperBeamBreak.get()) {
       twindexerMotor.setMotorSpeed(
         twindexerPIDController.calculate(
           twindexerMotor.getVelocity()
@@ -131,13 +141,32 @@ public class TwindexerSubsys extends SubsystemBase {
     twindexerMotor.setMotorSpeed(0); // Sets motor speed to 0 - coast mode will let it slow to a stop.
   }
 
+  /**
+   * Gives the value of topHopperBeamBreak.
+   * @return topHopperBeamBreak: the value of the beam break (true if not broken, false if broken by fuel).
+   */
+  public boolean getTopHopper() {
+    return hopperFullBeamBreak;
+  }
+
+  //TODO find out/determine if there will be one beambreak or another type of sensor for the bottom of the hopper
+  /**
+   * Gives the value of bottomHopperBeamBreak.
+   * @return bottomHopperBeamBreak: the value of the beam break (true if not broken, false if broken by fuel).
+   */
+  public boolean getBottomHopper() {
+    return bottomFuelBeamBreak;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
     // Gets the value of the hopper beam break. 
-    // Sets the variable to the opposite value to represent on SmartDashboard if there is fuel rather than if the beam break sensor detects the beam.
-    isHopperFull = !hopperFullBeamBreak.get();
+    hopperFullBeamBreak = topHopperBeamBreak.get(); 
+    // Sets the variable to the opposite value to represent on SmartDashboard if there is fuel,
+    // rather than if the beam break sensor detects the beam.
+    isHopperFull = !hopperFullBeamBreak;
 
     // Gets the velocity/speed of the motor.
     twindexerSpeed = twindexerMotor.getVelocity();
@@ -148,7 +177,7 @@ public class TwindexerSubsys extends SubsystemBase {
     //Displays whether or not the twindexer is spinning as a boolean.
     SmartDashboard.putBoolean("Twindexer is spinning: ", isTwindexerSpinning);
 
-    //Displays whether or not the hopper beam break is broken as a boolean.
+    //Displays whether or not the hopper is full as a boolean.
     SmartDashboard.putBoolean("Is the hopper full: ", isHopperFull);
   }
 }

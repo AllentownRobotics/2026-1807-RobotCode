@@ -24,9 +24,8 @@ public final class Constants {
     public static final double kd = 0;
 
     // Beam break IDs
-    public static final int fullBeamBreakID = 1; 
-    public static final int rightBeamBreakID = 0;
-    public static final int leftBeamBreakID = 2;
+    public static final int topBeamBreakID = 1; 
+    public static final int bottomBeamBreakID = 0;
   }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
