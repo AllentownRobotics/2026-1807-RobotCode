@@ -31,28 +31,31 @@ public class TurretSubsys extends SubsystemBase {
   private double targetY;
   private double targetX;
   private double robotHeading;
-
+  // TODO rename drive to drivetrain
   public TurretSubsys(CommandSwerveDrivetrain drive) {
     this.drive = drive;
+
+    // TODO Make constants and remove magic numbers
     targetTurretState = 0.2; // degrees
-    // turretMotor = new Kraken(100); // make constants for this
-    // turretEncoder = new CANcoder(200); // make constants for this
-    // turretMotor.addEncoder(turretEncoder);
 
-    // turretMotor.setBrakeMode();
+    turretMotor = new Kraken(100); // make constants for this
+    turretEncoder = new CANcoder(200); // make constants for this
+    turretMotor.addEncoder(turretEncoder);
 
-    // turretMotor.setRotorToSensorRatio(1);
-    // turretMotor.setSensorToMechanismRatio(1); // needs to be changed
-    // turretMotor.setMotorCurrentLimits(40);     MAKE SURE TO SET THIS BEFORE TESTING
+    turretMotor.setBrakeMode();
 
-    // turretMotor.setPIDValues(
-    //     Constants.turretConstants.turretkP,
-    //     Constants.turretConstants.turretkI,
-    //     Constants.turretConstants.turretkD,
-    //     Constants.turretConstants.turretkS,
-    //     Constants.turretConstants.turretkV,
-    //     Constants.turretConstants.turretkA,
-    //     Constants.turretConstants.turretkG);
+    turretMotor.setRotorToSensorRatio(1);
+    turretMotor.setSensorToMechanismRatio(1); // needs to be changed
+    turretMotor.setMotorCurrentLimits(40);      // MAKE SURE TO SET THIS BEFORE TESTING
+
+    turretMotor.setPIDValues(
+        Constants.turretConstants.turretkP,
+        Constants.turretConstants.turretkI,
+        Constants.turretConstants.turretkD,
+        Constants.turretConstants.turretkS,
+        Constants.turretConstants.turretkV,
+        Constants.turretConstants.turretkA,
+        Constants.turretConstants.turretkG);
   }
   /**
    * Calculates a robot relative angle to set a turret to. <p>
@@ -61,6 +64,8 @@ public class TurretSubsys extends SubsystemBase {
    * @return nothing cuz it a void
    */
   public void trackHUB() {
+
+    // TODO add setters and getters for driver feedback
 
     // Alliance shift, calculates the target X and target Y of the turret for angle calculation
     Optional<Alliance> ally = DriverStation.getAlliance();
@@ -74,25 +79,30 @@ public class TurretSubsys extends SubsystemBase {
         targetY = Constants.turretConstants.BLUE_HUB.getY();
       }
     }
+    // TODO rename current turret state
     // current absolute encoder reading
-    currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+    currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360; 
     robotHeading = drive.getState().Pose.getRotation().getDegrees();
 
     /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
      * robot heading allows you to get a robot relative angle*/
+
+    // TODO rename parts of the inverse tangent, change pigeon to getstate rotation, reane targetTurretState
     targetTurretState =
         Math.toDegrees(
             Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX())
                 - drive.getPigeon2().getRotation2d().getRadians());
 
-    
+    // TODO make constants, generalize comments *change wording for different variables*
     // only allows angles between -pi to +pi because every angle after that can be reprsensted by a
     // smaller angle in that interval
     targetTurretState = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(targetTurretState)));
     // Clamps between -25 and 25 so the degrees returned can never be above 25 or below -25.
-    targetTurretState = MathUtil.clamp(targetTurretState, -360, 360);
+    targetTurretState = MathUtil.clamp(targetTurretState, -15, 15);
     // tells the encoder to get to that target state. divided by 360 because it wants rotations and
     // turretState returns a degree
+
+    // TODO add comment for this
     turretMotor.setDesiredEncoderPosition(targetTurretState / 360);
 
     // various smartDashboard variables to test / tune

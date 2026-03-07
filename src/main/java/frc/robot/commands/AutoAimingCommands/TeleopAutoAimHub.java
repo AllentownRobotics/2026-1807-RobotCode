@@ -61,12 +61,15 @@ public class TeleopAutoAimHub extends Command {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
+
+  // TODO make comments more general, change variable names
   public void execute() {
     // compensate for robot facing the right direction.
     targetHubAngle = turret.getTargetTurretAngle();
     
-    // calculate the PID gains we need, feed that in for our turning rate to turn to a specific position
+    // calculate the PID gains we need (rate), feed that in for our turning rate to turn to a specific position
     double thetaCalculation = thetaController.calculate(-drivetrain.getState().Pose.getRotation().getDegrees(), -targetHubAngle);
+
     // variable used for tolerance
     rotationRate = thetaCalculation;
 

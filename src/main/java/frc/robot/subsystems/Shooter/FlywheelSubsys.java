@@ -17,6 +17,7 @@ public class FlywheelSubsys extends SubsystemBase {
   private Kraken rightFlywheelKraken;
   private double targetVelocity;
 
+  // TODO make method for stopping flywheel motors
   public FlywheelSubsys() {
     flywheelTolerance = 0.1; // rps
     // leftFlywheelKraken = new Kraken(103);
@@ -39,7 +40,7 @@ public class FlywheelSubsys extends SubsystemBase {
     targetVelocity =
         MathUtil.clamp(
             targetVelocity, 0, 5); // clamps so velocity can't ever be below 0 or above 5 rps.
-    leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to
+    leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to, requires RPS
   }
 
   /**

@@ -48,24 +48,24 @@ public class HoodSubsys extends SubsystemBase {
             Interpolator.forDouble()); // makes a new interpolating table, use case is for degree
     // calculation
 
-    // hoodMotor = new Kraken(101); // make constants for this
-    // hoodEncoder = new CANcoder(201); // make constants for this
-    // hoodMotor.addEncoder(hoodEncoder);
+    hoodMotor = new Kraken(101); // make constants for this
+    hoodEncoder = new CANcoder(201); // make constants for this
+    hoodMotor.addEncoder(hoodEncoder);
 
-    // hoodMotor.setBrakeMode(); // sets break mode when not in use
+    hoodMotor.setBrakeMode(); // sets break mode when not in use
 
-    // hoodMotor.setRotorToSensorRatio(1);
-    // hoodMotor.setSensorToMechanismRatio(30); // needs to be changed, gear ratio of the mechanism
-    // turretMotor.setMotorCurrentLimits(40);     MAKE SURE TO SET THIS BEFORE TESTING
+    hoodMotor.setRotorToSensorRatio(1);
+    hoodMotor.setSensorToMechanismRatio(30); // needs to be changed, gear ratio of the mechanism
+    // sturretMotor.setMotorCurrentLimits(40);     // MAKE SURE TO SET THIS BEFORE TESTING
     // PID gains for Hood, test different number to get accurately get hood to specified angle
-    // hoodMotor.setPIDValues(
-    //     Constants.hoodConstants.hoodkP,
-    //     Constants.hoodConstants.hoodkI,
-    //     Constants.hoodConstants.hoodkD,
-    //     Constants.hoodConstants.hoodkS,
-    //     Constants.hoodConstants.hoodkV,
-    //     Constants.hoodConstants.hoodkA,
-    //     Constants.hoodConstants.hoodkG);
+    hoodMotor.setPIDValues(
+        Constants.hoodConstants.hoodkP,
+        Constants.hoodConstants.hoodkI,
+        Constants.hoodConstants.hoodkD,
+        Constants.hoodConstants.hoodkS,
+        Constants.hoodConstants.hoodkV,
+        Constants.hoodConstants.hoodkA,
+        Constants.hoodConstants.hoodkG);
 
     SmartDashboard.putNumber("Hood target", 0);
 
@@ -100,10 +100,12 @@ public class HoodSubsys extends SubsystemBase {
     }
 
     // distance formula using the hub as x2 and current drive pose as x1
+    // TODO add more specific comments
     distanceToHub =
         Math.sqrt(
             Math.pow(hubX - drive.getState().Pose.getX(), 2)
                 + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
+                
     autoTargetHoodState =
         hoodMap.get(
             distanceToHub); // using distanceToHub, gets the value using that "key" from the hub

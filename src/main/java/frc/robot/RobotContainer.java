@@ -27,15 +27,11 @@ import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 // import frc.robot.commands.AutoAimingCommands.autoSetHoodAngle;
 import frc.robot.commands.AutoAimingCommands.TurretTargetHUB;
 import frc.robot.generated.TunerConstants;
-<<<<<<< HEAD
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.HoodSubsys;
 import frc.robot.subsystems.Shooter.TurretSubsys;
-=======
-import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Vision.VisionSubsys;
->>>>>>> a26901ac6dce072ba8bb2e336623642a00f91a90
 
 public class RobotContainer {
     private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -58,12 +54,12 @@ public class RobotContainer {
     // private final Hood hood = new Hood(drivetrain);
      /* Path follower */
     private final SendableChooser<Command> autoChooser;
+    private final VisionSubsys vision = new VisionSubsys(drivetrain);
 
-
-    public final VisionSubsys visionSubsystem = new VisionSubsys(drivetrain);
 
     public RobotContainer() {
         NamedCommands.registerCommand("autoAimHub", new AutonAutoAimHub(drivetrain, turret));
+
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
