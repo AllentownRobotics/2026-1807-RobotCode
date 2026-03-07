@@ -20,7 +20,7 @@ public final class Constants {
     public static final int driverController = 0;
   }
 
-  public static class blinkinConstants{
+  public static class LEDConstants{
     public static final int blinkinID = 12;
     /**
      *sets LED patterns
