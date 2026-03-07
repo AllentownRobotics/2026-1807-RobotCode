@@ -18,7 +18,7 @@ import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 import frc.robot.utils.Kraken;
 import java.util.Optional;
 
-public class Turret extends SubsystemBase {
+public class TurretSubsys extends SubsystemBase {
   /** Creates a new Turret. */
   private Kraken turretMotor;
 
@@ -32,7 +32,7 @@ public class Turret extends SubsystemBase {
   private double targetX;
   private double robotHeading;
 
-  public Turret(CommandSwerveDrivetrain drive) {
+  public TurretSubsys(CommandSwerveDrivetrain drive) {
     this.drive = drive;
     targetTurretState = 0.2; // degrees
     // turretMotor = new Kraken(100); // make constants for this
@@ -55,11 +55,9 @@ public class Turret extends SubsystemBase {
     //     Constants.turretConstants.turretkG);
   }
   /**
-   * Calculates the field Relative angle to the hub using a hard coded hub constant then subtracts
-   * current robot heading to turn that into a robot relative angle. In doing so allows us to set
-   * the encoder to a robot relative position. If set as a default command allows you to consantly
-   * track the hub using PID values.
-   *
+   * Calculates a robot relative angle to set a turret to. <p>
+   * Uses inverse tangent to calculate angle between current robot pose and Hub pose. 
+   * Then uses a PID loop to get the turret to a setpoint. 
    * @return nothing cuz it a void
    */
   public void trackHUB() {
@@ -100,10 +98,10 @@ public class Turret extends SubsystemBase {
     // various smartDashboard variables to test / tune
     SmartDashboard.putNumber("Turret current state", currentTurretState);
     SmartDashboard.putNumber("Turret target state", targetTurretState);
-    SmartDashboard.putNumber("posetargetX", drive.getState().Pose.getX());
-    SmartDashboard.putNumber("posetargetY", drive.getState().Pose.getY());
-    SmartDashboard.putNumber("targetX", targetX);
-    SmartDashboard.putNumber("targetY", targetY);
+    SmartDashboard.putNumber("RobotPoseX", drive.getState().Pose.getX());
+    SmartDashboard.putNumber("RobotPoseY", drive.getState().Pose.getY());
+    SmartDashboard.putNumber("HubTargetX", targetX);
+    SmartDashboard.putNumber("HubTargetY", targetY);
     SmartDashboard.putNumber("Pidgeon reading", robotHeading);
   }
 
@@ -141,11 +139,7 @@ public class Turret extends SubsystemBase {
    * @return boolean - true or false depending on if its there or not.
    */
   public boolean isTurretWithinTolerance() {
-    if (Math.abs(targetTurretState - currentTurretState) <= turretTolerance) {
-      return true;
-    } else {
-      return false;
-    }
+    return Math.abs(targetTurretState - currentTurretState) <= turretTolerance;
   }
 
   @Override

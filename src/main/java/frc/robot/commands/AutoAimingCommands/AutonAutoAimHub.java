@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Shooter.Turret;
+import frc.robot.subsystems.Shooter.TurretSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutonAutoAimHub extends Command {
   /** Creates a new autoAimHUB. */
   CommandSwerveDrivetrain drivetrain;
   CommandXboxController driverController;
-  Turret turret;
+  TurretSubsys turret;
   PIDController thetaController;
   double targetHubAngle;
   private final SwerveRequest.FieldCentric drive;
@@ -30,7 +30,7 @@ public class AutonAutoAimHub extends Command {
   private double MaxAngularRate;
   private double rotationRate;
 
-  public AutonAutoAimHub(CommandSwerveDrivetrain drivetrain, Turret turret) {
+  public AutonAutoAimHub(CommandSwerveDrivetrain drivetrain, TurretSubsys turret) {
     this.drivetrain = drivetrain;
     this.turret = turret;
     
@@ -74,8 +74,8 @@ public class AutonAutoAimHub extends Command {
       rotationRate = 0;
     }
     // applies the request to be able to drive while aiming
-    drivetrain.applyRequest(() -> drive.withVelocityX(1)
-                                      .withVelocityY(1)
+    drivetrain.applyRequest(() -> drive.withVelocityX(0)
+                                      .withVelocityY(0)
                                       .withRotationalRate(rotationRate)).execute();
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));

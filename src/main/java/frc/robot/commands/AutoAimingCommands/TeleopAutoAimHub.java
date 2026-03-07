@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Shooter.Turret;
+import frc.robot.subsystems.Shooter.TurretSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TeleopAutoAimHub extends Command {
   /** Creates a new autoAimHUB. */
   CommandSwerveDrivetrain drivetrain;
   CommandXboxController driverController;
-  Turret turret;
+  TurretSubsys turret;
   PIDController thetaController;
   double targetHubAngle;
   private final SwerveRequest.FieldCentric drive;
@@ -30,7 +30,7 @@ public class TeleopAutoAimHub extends Command {
   private double MaxAngularRate;
   private double rotationRate;
 
-  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, Turret turret) {
+  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret) {
     this.drivetrain = drivetrain;
     this.driverController = driverController;
     this.turret = turret;
