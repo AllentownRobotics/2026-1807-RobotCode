@@ -6,13 +6,13 @@ package frc.robot.commands.ClimbCMDs;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimbConstants;
-import frc.robot.subsystems.Climb.Climb;
+import frc.robot.subsystems.Climb.ClimbSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClimbToL3 extends Command {
-  Climb climb;
+  ClimbSubsys climb;
   /** Creates a new ClimbToL3. */
-  public ClimbToL3(Climb climb) {
+  public ClimbToL3(ClimbSubsys climb) {
     this.climb = climb;
 
     addRequirements(climb);

@@ -23,6 +23,7 @@ public final class Constants {
     public static final int climbCANCoderID = 0;
 
     public static final double L1Position = 0;
+    public static final double L1PositionLock = 0;
     public static final double L2Position = 0;
     public static final double L3Position = 0;
     public static final double positionTolerance = 0;

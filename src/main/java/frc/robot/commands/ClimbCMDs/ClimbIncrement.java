@@ -5,14 +5,14 @@
 package frc.robot.commands.ClimbCMDs;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Climb.Climb;
+import frc.robot.subsystems.Climb.ClimbSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClimbIncrement extends Command {
-  Climb climb;
+  ClimbSubsys climb;
   int increment;
   /** Creates a new ClimbIncrement. */
-  public ClimbIncrement(Climb climb, int increment) {
+  public ClimbIncrement(ClimbSubsys climb, int increment) {
     this.climb = climb;
     this.increment = increment;
 

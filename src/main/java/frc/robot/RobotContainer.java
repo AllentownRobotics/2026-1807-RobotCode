@@ -14,7 +14,7 @@ import frc.robot.commands.ClimbCMDs.ClimbToL1;
 import frc.robot.commands.ClimbCMDs.ClimbToL2;
 import frc.robot.commands.ClimbCMDs.ClimbToL3;
 import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.Climb.Climb;
+import frc.robot.subsystems.Climb.ClimbSubsys;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final Climb climbSubsystem = new Climb();
+  private final ClimbSubsys climbSubsystem = new ClimbSubsys();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =

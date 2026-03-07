@@ -17,13 +17,13 @@ import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
 import frc.utils.Kraken;
 
-public class Climb extends SubsystemBase {
+public class ClimbSubsys extends SubsystemBase {
   private Kraken rightClimbMotor, leftClimbMotor;
   private CANcoder climbEncoder;
   private double desiredSetpoint;
 
   /** Creates a new Climb. */
-  public Climb() {
+  public ClimbSubsys() {
     rightClimbMotor = new Kraken(ClimbConstants.rightClimbMotorID);
     leftClimbMotor = new Kraken(ClimbConstants.leftClimbMotorID);
     climbEncoder = new CANcoder(ClimbConstants.climbCANCoderID);
@@ -33,6 +33,7 @@ public class Climb extends SubsystemBase {
 
     leftClimbMotor.setNotInverted();
 
+    //Right motor follows the left motor, they both go the same way
     rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Aligned);
 
     leftClimbMotor.addEncoder(climbEncoder);
@@ -46,7 +47,7 @@ public class Climb extends SubsystemBase {
     leftClimbMotor.setBrakeMode();
     rightClimbMotor.setBrakeMode();
 
-    leftClimbMotor.setMotorCurrentLimits(0);
+    leftClimbMotor.setMotorCurrentLimits(40);
     leftClimbMotor.setSoftLimits(ClimbConstants.softLimitMinPosition, ClimbConstants.softLimitMaxPosition);
 
     desiredSetpoint = ClimbConstants.climbHomePosition;
@@ -54,9 +55,9 @@ public class Climb extends SubsystemBase {
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
-  public void setClimbSpeed(double speed){
+  /*public void setClimbSpeed(double speed){
     rightClimbMotor.setMotorSpeed(speed);
-  }
+  }*/
 
   public void setClimbSetpoint(double setpoint){
     desiredSetpoint = setpoint;
