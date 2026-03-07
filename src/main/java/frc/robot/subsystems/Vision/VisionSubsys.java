@@ -77,14 +77,14 @@ public class VisionSubsys extends SubsystemBase {
     for(double[] pose3dData: getRobotPose3dFieldSpaceEstimates()) {//loop through all arrays in the 3d pose
 
       // Timestamp of the camera's values, current timestamp - the total latency of the camera, first converts latency from milliseconds to seconds.
-      double timestamp = Timer.getTimestamp() - pose3dData[7]/1000.0;
+      double timestamp = Timer.getTimestamp() - pose3dData[6]/1000.0;
 
       //add the 2d position and timestamp to the arraylist
       pose2dEstimates.add(new double[]{// TODO remove magic numbers
         pose3dData[0], 
         pose3dData[1], 
         pose3dData[4], // this should be index 5, through testing, it was found that index 4 is the yaw
-        //currwent timestamp - the total latency of the camera, first converts latency from milliseconds to seconds,
+        //current timestamp - the total latency of the camera, first converts latency from milliseconds to seconds,
         // then subtracts it from the current timestamp to get the timestamp of when the image was taken
         timestamp
       });
@@ -142,13 +142,15 @@ public class VisionSubsys extends SubsystemBase {
 
       targetValid = table.getEntry("tv");
 
-      if (Alliance.Blue == DriverStation.getAlliance().get()) {// TODO potentialy change alliance.get to variable
-        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
-      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
-        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
-      } else {
-        robotPoseFieldSpace = table.getEntry("botpose_orb");
-      }
+      robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      
+      // if (Alliance.Blue == DriverStation.getAlliance().get()) {// TODO potentialy change alliance.get to variable
+      //   robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      // } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+      //   robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      // } else {
+      //   robotPoseFieldSpace = table.getEntry("botpose_orb");
+      // }
 
       targetID = table.getEntry("tid");
 
