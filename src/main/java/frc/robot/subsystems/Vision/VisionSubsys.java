@@ -154,13 +154,15 @@ public class VisionSubsys extends SubsystemBase {
 
       targetValid = table.getEntry("tv");
 
-      if (Alliance.Blue == DriverStation.getAlliance().get()) {// TODO potentialy change alliance.get to variable
-        robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
-      } else if (Alliance.Red == DriverStation.getAlliance().get()) {
-        robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
-      } else {
-        robotPoseFieldSpace = table.getEntry("botpose_orb");
-      }
+      robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      
+      // if (Alliance.Blue == DriverStation.getAlliance().get()) {// TODO potentialy change alliance.get to variable
+      //   robotPoseFieldSpace = table.getEntry("botpose_orb_wpiblue");
+      // } else if (Alliance.Red == DriverStation.getAlliance().get()) {
+      //   robotPoseFieldSpace = table.getEntry("botpose_orb_wpired");
+      // } else {
+      //   robotPoseFieldSpace = table.getEntry("botpose_orb");
+      // }
 
       targetID = table.getEntry("tid");
 
