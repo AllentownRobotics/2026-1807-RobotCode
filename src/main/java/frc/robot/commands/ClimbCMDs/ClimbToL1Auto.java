@@ -11,13 +11,14 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb.ClimbSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ClimbToL1 extends Command {
+public class ClimbToL1Auto extends Command {
   ClimbSubsys climb;
   BooleanSupplier isAtL1; 
   /** Creates a new ClimbToL1. */
-  public ClimbToL1(ClimbSubsys climb) {
+  public ClimbToL1Auto(ClimbSubsys climb) {
     this.climb = climb;
     this.isAtL1 = climb.isAtPosition(ClimbConstants.L1Position);
+
     addRequirements(climb);
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -37,7 +38,8 @@ public class ClimbToL1 extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
   // Returns true when the command should end.
   @Override

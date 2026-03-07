@@ -10,8 +10,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ClimbCMDs.ClimbIncrement;
 import frc.robot.commands.ClimbCMDs.ClimbToHome;
-import frc.robot.commands.ClimbCMDs.ClimbToL1;
-import frc.robot.commands.ClimbCMDs.ClimbToL2;
+import frc.robot.commands.ClimbCMDs.ClimbToL1Auto;
+import frc.robot.commands.ClimbCMDs.ClimbCMD;
 import frc.robot.commands.ClimbCMDs.ClimbToL3;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Climb.ClimbSubsys;
@@ -40,7 +40,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("ClimbToL1", new ClimbToL1(climbSubsystem));
+    NamedCommands.registerCommand("ClimbToL1", new ClimbToL1Auto(climbSubsystem));
     NamedCommands.registerCommand("ClimbToHome", new ClimbToHome(climbSubsystem));
     NamedCommands.registerCommand("ClimbWaitforL1", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L1PositionLock)));
     NamedCommands.registerCommand("ClimbWaitforHome", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));

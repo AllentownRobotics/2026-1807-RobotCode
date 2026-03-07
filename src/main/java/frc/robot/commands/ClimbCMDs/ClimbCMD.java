@@ -11,13 +11,11 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb.ClimbSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ClimbToL2 extends Command {
+public class ClimbCMD extends Command {
   ClimbSubsys climb;
-  BooleanSupplier isAtL2;
   /** Creates a new ClimbToL2. */
-  public ClimbToL2(ClimbSubsys climb) {
+  public ClimbCMD(ClimbSubsys climb) {
     this.climb = climb;
-    this.isAtL2 = climb.isAtPosition(ClimbConstants.L2Position);
 
     addRequirements(climb);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -31,8 +29,6 @@ public class ClimbToL2 extends Command {
 
   @Override
   public void execute(){
-    if(isAtL2.getAsBoolean()){
-      climb.setClimbSetpoint(ClimbConstants.L2PositionLock);
-    }
+    
   }
 }

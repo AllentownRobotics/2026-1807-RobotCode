@@ -27,10 +27,12 @@ public class ClimbSubsys extends SubsystemBase {
     rightClimbMotor = new Kraken(ClimbConstants.rightClimbMotorID);
     leftClimbMotor = new Kraken(ClimbConstants.leftClimbMotorID);
     climbEncoder = new CANcoder(ClimbConstants.climbCANCoderID);
+    //add another encoder
 
     rightClimbMotor.restoreFactoryDefaults();
     leftClimbMotor.restoreFactoryDefaults();
 
+    rightClimbMotor.setInverted();
     leftClimbMotor.setNotInverted();
 
     //Right motor follows the left motor, they both go the same way
@@ -55,6 +57,7 @@ public class ClimbSubsys extends SubsystemBase {
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
+  //Make a manual version of the command
   /*public void setClimbSpeed(double speed){
     rightClimbMotor.setMotorSpeed(speed);
   }*/
