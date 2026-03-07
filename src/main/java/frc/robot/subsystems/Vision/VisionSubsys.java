@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.Vision;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Vision.LimelightHelpers.PoseEstimate;
 
 public class VisionSubsys extends SubsystemBase {
   private Limelight[] limelights;
@@ -71,26 +73,34 @@ public class VisionSubsys extends SubsystemBase {
    */
   public ArrayList<double[]> getRobotPose2dFieldSpaceEstimates() {// TODO finish javadoc comment
 
-    //Array of double arrays, each array is in the order of x,y, rotation, timestamp
+    // //Array of double arrays, each array is in the order of x,y, rotation, timestamp
+    // ArrayList<double[]> pose2dEstimates = new ArrayList<double[]>();
+
+    // for(double[] pose3dData: getRobotPose3dFieldSpaceEstimates()) {//loop through all arrays in the 3d pose
+
+    //   // Timestamp of the camera's values, current timestamp - the total latency of the camera, first converts latency from milliseconds to seconds.
+    //   double timestamp = Timer.getTimestamp() - pose3dData[7]/1000.0;
+
+    //   //add the 2d position and timestamp to the arraylist
+    //   pose2dEstimates.add(new double[]{// TODO remove magic numbers
+    //     pose3dData[0], 
+    //     pose3dData[1], 
+    //     pose3dData[4], // this should be index 5, through testing, it was found that index 4 is the yaw
+    //     //currwent timestamp - the total latency of the camera, first converts latency from milliseconds to seconds,
+    //     // then subtracts it from the current timestamp to get the timestamp of when the image was taken
+    //     timestamp
+    //   });
+    // }
+
+    // return pose2dEstimates;// return the array of 2d positions from the cameras that see april tags
+
     ArrayList<double[]> pose2dEstimates = new ArrayList<double[]>();
-
-    for(double[] pose3dData: getRobotPose3dFieldSpaceEstimates()) {//loop through all arrays in the 3d pose
-
-      // Timestamp of the camera's values, current timestamp - the total latency of the camera, first converts latency from milliseconds to seconds.
-      double timestamp = Timer.getTimestamp() - pose3dData[7]/1000.0;
-
-      //add the 2d position and timestamp to the arraylist
-      pose2dEstimates.add(new double[]{// TODO remove magic numbers
-        pose3dData[0], 
-        pose3dData[1], 
-        pose3dData[4], // this should be index 5, through testing, it was found that index 4 is the yaw
-        //currwent timestamp - the total latency of the camera, first converts latency from milliseconds to seconds,
-        // then subtracts it from the current timestamp to get the timestamp of when the image was taken
-        timestamp
-      });
+    for(Limelight limelight : limelights){//loops through all limelights
+      if (limelight.hasTarget()) {//if the limelight sees an april tag
+        pose2dEstimates.add(limelight.getRobotPose2dFieldSpaceEstimateMT2());
+      }
     }
-
-    return pose2dEstimates;// return the array of 2d positions from the cameras that see april tags
+    return pose2dEstimates;
   }
 
   @Override
@@ -125,6 +135,7 @@ public class VisionSubsys extends SubsystemBase {
 
     private NetworkTable table;
     private NetworkTableEntry targetX, targetY, targetArea, robotPoseFieldSpace, targetPoseRobotSpace, targetID, targetValid;
+    private String name;
 
     /**
      * Creates a new Limelight
@@ -133,6 +144,7 @@ public class VisionSubsys extends SubsystemBase {
     public Limelight(String name) {
 
       table = NetworkTableInstance.getDefault().getTable(name); // gets the network table for the limelight with the given name
+      this.name = name;
 
       targetX = table.getEntry("tx");
 
@@ -225,6 +237,16 @@ public class VisionSubsys extends SubsystemBase {
     public double[] getRobotPoseFieldSpaceEstimate() {
       double[] defaultValue = new double[0];
       return robotPoseFieldSpace.getDoubleArray(defaultValue);
+    }
+
+    public double[] getRobotPose2dFieldSpaceEstimateMT2() {
+      PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name);
+      return new double[] {
+        poseEstimate.pose.getX(),
+        poseEstimate.pose.getY(),
+        poseEstimate.pose.getRotation().getDegrees(),
+        poseEstimate.timestampSeconds
+      };
     }
 
     /**
