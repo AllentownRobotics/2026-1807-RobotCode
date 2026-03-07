@@ -25,7 +25,9 @@ public final class Constants {
     public static final double L1Position = 0;
     public static final double L1PositionLock = 0;
     public static final double L2Position = 0;
+    public static final double L2PositionLock = 0;
     public static final double L3Position = 0;
+    public static final double L3PositionLock = 0;
     public static final double positionTolerance = 0;
     public static final double softLimitMinPosition = 0;
     public static final double softLimitMaxPosition = 0;

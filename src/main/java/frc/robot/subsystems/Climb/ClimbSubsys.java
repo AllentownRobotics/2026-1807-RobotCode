@@ -73,10 +73,11 @@ public class ClimbSubsys extends SubsystemBase {
     return leftClimbMotor.getPosition();
   }
 
+  
   public BooleanSupplier isAtPosition(double targetPosition) {
     double currentPosition = getClimbPositionInInches();
-    if ( (targetPosition - Constants.ClimbConstants.positionTolerance >= currentPosition ) && 
-         (targetPosition + Constants.ClimbConstants.positionTolerance <= currentPosition)) {
+    if ( (currentPosition >= targetPosition - Constants.ClimbConstants.positionTolerance) && 
+         (currentPosition <= targetPosition + Constants.ClimbConstants.positionTolerance)) {
       return () -> true;
     }
     return () -> false;

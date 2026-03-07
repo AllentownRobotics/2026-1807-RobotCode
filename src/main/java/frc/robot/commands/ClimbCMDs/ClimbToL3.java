@@ -4,6 +4,8 @@
 
 package frc.robot.commands.ClimbCMDs;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb.ClimbSubsys;
@@ -11,9 +13,11 @@ import frc.robot.subsystems.Climb.ClimbSubsys;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ClimbToL3 extends Command {
   ClimbSubsys climb;
+  BooleanSupplier isAtL3;
   /** Creates a new ClimbToL3. */
   public ClimbToL3(ClimbSubsys climb) {
     this.climb = climb;
+    this.isAtL3 = climb.isAtPosition(ClimbConstants.L3Position);
 
     addRequirements(climb);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,5 +27,12 @@ public class ClimbToL3 extends Command {
   @Override
   public void initialize() {
     climb.setClimbSetpoint(ClimbConstants.L3Position);
+  }
+
+  @Override
+  public void execute(){
+    if(isAtL3.getAsBoolean()){
+      climb.setClimbSetpoint(ClimbConstants.L3PositionLock);
+    }
   }
 }

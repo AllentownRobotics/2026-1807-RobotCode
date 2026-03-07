@@ -40,18 +40,10 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("ClimbToHome", new ClimbToHome(climbSubsystem));
     NamedCommands.registerCommand("ClimbToL1", new ClimbToL1(climbSubsystem));
-    NamedCommands.registerCommand("ClimbToL2", new ClimbToL2(climbSubsystem));
-    NamedCommands.registerCommand("ClimbToL3", new ClimbToL3(climbSubsystem));
-    NamedCommands.registerCommand("ClimbWaitForL1", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L1Position)));
-    NamedCommands.registerCommand("ClimbWaitForL2", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L2Position)));
-    NamedCommands.registerCommand("ClimbWaitForL3", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L3Position)));
-    NamedCommands.registerCommand("ClimbWaitForHome", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
-
-    NamedCommands.registerCommand("Climb to L1", new ClimbToL1(climbSubsystem));
-    NamedCommands.registerCommand("Climb to L2", new ClimbToL2(climbSubsystem));
-    NamedCommands.registerCommand("Climb to L3", new ClimbToL3(climbSubsystem));
+    NamedCommands.registerCommand("ClimbToHome", new ClimbToHome(climbSubsystem));
+    NamedCommands.registerCommand("ClimbWaitforL1", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L1PositionLock)));
+    NamedCommands.registerCommand("ClimbWaitforHome", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
 
     // Configure the trigger bindings
     configureBindings();
