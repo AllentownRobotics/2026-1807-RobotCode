@@ -120,9 +120,63 @@ public class TurretSubsys extends SubsystemBase {
     // currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
      * robot heading allows you to get a robot relative angle*/
-    targetTurretState =
+    // targetTurretState =
+    //     Math.toDegrees(
+    //         Math.atan2(targetY - drive.getState().Pose.getY(), targetX - drive.getState().Pose.getX())); 
+
+    // if(ally.get() == Alliance.Blue && drive.getState().Pose.getX() <= 4 || ally.get() == Alliance.Red && drive.getState().Pose.getX() >= 12 ){
+    // targetTurretState =
+    //     Math.toDegrees(
+    //         Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+    // }
+    // else{
+    //   targetTurretState = 0;
+    // }
+  if(ally.get() == Alliance.Blue && drive.getState().Pose.getX() <= 4){
+     targetTurretState =
         Math.toDegrees(
-            Math.atan2(targetY - drive.getState().Pose.getY(), targetX - drive.getState().Pose.getX())); 
+            Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+
+      targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+    }else{
+      if(ally.get() == Alliance.Blue && drive.getState().Pose.getX() >= 4 && drive.getState().Pose.getY() <= 3.975){
+        targetX = 2.186;
+        targetY = 1.690; // orbit
+        targetTurretState =
+        Math.toDegrees(
+            Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+        // targetTurretState = targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+      } 
+      if(ally.get() == Alliance.Blue && drive.getState().Pose.getX() >= 4 && drive.getState().Pose.getY() >= 3.975){
+        targetX = 1.974;
+        targetY = 6.065;
+        targetTurretState = 
+        Math.toDegrees(
+            Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+        // targetTurretState = targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+      }
+    }
+    if(ally.get() == Alliance.Red && drive.getState().Pose.getX() >= 12){
+     targetTurretState =  // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+        Math.toDegrees(
+            Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+    }else{
+      if(ally.get() == Alliance.Red && drive.getState().Pose.getX() <= 12 && drive.getState().Pose.getY() >= 3.975){
+        targetX = 14.339;
+        targetY = 6.477; // orbit
+        targetTurretState = // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+        Math.toDegrees(
+            Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+      }
+      if(ally.get() == Alliance.Red && drive.getState().Pose.getX() <= 12 && drive.getState().Pose.getY() <= 3.975 ){
+        targetX = 14.339;
+        targetY = 1.690;
+        targetTurretState = // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+        Math.toDegrees(
+            Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+      }
+      
+    }
 
     // turretPositionError = targetTurretState - currentTurretState;
     // only allows angles between -pi to +pi because every angle after that can be reprsensted by a
@@ -132,6 +186,11 @@ public class TurretSubsys extends SubsystemBase {
     return targetTurretState;
   }
 
+// TODO Make a method for targetTurretState so it's written better
+  public double targetTurretState(Double targetX, Double TargetY, Double currentPoseX, Double currentPoseY){
+     return Math.toDegrees(
+            Math.atan2(targetY - currentPoseY, targetX -  currentPoseX));
+  }
 
   /**
    * Checks if turret is in a tolerable range of where it needs to be.

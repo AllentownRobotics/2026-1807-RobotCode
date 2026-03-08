@@ -63,7 +63,7 @@ public class TeleopAutoAimHub extends Command {
   @Override
   public void execute() {
     // compensate for robot facing the right direction.
-    targetHubAngle = turret.getTargetTurretAngle();
+    targetHubAngle = turret.getTargetTurretAngle() + 180;
     
     // calculate the PID gains we need, feed that in for our turning rate to turn to a specific position
     double thetaCalculation = thetaController.calculate(-drivetrain.getState().Pose.getRotation().getDegrees(), -targetHubAngle);
