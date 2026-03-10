@@ -5,11 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ExpelFuelCMD;
 import frc.robot.commands.KickFuelCMD;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final KickerSubsys m_kicker = new KickerSubsys();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -51,16 +47,14 @@ public class RobotContainer {
    */
   //Trigger value = m_buttonboard.getButton(0);
   private void configureBindings() {
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
+  
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
     //m_kicker.setDefaultCommand(m_kickFuel);
-    //m_driverController.a().whileTrue(m_expelFuel);
+    m_driverController.a().whileTrue(m_expelFuel);
     m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
     m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they joystick is pressed down it runs the method
  
@@ -74,6 +68,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return Autos.exampleAuto(m_exampleSubsystem);
+    return null;
   }
 }

@@ -30,7 +30,7 @@ public class ExpelFuelCMD extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    kicker.stopMotors();
+    kicker.stopKickerMotors();
   }
 
   // Returns true when the command should end.

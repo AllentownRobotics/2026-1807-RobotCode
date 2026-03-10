@@ -28,4 +28,8 @@ public final class Constants {
   public static class SensorIDs {
     public static final int sensorID = 0;
   }
+
+  public static class TimeConstants {
+    public static final double kickDurationAsSec = 3;
+  }
 }

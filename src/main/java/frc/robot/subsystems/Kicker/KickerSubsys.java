@@ -10,12 +10,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.utils.Kraken;
 
+
 public class KickerSubsys extends SubsystemBase {
   private Kraken bottomKickerMotor;//Establishes the Bottom kicker motor
   private Kraken topKickerMotor;//Establishes the Top kicker motor
   private DigitalInput beamBreak;//Establishes the beam break
-  private double motorVelocity;//Creates a double called motor velocity
-  private boolean motorSpinning;//Creates a boolean called motorSpinning
   /** Creates a new Kicker. */
   public KickerSubsys() {
     beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);//Creates a new beam break
@@ -39,21 +38,23 @@ public class KickerSubsys extends SubsystemBase {
     topKickerMotor.setMotorSpeed(Constants.KickerConstansts.topKickerMotorSpeedExpel);//Set the top kicker motor's speed to a constant
   }
   /**
-   * Stops all motors
+   * Stops all kicker motors
    */
-  public void stopMotors() {
+  public void stopKickerMotors() {
     bottomKickerMotor.stopMotor();//Stops the bottom kicker motor
     topKickerMotor.stopMotor();//Stops the top kicker motor
   }
   /**
-   * Gets the value of the beam break
+   * Determines if fuel is in the Kicker
+   * @return
    */
-  public boolean getSensorValue() {
-    return beamBreak.get();
+  public boolean isFuelInKicker() {
+    return beamBreak.get();//Returns true if beam is broken and false if beam is not
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putBoolean("is fuel in the kicker", isFuelInKicker());
     // This method will be called once per scheduler run
   }
 }
