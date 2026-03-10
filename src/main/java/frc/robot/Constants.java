@@ -15,6 +15,7 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 0;
   }
 
   public static class ClimbConstants {
@@ -44,6 +45,8 @@ public final class Constants {
     public static final double CLIMB_GFF = 0; // gravity feedforward 0.296
     public static final double CLIMB_MIN_OUTPUT = -1;
     public static final double CLIMB_MAX_OUTPUT = 1;
+
+    public static final double climbSpeed = 0;
 
     public static final double climbGearing = 0; // inches
     public static final double climbSprocketRadius = 0;

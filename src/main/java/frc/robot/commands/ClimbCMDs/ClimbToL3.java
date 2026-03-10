@@ -11,39 +11,37 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb.ClimbSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ClimbToL1Auto extends Command {
+public class ClimbToL3 extends Command {
   ClimbSubsys climb;
-  BooleanSupplier isAtL1; 
-  /** Creates a new ClimbToL1. */
-  public ClimbToL1Auto(ClimbSubsys climb) {
+  BooleanSupplier isAtL3;
+  /** Creates a new ClimbToL3. */
+  public ClimbToL3(ClimbSubsys climb) {
     this.climb = climb;
-    this.isAtL1 = climb.isAtPosition(ClimbConstants.L1Position);
-
-    addRequirements(climb);
+    this.isAtL3 = climb.isAtPosition(ClimbConstants.L3Position);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climb.setClimbSetpoint(ClimbConstants.L1Position);
+    climb.setClimbSetpoint(ClimbConstants.L3Position);
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
-    if(isAtL1.getAsBoolean()){
-      climb.setClimbSetpoint(ClimbConstants.L1PositionLock);
+  public void execute() {
+    if(isAtL3.getAsBoolean()){
+      climb.setClimbSetpoint(ClimbConstants.L3PositionLock);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return climb.isAtPosition(ClimbConstants.L1PositionLock).getAsBoolean();
+    return climb.isAtPosition(ClimbConstants.L3PositionLock).getAsBoolean();
   }
 }

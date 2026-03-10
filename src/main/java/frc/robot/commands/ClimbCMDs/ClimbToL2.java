@@ -11,13 +11,13 @@ import frc.robot.Constants.ClimbConstants;
 import frc.robot.subsystems.Climb.ClimbSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ClimbCMD extends Command {
+public class ClimbToL2 extends Command {
   ClimbSubsys climb;
+  BooleanSupplier isAtL2;
   /** Creates a new ClimbToL2. */
-  public ClimbCMD(ClimbSubsys climb) {
+  public ClimbToL2(ClimbSubsys climb) {
     this.climb = climb;
-
-    addRequirements(climb);
+    this.isAtL2 = climb.isAtPosition(ClimbConstants.L2Position);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -27,8 +27,21 @@ public class ClimbCMD extends Command {
     climb.setClimbSetpoint(ClimbConstants.L2Position);
   }
 
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute(){
-    
+  public void execute() {
+    if(isAtL2.getAsBoolean()){
+      climb.setClimbSetpoint(ClimbConstants.L2PositionLock);
+    }
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {}
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return climb.isAtPosition(ClimbConstants.L2PositionLock).getAsBoolean();
   }
 }

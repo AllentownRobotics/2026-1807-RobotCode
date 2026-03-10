@@ -10,15 +10,17 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.ClimbCMDs.ClimbIncrement;
 import frc.robot.commands.ClimbCMDs.ClimbToHome;
-import frc.robot.commands.ClimbCMDs.ClimbToL1Auto;
-import frc.robot.commands.ClimbCMDs.ClimbCMD;
+import frc.robot.commands.ClimbCMDs.ClimbToL1;
+import frc.robot.commands.ClimbCMDs.ClimbToL2;
 import frc.robot.commands.ClimbCMDs.ClimbToL3;
+import frc.robot.commands.ClimbCMDs.ClimbUpManual;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.Climb.ClimbSubsys;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -35,16 +37,19 @@ public class RobotContainer {
   private final ClimbSubsys climbSubsystem = new ClimbSubsys();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController operatorController =
+    new CommandXboxController(OperatorConstants.kOperatorControllerPort);
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("ClimbToL1", new ClimbToL1Auto(climbSubsystem));
+    NamedCommands.registerCommand("ClimbToL1", new ClimbToL1(climbSubsystem));
     NamedCommands.registerCommand("ClimbToHome", new ClimbToHome(climbSubsystem));
     NamedCommands.registerCommand("ClimbWaitforL1", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L1PositionLock)));
     NamedCommands.registerCommand("ClimbWaitforHome", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
 
+  
     // Configure the trigger bindings
     configureBindings();
   }
@@ -68,6 +73,12 @@ public class RobotContainer {
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    operatorController.a().whileTrue(new ClimbToL1(climbSubsystem).andThen(new ClimbToL2(climbSubsystem).andThen(new ClimbToL3(climbSubsystem))));
+   
+    /*Manual Commands */
+    //operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
+    //operatorController.y().whileTrue(new ClimbUpManual(climbSubsystem));
   }
 
   /**

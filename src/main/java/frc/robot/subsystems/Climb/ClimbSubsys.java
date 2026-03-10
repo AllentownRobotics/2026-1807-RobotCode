@@ -57,10 +57,10 @@ public class ClimbSubsys extends SubsystemBase {
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
-  //Make a manual version of the command
-  /*public void setClimbSpeed(double speed){
+  //For manual version of the command
+  public void setClimbSpeed(double speed){
     rightClimbMotor.setMotorSpeed(speed);
-  }*/
+  }
 
   public void setClimbSetpoint(double setpoint){
     desiredSetpoint = setpoint;
@@ -87,6 +87,10 @@ public class ClimbSubsys extends SubsystemBase {
   }
 
   public void stopClimb(){
+    leftClimbMotor.stopMotor();
+  }
+
+  public void stopClimbVolts(){
     leftClimbMotor.setVolts(Voltage.ofBaseUnits(0, Volts));
   }
   
