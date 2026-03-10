@@ -5,35 +5,59 @@
 package frc.robot.subsystems;
 
 import java.util.EnumMap;
+import java.util.Optional;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.blinkinConstants;
+import frc.robot.Constants.LEDConstants;
 
 public class LEDSubsystem extends SubsystemBase {
   /** Creates a new LEDSubsystem. */
-  Spark blinkin;
+  Spark blinkin; //establishes blinkin
 
-  EnumMap<blinkinConstants.LEDPatterns, Double> patternmap = new EnumMap<>(blinkinConstants.LEDPatterns.class);
+  EnumMap<LEDConstants.LEDPatterns, Double> patternmap = new EnumMap<>(LEDConstants.LEDPatterns.class); //creates new enummap
+  /**
+     *put blinkin constants on the pattern map
+     */
   public LEDSubsystem() {
     //make a new spark for blinkin
-    blinkin = new Spark(blinkinConstants.blinkinID);
-    //put blinkin constants on the pattern map
+    blinkin = new Spark(LEDConstants.blinkinID);
+    
+    patternmap.put(LEDConstants.LEDPatterns.OFF, LEDConstants.off);
+    patternmap.put(LEDConstants.LEDPatterns.IDLE, LEDConstants.idle);
+    patternmap.put(LEDConstants.LEDPatterns.ALIGNED_WITH_HUB, LEDConstants.alignedWithHub);
+    patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED, LEDConstants.climbCompleteRed);
+    patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, LEDConstants.climbCompleteBlue);
+    patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION, LEDConstants.pivotAtIntakePosition);
+    patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION, LEDConstants.pivotAtHomePosition);
+    patternmap.put(LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT, LEDConstants.fuelReadyToShoot);
+    patternmap.put(LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER, LEDConstants.fuelInTwindexer);
+    patternmap.put(LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION, LEDConstants.alignedWithHumanPlayerStation);
 
-    blinkin = new Spark(blinkinConstants.blinkinID);
+    blinkin.set(LEDConstants.idle);//sets the idle blinkin constant
+  }
 
-    patternmap.put(blinkinConstants.LEDPatterns.OFF, blinkinConstants.off);
-    patternmap.put(blinkinConstants.LEDPatterns.IDLE, blinkinConstants.defaultColor);
-    patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUB, blinkinConstants.alignedWithHub);
-    patternmap.put(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_RED, blinkinConstants.climbCompleteRed);
-    patternmap.put(blinkinConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, blinkinConstants.climbCompleteBlue);
-    patternmap.put(blinkinConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION, blinkinConstants.pivotAtIntakePosition);
-    patternmap.put(blinkinConstants.LEDPatterns.PIVOT_AT_HOME_POSITION, blinkinConstants.pivotAtHomePosition);
-    patternmap.put(blinkinConstants.LEDPatterns.FUEL_READY_TO_SHOOT, blinkinConstants.fuelInTwindexer);
-    patternmap.put(blinkinConstants.LEDPatterns.FUEL_IN_TWINDEXER, blinkinConstants.fuelInTwindexer);
-    patternmap.put(blinkinConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION, blinkinConstants.alignedWithHumanPlayerStation);
+  public void setPattern(LEDConstants.LEDPatterns robotStatePattern){
+    double pattern;//establishes pattern
+    pattern = robotStatePattern.value;//states the pattern value
 
+    /*if (robotStatePattern == LEDConstants.LEDPatterns.CLIMB_COMPLETE){
+      pattern = patternmap.get(robotStatePattern);
+      Optional<Alliance> alliance = DriverStation.getAlliance();
+      if(alliance.isPresent()){
+        if (alliance.get()== Alliance.Red){
+          pattern = patternmap.get(LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED);
+        }
+        if(alliance.get() == Alliance.Blue){
+          pattern = patternmap.get(LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE);
+        }
+      }
+    }*/
+
+    blinkin.set(pattern);//sets the pattern
   }
 
   @Override

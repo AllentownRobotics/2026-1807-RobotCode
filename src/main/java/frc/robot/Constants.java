@@ -29,15 +29,23 @@ public final class Constants {
   }
   public static class OperatorConstants {
     public static final int kDriverControllerPort  = 0;
+  public static class operatorConstants {
+    public static final int operatorController = 0;
+  }
+  public static class DriverConstants {
+    public static final int driverController = 0;
   }
 
-  public static class blinkinConstants{
-    public static final int blinkinID = 0;
-    //sets LED patterns
-    public enum LEDPatterns{
+  public static class LEDConstants{
+    public static final int blinkinID = 12;
+    /**
+     *sets LED patterns
+     */
+    public static enum LEDPatterns{
       OFF(off),
-      IDLE(defaultColor),
+      IDLE(idle),
       ALIGNED_WITH_HUB(alignedWithHub),
+      CLIMB_COMPLETE(off),
       CLIMB_COMPLETE_RED(climbCompleteRed),
       CLIMB_COMPLETE_BLUE(climbCompleteBlue),
       PIVOT_AT_INTAKE_POSITION(pivotAtIntakePosition),
@@ -51,9 +59,9 @@ public final class Constants {
         value = val;
       }
     }
-
-    public static final double off = 0;//change after color is confirmed
-    public static final double defaultColor = 0;//change after color is confirmed
+    //color codes
+    public static final double off = -0.89;//change after color is confirmed
+    public static final double idle = -0.89;//change after color is confirmed
     public static final double alignedWithHub = 0;//change after color is confirmed
     public static final double climbCompleteRed = 0;//change after color is confirmed
     public static final double climbCompleteBlue = 0;//change after color is confirmed
