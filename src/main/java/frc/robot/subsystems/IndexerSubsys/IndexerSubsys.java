@@ -8,7 +8,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.collectorConstants;
+import frc.robot.Constants;
 import frc.utils.Kraken;
 
 public class IndexerSubsys extends SubsystemBase {
@@ -66,17 +66,17 @@ public class IndexerSubsys extends SubsystemBase {
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsys() {
     // Assigns beam break IDs to their corresponding beam breaks.
-    topHopperBeamBreak = new DigitalInput(collectorConstants.IndexerConstants.topBeamBreakID);
-    bottomHopperBeamBreak = new DigitalInput(collectorConstants.IndexerConstants.bottomBeamBreakID);
+    topHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.topBeamBreakID);
+    bottomHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.bottomBeamBreakID);
 
     // Assigns PID constants to PIDController.
     indexerPIDController = new PIDController(
-      collectorConstants.IndexerConstants.kp, 
-      collectorConstants.IndexerConstants.ki, 
-      collectorConstants.IndexerConstants.kd);
+      Constants.IndexerConstants.kp, 
+      Constants.IndexerConstants.ki, 
+      Constants.IndexerConstants.kd);
     
     // Assigns motor ID to indexer motor.
-    indexerMotor = new Kraken(collectorConstants.MotorIDs.indexerMotorID); 
+    indexerMotor = new Kraken(Constants.MotorIDs.indexerMotorID); 
     indexerMotor.setCoastMode();
   }
 
@@ -85,7 +85,7 @@ public class IndexerSubsys extends SubsystemBase {
    */
   public void setIndexerDesiredSpeed(double speed) {
     // Assigns setpoint value to PID controller.
-    indexerPIDController.setSetpoint(collectorConstants.IndexerConstants.desiredIndexerSpeed);
+    indexerPIDController.setSetpoint(Constants.IndexerConstants.desiredIndexerSpeed);
   }
 
   /**

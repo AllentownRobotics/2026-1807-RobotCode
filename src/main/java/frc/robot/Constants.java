@@ -60,7 +60,7 @@ public final class Constants {
   public static class collectorConstants{
     public static final int collectorMotorID = 18;//change according to motor id number - collector motor ID number
     public static final double collectorP = 0.1;
-    public static final double collctorI = 0;
+    public static final double collectorI = 0;
     public static final double collectorD = 0;    
   }
 
