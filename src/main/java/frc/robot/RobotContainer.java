@@ -7,8 +7,13 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.retractPivotCommand;
 import frc.robot.commands.extendPivotCommand;
+import frc.robot.commands.Autos;
+import frc.robot.commands.AutosSpinIndexerCMD;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.SpinIndexerCMD;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
+import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,6 +30,15 @@ public class RobotContainer {
    private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
    //private final extendPivotCommand m_GroundCollectionCommand = new extendPivotCommand(m_GroundCollectionSubsystem);
    private final CommandXboxController m_xboxController = new CommandXboxController(0);
+  // The robot's subsystems and commands are defined here...
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
+
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+  private final SpinIndexerCMD m_SpinIndexerCMD = new SpinIndexerCMD(m_indexerSubsystem);
+  private final AutosSpinIndexerCMD m_AutosSpinIndexerCMD = new AutosSpinIndexerCMD(m_indexerSubsystem);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -53,5 +67,28 @@ public class RobotContainer {
     m_xboxController.x().whileTrue(
       new retractPivotCommand(m_GroundCollectionSubsystem)
     );
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    new Trigger(m_exampleSubsystem::exampleCondition)
+        .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
+    // cancelling on release.
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    
+    // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
+    m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
+
+    // Currently a test binding - this command will be used for autos.
+    m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
+  }
+
+  /**
+   * Use this to pass the autonomous command to the main {@link Robot} class.
+   *
+   * @return the command to run in autonomous
+   */
+  public Command getAutonomousCommand() {
+    // An example command will be run in autonomous
+    return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
