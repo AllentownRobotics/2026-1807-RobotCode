@@ -16,6 +16,7 @@ public class ClimbToHome extends Command {
   /** Creates a new ClimbToHome. */
   public ClimbToHome(ClimbSubsys climb) {
     this.climb = climb;
+    //Checks if climb is at the L1Position which it has to reach before it reverses back
     this.isAtL1 = climb.isAtPosition(ClimbConstants.L1Position);
 
     addRequirements(climb);
@@ -25,13 +26,28 @@ public class ClimbToHome extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Uses PID to move climb to L1Position
     climb.setClimbSetpoint(ClimbConstants.L1Position);
   }
 
   @Override 
   public void execute(){
+    //If the climb has reached the L1Position, it can then be brought from there to the home position
     if(isAtL1.getAsBoolean()){
+      //Uses PID to move climb to Home Position
       climb.setClimbSetpoint(ClimbConstants.climbHomePosition);
     }
   }
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    //If climb reached home position then the command is over
+    return climb.isAtPosition(ClimbConstants.climbHomePosition).getAsBoolean();
+  }
+
 }

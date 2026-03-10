@@ -23,6 +23,7 @@ public class ClimbIncrement extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Uses premade method to adjust climb incremently
     climb.adjustPositionIncremently(increment);
   }
 }

@@ -29,54 +29,61 @@ public class ClimbSubsys extends SubsystemBase {
     climbEncoder = new CANcoder(ClimbConstants.climbCANCoderID);
     //add another encoder
 
+    //Resets Motors
     rightClimbMotor.restoreFactoryDefaults();
     leftClimbMotor.restoreFactoryDefaults();
-
-    rightClimbMotor.setInverted();
-    leftClimbMotor.setNotInverted();
 
     //Right motor follows the left motor, they both go the same way
     rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Aligned);
 
+    //Encoder for pid, only need one for left because right follows it
     leftClimbMotor.addEncoder(climbEncoder);
 
+    //Gear Ratio and Circumference 
     leftClimbMotor.setRotorToSensorRatio(ClimbConstants.climbGearing);
     leftClimbMotor.setSensorToMechanismRatio(ClimbConstants.climbEncoderToMechanismRatio);
 
+    //PID Values, can be changed in constants
     leftClimbMotor.setPIDValues(ClimbConstants.CLIMB_P, ClimbConstants.CLIMB_I, ClimbConstants.CLIMB_D, 
     ClimbConstants.CLIMB_SFF, ClimbConstants.CLIMB_VFF, ClimbConstants.CLIMB_AFF, ClimbConstants.CLIMB_GFF);
 
+    //Starts motors in brake mode
     leftClimbMotor.setBrakeMode();
     rightClimbMotor.setBrakeMode();
 
+    //Prevents motors from breaking, sets limits for their speed
     leftClimbMotor.setMotorCurrentLimits(40);
     leftClimbMotor.setSoftLimits(ClimbConstants.softLimitMinPosition, ClimbConstants.softLimitMaxPosition);
 
+    //Desired setpoint starts off as home position, Encoder starts at 0, desired encoder position moves your robot to the desired setpoint
     desiredSetpoint = ClimbConstants.climbHomePosition;
     climbEncoder.setPosition(0);
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
-  //For manual version of the command
+  //For manual version of the command, change speed in constants
   public void setClimbSpeed(double speed){
     rightClimbMotor.setMotorSpeed(speed);
   }
 
+  //Creates a desired setpoint for the mechanism to go to
   public void setClimbSetpoint(double setpoint){
     desiredSetpoint = setpoint;
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
+  //Adjusts position of climb by a set increment
   public void adjustPositionIncremently(double increment){
     desiredSetpoint += increment;
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
+  //Gets climb position in inches
   public double getClimbPositionInInches(){
     return leftClimbMotor.getPosition();
   }
 
-  
+  //Returns a boolean as to if the mechanism has reached its desired position
   public BooleanSupplier isAtPosition(double targetPosition) {
     double currentPosition = getClimbPositionInInches();
     if ( (currentPosition >= targetPosition - Constants.ClimbConstants.positionTolerance) && 
@@ -86,10 +93,12 @@ public class ClimbSubsys extends SubsystemBase {
     return () -> false;
   }
 
+  //Emergency stop
   public void stopClimb(){
     leftClimbMotor.stopMotor();
   }
 
+  //Emergency stop
   public void stopClimbVolts(){
     leftClimbMotor.setVolts(Voltage.ofBaseUnits(0, Volts));
   }

@@ -23,6 +23,7 @@ public class ClimbUpManual extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Sets climb to move up at whatever the speed constant is set as
     climb.setClimbSpeed(ClimbConstants.climbSpeed);
   }
 
@@ -33,6 +34,7 @@ public class ClimbUpManual extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    //When the command is finished the motors are stopped
     climb.setClimbSpeed(0);
   }
 

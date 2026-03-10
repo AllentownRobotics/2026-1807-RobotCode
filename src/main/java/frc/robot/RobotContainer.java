@@ -72,8 +72,8 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
 
+    //Sequential Command Group so the climb goes to L1, then L2, then L3
     operatorController.a().whileTrue(new ClimbToL1(climbSubsystem).andThen(new ClimbToL2(climbSubsystem).andThen(new ClimbToL3(climbSubsystem))));
    
     /*Manual Commands */

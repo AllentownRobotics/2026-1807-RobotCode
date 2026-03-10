@@ -17,19 +17,25 @@ public class ClimbToL3 extends Command {
   /** Creates a new ClimbToL3. */
   public ClimbToL3(ClimbSubsys climb) {
     this.climb = climb;
+
+    //Checks if climb is at the L2Position which it has to reach before it reverses back
     this.isAtL3 = climb.isAtPosition(ClimbConstants.L3Position);
+
+    addRequirements(climb);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //Uses PID to move climb to L3Position
     climb.setClimbSetpoint(ClimbConstants.L3Position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //If the climb has reached the L2Position, it can then be brought from there to the L2LockPosition 
     if(isAtL3.getAsBoolean()){
       climb.setClimbSetpoint(ClimbConstants.L3PositionLock);
     }
@@ -42,6 +48,7 @@ public class ClimbToL3 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //If climb reached L2positionLock then the command is over
     return climb.isAtPosition(ClimbConstants.L3PositionLock).getAsBoolean();
   }
 }
