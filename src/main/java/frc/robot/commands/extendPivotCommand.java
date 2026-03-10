@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import frc.robot.Constants.pivotConsants;
+import frc.robot.collectorConstants.pivotConsants;
 import frc.robot.subsystems.GroundCollector.*;
 import edu.wpi.first.wpilibj2.command.Command;
 

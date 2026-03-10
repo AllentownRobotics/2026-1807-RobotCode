@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import frc.robot.Constants.collectorConstants;
-import frc.robot.Constants.controllerConstants;
-import frc.robot.Constants.pivotConsants;
+import frc.robot.collectorConstants;
+import frc.robot.collectorConstants.collectorConstants;
+import frc.robot.collectorConstants.controllerConstants;
+import frc.robot.collectorConstants.pivotConsants;
 import frc.utils.Kraken;
 
 public class GroundCollector extends SubsystemBase {
@@ -124,8 +124,8 @@ public class GroundCollector extends SubsystemBase {
    */
   public BooleanSupplier isAtPosition(double targetPosition){
     double currentPosition = getPivotPosition();
-    if((targetPosition - Constants.pivotConsants.positionTolerance >= currentPosition)
-    &&(targetPosition + Constants.pivotConsants.positionTolerance <= currentPosition)){
+    if((targetPosition - collectorConstants.pivotConsants.positionTolerance >= currentPosition)
+    &&(targetPosition + collectorConstants.pivotConsants.positionTolerance <= currentPosition)){
       return () -> true;
     }
     return () -> false;
@@ -161,7 +161,7 @@ public class GroundCollector extends SubsystemBase {
         collectorMotor.setMotorSpeed(0);//otherwise keep as 0 - stops motor
       }*/
 
-      if (Math.abs(Constants.pivotConsants.intakePosition - pivotMotor.getPosition()) <= pivotConsants.positionTolerance){
+      if (Math.abs(collectorConstants.pivotConsants.intakePosition - pivotMotor.getPosition()) <= pivotConsants.positionTolerance){
         collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);//sets collector speed if at the intake psoition
       } else {
         collectorMotor.setMotorSpeed(0);//otherwise keep as 0 - stops motor

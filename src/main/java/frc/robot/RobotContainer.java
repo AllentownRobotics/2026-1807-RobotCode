@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.collectorConstants.OperatorConstants;
 import frc.robot.commands.retractPivotCommand;
 import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.Autos;

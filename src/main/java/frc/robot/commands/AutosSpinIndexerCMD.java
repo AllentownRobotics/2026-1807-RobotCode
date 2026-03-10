@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
+import frc.robot.collectorConstants;
 import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -24,14 +24,14 @@ public class AutosSpinIndexerCMD extends Command {
   @Override
   public void initialize() {
     // Sets motor's desired speed.
-    indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed);
+    indexerSubsys.setIndexerDesiredSpeed(collectorConstants.IndexerConstants.desiredIndexerSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // Continuously sets the setpoint so that the motor keeps aiming to reach the desired speed.
-    indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed);
+    indexerSubsys.setIndexerDesiredSpeed(collectorConstants.IndexerConstants.desiredIndexerSpeed);
 
     // Uses PID to set motor speed if one or more of the sensors detects fuel in the hopper.
     indexerSubsys.autosSetIndexerSpeed();
