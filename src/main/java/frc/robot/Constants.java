@@ -28,7 +28,49 @@ public final class Constants {
     public static final int bottomBeamBreakID = 41;
   }
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort  = 0;
+  }
+  public static class operatorConstants {
+    public static final int operatorController = 0;
+  }
+  public static class DriverConstants {
+    public static final int driverController = 0;
+  }
+
+  public static class LEDConstants{
+    public static final int blinkinID = 12;
+    /**
+     *sets LED patterns
+     */
+    public static enum LEDPatterns{
+      OFF(off),
+      IDLE(idle),
+      ALIGNED_WITH_HUB(alignedWithHub),
+      CLIMB_COMPLETE(off),
+      CLIMB_COMPLETE_RED(climbCompleteRed),
+      CLIMB_COMPLETE_BLUE(climbCompleteBlue),
+      PIVOT_AT_INTAKE_POSITION(pivotAtIntakePosition),
+      PIVOT_AT_HOME_POSITION(pivotAtHomePosition),
+      FUEL_READY_TO_SHOOT(fuelReadyToShoot),
+      FUEL_IN_TWINDEXER(fuelInTwindexer),
+      ALIGNED_WITH_HUMAN_PLAYER_STATION(alignedWithHumanPlayerStation);
+
+      public final double value;
+      private LEDPatterns(double val){
+        value = val;
+      }
+    }
+    //color codes
+    public static final double off = -0.89;//change after color is confirmed
+    public static final double idle = -0.89;//change after color is confirmed
+    public static final double alignedWithHub = 0;//change after color is confirmed
+    public static final double climbCompleteRed = 0;//change after color is confirmed
+    public static final double climbCompleteBlue = 0;//change after color is confirmed
+    public static final double pivotAtIntakePosition = 0;//change after color is confirmed
+    public static final double pivotAtHomePosition = 0;//change after color is confirmed
+    public static final double fuelReadyToShoot = 0;//change after color is confirmed
+    public static final double fuelInTwindexer = 0;//change after color is confirmed
+    public static final double alignedWithHumanPlayerStation = 0;//change after color is confirmed
   }
 
   public static class pivotConsants{
