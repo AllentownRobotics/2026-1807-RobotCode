@@ -14,10 +14,10 @@ package frc.robot;
  */
 public final class Constants {
   public static class MotorIDs {
-    public static final int twindexerMotorID = 2; // Motor ID for twindexer
+    public static final int indexerMotorID = 2; // Motor ID for indexer
   }
-  public static class TwindexerConstants {
-    public static final double desiredTwindexerSpeed = 0.5; // PID setpoint (aka desired motor speed) 
+  public static class IndexerConstants {
+    public static final double desiredIndexerSpeed = 0.5; // PID setpoint (aka desired motor speed) 
     // PID values (need to be calibrated):
     public static final double kp = 0.1;
     public static final double ki = 0;
