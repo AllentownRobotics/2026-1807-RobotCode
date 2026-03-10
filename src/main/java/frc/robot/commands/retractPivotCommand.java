@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.pivotConsants;
 import frc.robot.subsystems.GroundCollector.*;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class pivotInCommand extends Command {
-  /** Creates a new pivotInCommand. */
+public class retractPivotCommand extends Command {
+  /** Creates a new retractPivotCommand. */
   private final GroundCollector groundCollectionSubsystem;
-  public pivotInCommand(GroundCollector subsystem) {
+  public retractPivotCommand(GroundCollector subsystem) {
     groundCollectionSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -23,7 +23,7 @@ public class pivotInCommand extends Command {
    *sets pivot position at the start
    */
   public void initialize() {
-    groundCollectionSubsystem.setPivotPosition(pivotConsants.homePosition);
+    groundCollectionSubsystem.setPivotPosition(pivotConsants.intakePosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

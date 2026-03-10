@@ -5,8 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.pivotInCommand;
-import frc.robot.commands.pivotOutCommand;
+import frc.robot.commands.retractPivotCommand;
+import frc.robot.commands.extendPivotCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
    // The robot's subsystems and commands are defined here...
    private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
-   //private final pivotOutCommand m_GroundCollectionCommand = new pivotOutCommand(m_GroundCollectionSubsystem);
+   //private final extendPivotCommand m_GroundCollectionCommand = new extendPivotCommand(m_GroundCollectionSubsystem);
    private final CommandXboxController m_xboxController = new CommandXboxController(0);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -45,13 +45,13 @@ public class RobotContainer {
     *when pressing y on controller, the pivot motor spins to intake position
     */
     m_xboxController.y().whileTrue(
-      new pivotOutCommand(m_GroundCollectionSubsystem)
+      new extendPivotCommand(m_GroundCollectionSubsystem)
     );
     /**
      *when pressing x on controller, the pivot motor spins to home position
      */
     m_xboxController.x().whileTrue(
-      new pivotInCommand(m_GroundCollectionSubsystem)
+      new retractPivotCommand(m_GroundCollectionSubsystem)
     );
   }
 }
