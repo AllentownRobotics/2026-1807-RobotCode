@@ -14,18 +14,18 @@ package frc.robot;
  */
 public final class Constants {
   public static class MotorIDs {
-    public static final int indexerMotorID = 2; // Motor ID for indexer
+    public static final int indexerMotorID = 30; // Motor ID for indexer
   }
   public static class IndexerConstants {
-    public static final double desiredIndexerSpeed = 0.5; // PID setpoint (aka desired motor speed) 
-    // PID values (need to be calibrated):
+    public static final double desiredIndexerSpeed = 0.1; // PID setpoint (aka desired motor speed)
+    // PID values (not calibrated yet):
     public static final double kp = 0.1;
     public static final double ki = 0;
     public static final double kd = 0;
 
     // Beam break IDs
-    public static final int topBeamBreakID = 1; 
-    public static final int bottomBeamBreakID = 0;
+    public static final int topBeamBreakID = 40; 
+    public static final int bottomBeamBreakID = 41;
   }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
