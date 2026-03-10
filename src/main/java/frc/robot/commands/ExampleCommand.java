@@ -4,37 +4,22 @@
 
 package frc.robot.commands;
 
-<<<<<<< HEAD:src/main/java/frc/robot/commands/ExampleCommand.java
-=======
 import frc.robot.Constants.pivotConsants;
 import frc.robot.subsystems.GroundCollector.*;
->>>>>>> main:src/main/java/frc/robot/commands/extendPivotCommand.java
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.LEDSubsystem;
 
 /** An example command that uses an example subsystem. */
-<<<<<<< HEAD:src/main/java/frc/robot/commands/ExampleCommand.java
-public class ExampleCommand extends Command {
-  @SuppressWarnings("PMD.UnusedPrivateField")
-  private final LEDSubsystem m_subsystem;
-=======
 public class extendPivotCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final GroundCollector groundCollectionSubsystem;
->>>>>>> main:src/main/java/frc/robot/commands/extendPivotCommand.java
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-<<<<<<< HEAD:src/main/java/frc/robot/commands/ExampleCommand.java
-  public ExampleCommand(LEDSubsystem subsystem) {
-    m_subsystem = subsystem;
-=======
   public extendPivotCommand(GroundCollector subsystem) {
     groundCollectionSubsystem = subsystem;
->>>>>>> main:src/main/java/frc/robot/commands/extendPivotCommand.java
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
