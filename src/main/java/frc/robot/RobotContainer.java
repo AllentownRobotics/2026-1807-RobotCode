@@ -5,10 +5,21 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.retractPivotCommand;
+import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.Autos;
+import frc.robot.commands.AutosSpinIndexerCMD;
 import frc.robot.commands.ExampleCommand;
+<<<<<<< HEAD
 import frc.robot.subsystems.LEDSubsystem;
+=======
+import frc.robot.commands.SpinIndexerCMD;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.GroundCollector.GroundCollector;
+import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
+>>>>>>> main
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -19,13 +30,23 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+   // The robot's subsystems and commands are defined here...
+   private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
+   //private final extendPivotCommand m_GroundCollectionCommand = new extendPivotCommand(m_GroundCollectionSubsystem);
+   private final CommandXboxController m_xboxController = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
+<<<<<<< HEAD
   private final LEDSubsystem m_exampleSubsystem = new LEDSubsystem();
+=======
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
+>>>>>>> main
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
-
+  private final SpinIndexerCMD m_SpinIndexerCMD = new SpinIndexerCMD(m_indexerSubsystem);
+  private final AutosSpinIndexerCMD m_AutosSpinIndexerCMD = new AutosSpinIndexerCMD(m_indexerSubsystem);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -42,11 +63,30 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+   /**
+    *when pressing y on controller, the pivot motor spins to intake position
+    */
+    m_xboxController.y().whileTrue(
+      new extendPivotCommand(m_GroundCollectionSubsystem)
+    );
+    /**
+     *when pressing x on controller, the pivot motor spins to home position
+     */
+    m_xboxController.x().whileTrue(
+      new retractPivotCommand(m_GroundCollectionSubsystem)
+    );
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
+    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    
+    // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
+    m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
+
+    // Currently a test binding - this command will be used for autos.
+    m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
   }
 
   /**
