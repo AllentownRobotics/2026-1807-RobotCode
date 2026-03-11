@@ -6,9 +6,11 @@ package frc.robot.subsystems.Shooter;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,6 +44,7 @@ public class HoodSubsys extends SubsystemBase {
   public HoodSubsys(CommandSwerveDrivetrain drive) {
     this.drive = drive;
     hoodTolerance = 0.1; // degrees
+  
     hoodMap =
         new InterpolatingTreeMap(
             InverseInterpolator.forDouble(),
@@ -98,12 +101,17 @@ public class HoodSubsys extends SubsystemBase {
         hubY = Constants.turretConstants.BLUE_HUB.getY();
       }
     }
+    double currentPosX = drive.getState().Pose.getX();
+    double currentPosY = drive.getState().Pose.getY();
+    Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
+    Translation2d targetPoint = new Translation2d(hubX, hubY);
 
     // distance formula using the hub as x2 and current drive pose as x1
-    distanceToHub =
-        Math.sqrt(
-            Math.pow(hubX - drive.getState().Pose.getX(), 2)
-                + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
+    
+    distanceToHub = currentPoint.getDistance(targetPoint);
+        // Math.sqrt(
+        //     Math.pow(hubX - drive.getState().Pose.getX(), 2)
+        //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
     autoTargetHoodState =
         hoodMap.get(
             distanceToHub); // using distanceToHub, gets the value using that "key" from the hub
