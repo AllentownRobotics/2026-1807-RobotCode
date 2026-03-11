@@ -19,9 +19,10 @@ public final class Constants {
   }
 
   public static class ClimbConstants {
-    public static final int leftClimbMotorID = 0;
-    public static final int rightClimbMotorID = 0;
-    public static final int climbCANCoderID = 0;
+    public static final int leftClimbMotorID = 100;
+    public static final int rightClimbMotorID = 90;
+    public static final int leftClimbCANCoderID = 101;
+    public static final int rightClimbCANCoderID = 91;
 
     public static final double L1Position = 0;
     public static final double L1PositionLock = 0;

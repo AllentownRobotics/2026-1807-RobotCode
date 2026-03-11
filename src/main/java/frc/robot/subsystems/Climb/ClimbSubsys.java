@@ -26,17 +26,17 @@ public class ClimbSubsys extends SubsystemBase {
   public ClimbSubsys() {
     rightClimbMotor = new Kraken(ClimbConstants.rightClimbMotorID);
     leftClimbMotor = new Kraken(ClimbConstants.leftClimbMotorID);
-    climbEncoder = new CANcoder(ClimbConstants.climbCANCoderID);
+    climbEncoder = new CANcoder(ClimbConstants.leftClimbCANCoderID);
     //add another encoder
 
     //Resets Motors
     rightClimbMotor.restoreFactoryDefaults();
     leftClimbMotor.restoreFactoryDefaults();
 
-    //Right motor follows the left motor, they both go the same way
-    rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Aligned);
+    //Right motor follows the left motor, they are inverted (opposed)
+    rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Opposed);
 
-    //Encoder for pid, only need one for left because right follows it
+    //Encoder for PID, only need one for left because right follows it
     leftClimbMotor.addEncoder(climbEncoder);
 
     //Gear Ratio and Circumference 
@@ -63,7 +63,7 @@ public class ClimbSubsys extends SubsystemBase {
 
   //For manual version of the command, change speed in constants
   public void setClimbSpeed(double speed){
-    rightClimbMotor.setMotorSpeed(speed);
+    leftClimbMotor.setMotorSpeed(speed);
   }
 
   //Creates a desired setpoint for the mechanism to go to
@@ -85,12 +85,7 @@ public class ClimbSubsys extends SubsystemBase {
 
   //Returns a boolean as to if the mechanism has reached its desired position
   public BooleanSupplier isAtPosition(double targetPosition) {
-    double currentPosition = getClimbPositionInInches();
-    if ( (currentPosition >= targetPosition - Constants.ClimbConstants.positionTolerance) && 
-         (currentPosition <= targetPosition + Constants.ClimbConstants.positionTolerance)) {
-      return () -> true;
-    }
-    return () -> false;
+    return () -> Math.abs(getClimbPositionInInches() - targetPosition) <= ClimbConstants.positionTolerance;
   }
 
   //Emergency stop
