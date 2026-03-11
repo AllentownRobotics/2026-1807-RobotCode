@@ -4,6 +4,7 @@
 
 package frc.utils;
 
+
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -47,7 +48,12 @@ public class Kraken extends SubsystemBase {
     music.addInstrument(kraken);
   }
 
-  /** Factory resets the motor. */
+
+  public Kraken() {
+    //TODO Auto-generated constructor stub
+}
+
+/** Factory resets the motor. */
   public void restoreFactoryDefaults() {
     kraken.getConfigurator().apply(new TalonFXConfiguration());
   }
@@ -99,8 +105,8 @@ public class Kraken extends SubsystemBase {
   }
 
   /** Allows a motor to follow another motor. Setting the inverted boolean to true allows motor to turn opposite the leader. */
-  public void follow(int leaderCANID, MotorAlignmentValue inverted) {
-    kraken.setControl(new Follower(leaderCANID, inverted));
+  public void follow(int leaderCANID, MotorAlignmentValue MotorAlignmentValue) {
+    kraken.setControl(new Follower(leaderCANID, MotorAlignmentValue));
   }
 
   /** Connects a CANCoder to the specified motor. */
@@ -138,6 +144,8 @@ public class Kraken extends SubsystemBase {
  /** Returns the velocity of the motor. */
   public double getVelocity() {
     return kraken.get();
+    //the line below is for Kraken X44s since their max speed is 20% the max speed of X60s.
+    //return kraken.getVelocity().getValueAsDouble() / 25;
   }
   
   public void setMotionMagicParameters(double maxVelocity, double maxAccel, double maxJerk) {
