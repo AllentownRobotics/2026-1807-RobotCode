@@ -30,6 +30,22 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort  = 0;
   }
+
+  public static class KickerConstansts {
+    public static final int topKickerMotorID = 1;
+    public static final double topKickerMotorSpeedKick = -0.2;
+    public static final double topKickerMotorSpeedExpel = 0.2;
+    public static final int  bottomKickerMotorID = 2;
+    public static final double bottomKickerSpeed = 0.2;
+  }
+
+  public static class SensorIDs {
+    public static final int sensorID = 0;
+  }
+
+  public static class TimeConstants {
+    public static final double kickDurationAsSec = 3;
+  }
   public static class operatorConstants {
     public static final int operatorController = 0;
   }

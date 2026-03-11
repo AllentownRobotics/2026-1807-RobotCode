@@ -10,12 +10,13 @@ import frc.robot.commands.extendPivotCommand;
 // import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.LEDConstants;
 import frc.robot.Constants.operatorConstants;
-import frc.robot.commands.Autos;
+import frc.robot.commands.ExpelFuelCMD;
 import frc.robot.commands.AutosSpinIndexerCMD;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.commands.SpinIndexerCMD;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Kicker.KickerSubsys;
+import frc.utils.ButtonBoard;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
 import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -44,7 +44,7 @@ public class RobotContainer {
    private final CommandXboxController m_xboxController = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
   private final LEDSubsystem m_exampleSubsystem = new LEDSubsystem();
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final KickerSubsys m_kicker = new KickerSubsys();
   private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -58,6 +58,10 @@ public class RobotContainer {
       new CommandXboxController(operatorConstants.operatorController);//creates new operator controller
 
   private final LEDSubsystem LEDSubsystem = new LEDSubsystem();//makes new LEDSubsystem
+  private final ExpelFuelCMD m_expelFuel = new ExpelFuelCMD(m_kicker);
+  private final KickFuelCMD m_kickFuel = new KickFuelCMD(m_kicker);
+
+  final ButtonBoard m_buttonboard = new ButtonBoard(0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -89,6 +93,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+  //Trigger value = m_buttonboard.getButton(0);
   private void configureBindings() {
    /**
     *when pressing y on controller, the pivot motor spins to intake position
@@ -115,14 +120,21 @@ public class RobotContainer {
                 LEDConstants.LEDPatterns.IDLE), LEDSubsystem));//set idle as default pattern
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    //m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+    ////m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     
     // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
     m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
 
     // Currently a test binding - this command will be used for autos.
     m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
-  }
+    //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
+    //m_kicker.setDefaultCommand(m_kickFuel);
+    m_driverController.a().whileTrue(m_expelFuel);
+    m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
+    m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they joystick is pressed down it runs the method
+ 
+    }
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

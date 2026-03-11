@@ -48,6 +48,7 @@ public class Kraken extends SubsystemBase {
     music.addInstrument(kraken);
   }
 
+
   public Kraken() {
     //TODO Auto-generated constructor stub
 }
