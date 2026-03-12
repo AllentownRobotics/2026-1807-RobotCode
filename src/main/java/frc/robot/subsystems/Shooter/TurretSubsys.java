@@ -120,7 +120,7 @@ public class TurretSubsys extends SubsystemBase {
     SmartDashboard.putNumber("Pidgeon reading", robotHeading);
   }
 
-  public double getTargetTurretAngle(){
+  public Rotation2d getTargetTurretAngle(){
      Optional<Alliance> ally = DriverStation.getAlliance();
 
     if (ally.isPresent()) {
@@ -207,7 +207,7 @@ public class TurretSubsys extends SubsystemBase {
       
     }
 
-    return targetTurretState;
+    return Rotation2d.fromDegrees(targetTurretState);
   }
 
 

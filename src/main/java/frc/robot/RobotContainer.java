@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.SmartDashValues;
+// import frc.robot.commands.SmartDashValues;
 // import frc.robot.commands.manualSetHoodAngle;
 // import frc.robot.commands.setFlywheelVelocity;
-import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
+// import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 // import frc.robot.commands.AutoAimingCommands.autoSetHoodAngle;
 import frc.robot.commands.AutoAimingCommands.TurretTargetHUB;
@@ -56,7 +56,7 @@ public class RobotContainer {
 
 
     public RobotContainer() {
-        NamedCommands.registerCommand("autoAimHub", new AutonAutoAimHub(drivetrain, turret));
+        // NamedCommands.registerCommand("autoAimHub", new AutonAutoAimHub(drivetrain, turret));
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
@@ -104,7 +104,7 @@ public class RobotContainer {
         joystick.leftBumper().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
         joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); 
-        joystick.povUp().whileTrue(new SmartDashValues(turret, drivetrain));
+        // joystick.povUp().whileTrue(new SmartDashValues(turret, drivetrain));
         // turret.setDefaultCommand(new targetHUB(turret));
         // hood.setDefaultCommand(new autoSetHoodAngle(hood));
         // joystick.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));

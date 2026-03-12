@@ -5,10 +5,19 @@
 package frc.robot.commands.AutoAimingCommands;
 
 import static edu.wpi.first.units.Units.*;
+
+import java.security.PublicKey;
+import java.util.function.Function;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.events.OneShotTriggerEvent;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -29,6 +38,7 @@ public class TeleopAutoAimHub extends Command {
   private double MaxSpeed;
   private double MaxAngularRate;
   private double rotationRate;
+  private TrapezoidProfile headingControl;
 
   public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret) {
     this.drivetrain = drivetrain;
@@ -39,19 +49,32 @@ public class TeleopAutoAimHub extends Command {
     MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     
     drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.10) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
 
     // PID controller for theta or rotational movement
     thetaController = new PIDController(Constants.AimingConstants.driveHubAutoAimkP
                                        ,Constants.AimingConstants.driveHubAutoAimkI
                                        ,Constants.AimingConstants.driveHubAutoAimkD);
-    // wraps from -180 to 180 so we never take the "long" route to get to a setpoint
-    thetaController.enableContinuousInput(-180, 180);
+    
+    headingControl = new TrapezoidProfile(new Constraints(MaxAngularRate, MaxAngularRate * 5));
+    
+    
+    // wraps from -pi to pi so we never take the "long" route to get to a setpoint
+    thetaController.enableContinuousInput(-Math.PI + Math.toRadians(5), Math.PI - Math.toRadians(5));
     addRequirements(drivetrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
+// {
+// Function;
+// Zarif - hair = Robot wins worlds!
+
+// then: explode 
+
+// if collectorExtendo
+// then: targetHub
+// }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -63,21 +86,27 @@ public class TeleopAutoAimHub extends Command {
   @Override
   public void execute() {
     // compensate for robot facing the right direction.
-    targetHubAngle = turret.getTargetTurretAngle() + 180;
+    targetHubAngle = turret.getTargetTurretAngle().getRadians();
+
+    State currentState = new State(drivetrain.getState().Pose.getRotation().getRadians(), drivetrain.getState().Speeds.omegaRadiansPerSecond);
+    State targetState = new State(targetHubAngle, 0);
+
+    State nextPosition = headingControl.calculate(.02, currentState, targetState);
+    
     
     // calculate the PID gains we need, feed that in for our turning rate to turn to a specific position
-    double thetaCalculation = thetaController.calculate(-drivetrain.getState().Pose.getRotation().getDegrees(), -targetHubAngle);
+    double thetaCalculation = thetaController.calculate(drivetrain.getState().Pose.getRotation().getDegrees(), nextPosition.position);
     // variable used for tolerance
     rotationRate = thetaCalculation;
 
     // if statement saying if the difference between our target and current is below 5 degrees, we can stop rotating
-    if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180)  <= 7){
+    if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees())  <= 7){
       rotationRate = 0;
     }
     // applies the request to be able to drive while aiming
     drivetrain.applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * MaxSpeed)
                                       .withVelocityY(-driverController.getLeftX() * MaxSpeed)
-                                      .withRotationalRate(rotationRate)).execute();
+                                      .withRotationalRate(rotationRate + nextPosition.velocity)).execute();
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
     
