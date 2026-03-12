@@ -57,8 +57,8 @@ public final class Constants {
   }
 
   public static class AimingConstants{
-      public static final double driveHubAutoAimkP = 0.5;  // fine tune more
-      public static final double driveHubAutoAimkI = 0; // fine tune more 
+      public static final double driveHubAutoAimkP = 5;  // fine tune more
+      public static final double driveHubAutoAimkI = 1; // fine tune more 
       public static final double driveHubAutoAimkD = 0;   // fine tune more
      //------------------BLUE ALLIANCE--------------------
       public static final double blueAllianceTrench = 4;
