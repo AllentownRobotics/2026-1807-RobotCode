@@ -13,10 +13,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class MotorIDs {
-    public static final int indexerMotorID = 30; // Motor ID for indexer
-  }
   public static class IndexerConstants {
+    public static final int indexerMotorID = 30; // Motor ID for indexer
+
     public static final double desiredIndexerSpeed = 0.1; // PID setpoint (aka desired motor speed)
     // PID values (not calibrated yet):
     public static final double kp = 0.1;

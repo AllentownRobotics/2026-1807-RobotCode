@@ -76,9 +76,11 @@ public class IndexerSubsys extends SubsystemBase {
       Constants.IndexerConstants.kd);
     
     // Assigns motor ID to indexer motor.
-    indexerMotor = new Kraken(Constants.MotorIDs.indexerMotorID); 
+    indexerMotor = new Kraken(Constants.IndexerConstants.indexerMotorID); 
     indexerMotor.setCoastMode();
   }
+
+  // The motor methods are not used for Seneca because the robot is temporarily built to use a non-motorized indexer 
 
   /**
    * Sets the desired speed (setpoint) for the indexer PID.
@@ -116,7 +118,7 @@ public class IndexerSubsys extends SubsystemBase {
     } else {
       indexerMotor.setMotorSpeed(0);
     }
-  }
+  } // (Not urgent) TODO is there a more efficient way to use PID for motor speed?
 
   /**
    * Gets the indexer's velocity from indexerSpeed and determines if the indexer is spinning.
@@ -131,7 +133,7 @@ public class IndexerSubsys extends SubsystemBase {
     }
 
     return isMotorSpinning;
-  }
+  } // (Not urgent) TODO there is almost definitely a simpler way to do this
 
   /**
    * Sets indexer motor speed to 0 so that it slows to a stop.
@@ -146,6 +148,8 @@ public class IndexerSubsys extends SubsystemBase {
     // );
     indexerMotor.setMotorSpeed(0); // Sets motor speed to 0 - coast mode will let it slow to a stop.
   }
+
+  // The get hopper methods are for other subsystems/autos. They are currently not used for the Indexer subsystem itself.
 
   /**
    * Gives the value of topHopperBeamBreak.
@@ -192,5 +196,6 @@ public class IndexerSubsys extends SubsystemBase {
 
     //Displays whether or not there is any fuel in the hopper as a boolean.
     SmartDashboard.putBoolean("Is there fuel in hopper: ", doesHopperHaveFuel);
+    // TODO adjust SmartDashboard items (may be done at comp)
   }
 }

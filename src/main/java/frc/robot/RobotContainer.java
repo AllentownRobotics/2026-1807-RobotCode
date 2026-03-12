@@ -122,11 +122,10 @@ public class RobotContainer {
     // cancelling on release.
     ////m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     
-    // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
+    // Test bindings for indexer
     m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
-
-    // Currently a test binding - this command will be used for autos.
     m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
+
     //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
     //m_kicker.setDefaultCommand(m_kickFuel);
     m_driverController.a().whileTrue(m_expelFuel);
