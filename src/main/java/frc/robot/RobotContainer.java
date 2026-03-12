@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
 // import frc.robot.commands.SmartDashValues;
 // import frc.robot.commands.manualSetHoodAngle;
 // import frc.robot.commands.setFlywheelVelocity;
@@ -56,7 +57,7 @@ public class RobotContainer {
 
 
     public RobotContainer() {
-        // NamedCommands.registerCommand("autoAimHub", new AutonAutoAimHub(drivetrain, turret));
+        NamedCommands.registerCommand("autoAimHub", new AutonAutoAimHub(drivetrain, joystick,turret).withTimeout(2));
         autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();

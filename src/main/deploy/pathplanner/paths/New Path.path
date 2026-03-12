@@ -48,7 +48,7 @@
   "folder": "OutpostClimbRight",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 15.238997422527959
+    "rotation": 1.4719792134304523
   },
   "useDefaultConstraints": true
 }
