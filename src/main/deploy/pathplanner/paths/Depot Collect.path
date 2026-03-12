@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.32,
+        "y": 7.401
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.6027026984416017,
+        "y": 7.359510858753022
+      },
+      "isLocked": false,
+      "linkedName": "shoot 2"
+    },
+    {
+      "anchor": {
+        "x": 0.621,
+        "y": 5.915
+      },
+      "prevControl": {
+        "x": 0.21162944079466767,
+        "y": 5.733127575984167
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "depot collect"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Orbit Neutral Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -61.990823291986125
+  },
+  "useDefaultConstraints": true
+}
