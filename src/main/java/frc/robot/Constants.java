@@ -60,6 +60,7 @@ public final class Constants {
       public static final double driveHubAutoAimkP = 5;  // fine tune more
       public static final double driveHubAutoAimkI = 1; // fine tune more 
       public static final double driveHubAutoAimkD = 0;   // fine tune more
+      public static final double headingTargettingTolerance = 5;
      //------------------BLUE ALLIANCE--------------------
       public static final double blueAllianceTrench = 4;
       public static final double middleLine = 3.975;
