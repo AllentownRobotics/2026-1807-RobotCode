@@ -33,7 +33,11 @@ public class VisionSubsys extends SubsystemBase {
   /** Creates a new Vision. */
   public VisionSubsys(CommandSwerveDrivetrain drivetrain) {
     limelights = new Limelight[]{ // add all of the limelights used for april tags here
-      new Limelight("limelight-test")
+      new Limelight("limelight-fl"),
+      new Limelight("limelight-fr"),
+      new Limelight("limelight-bl"),
+      new Limelight("limelight-br"),
+      new Limelight("limelight-collect")
     };
 
 
