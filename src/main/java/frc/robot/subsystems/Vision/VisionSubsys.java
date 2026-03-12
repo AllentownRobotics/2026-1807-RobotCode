@@ -6,6 +6,9 @@ package frc.robot.subsystems.Vision;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+
+import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
@@ -71,7 +74,7 @@ public class VisionSubsys extends SubsystemBase {
    * 
    * @return
    */
-  public ArrayList<double[]> getRobotPose2dFieldSpaceEstimates() {// TODO finish javadoc comment
+  public ArrayList<PoseEstimate> getRobotPose2dFieldSpaceEstimates() {// TODO finish javadoc comment
 
     // //Array of double arrays, each array is in the order of x,y, rotation, timestamp
     // ArrayList<double[]> pose2dEstimates = new ArrayList<double[]>();
@@ -94,7 +97,7 @@ public class VisionSubsys extends SubsystemBase {
 
     // return pose2dEstimates;// return the array of 2d positions from the cameras that see april tags
 
-    ArrayList<double[]> pose2dEstimates = new ArrayList<double[]>();
+    ArrayList<PoseEstimate> pose2dEstimates = new ArrayList<PoseEstimate>();
     for(Limelight limelight : limelights){//loops through all limelights
       if (limelight.hasTarget()) {//if the limelight sees an april tag
         pose2dEstimates.add(limelight.getRobotPose2dFieldSpaceEstimateMT2());
@@ -106,27 +109,17 @@ public class VisionSubsys extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    ArrayList<double[]> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
+    
 
-    boolean anyCameraHasPose = !robotPose2dFieldSpaceEstimates.isEmpty();// variable to store whether any cameras see an april tag, used for testing
-
-    if(anyCameraHasPose) { /* if any cameras see an april tag, update the drivetrain's position with the camera's values, 
-    if multiple cameras see an april tag, update the drivetrain's position with each camera's values, 
-    this allows the drivetrain to use all of the information from all of the cameras to get a more accurate position on the field*/
-
-      for(double[] poseEstimate: robotPose2dFieldSpaceEstimates) {// loop through all positions given by all cameras that see an AprilTag
+    
+      ArrayList<PoseEstimate> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
+      for(PoseEstimate poseEstimate: robotPose2dFieldSpaceEstimates) {// loop through all positions given by all cameras that see an AprilTag
 
         drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
-          new Pose2d(poseEstimate[0], poseEstimate[1], Rotation2d.fromDegrees(poseEstimate[2])), // convert the x, y, and yaw values into a Pose2d
-          poseEstimate[3] // use the timestamp to allow different cameras to have different latency
+          new Pose2d(poseEstimate.pose.getX(), poseEstimate.pose.getY(), poseEstimate.pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
+          poseEstimate.timestampSeconds // use the timestamp to allow different cameras to have different latency
           );// TODO add standard deviations for the vision measurements
       }
-
-      /* SmartDashboard.putNumber("x", getRobotPose2dFieldSpaceEstimates().get(0)[0]);// for testing, put each of
-      SmartDashboard.putNumber("y", getRobotPose2dFieldSpaceEstimates().get(0)[1]);// the position values to
-      SmartDashboard.putNumber("yaw", getRobotPose2dFieldSpaceEstimates().get(0)[2]);// SmartDashboard */
-      
-    }
   }
 
   public class Limelight extends SubsystemBase {// extends subsystem base to allow for future use of limelight specific commands, 
@@ -241,14 +234,18 @@ public class VisionSubsys extends SubsystemBase {
       return robotPoseFieldSpace.getDoubleArray(defaultValue);
     }
 
-    public double[] getRobotPose2dFieldSpaceEstimateMT2() {
+    public PoseEstimate getRobotPose2dFieldSpaceEstimateMT2() {
+
+      SwerveDriveState driveState = drivetrain.getState();
+
+
+      if(LimelightHelpers.getTargetCount(name) > 1){
+        LimelightHelpers.SetRobotOrientation(name, LimelightHelpers.getBotPoseEstimate_wpiBlue(name).pose.getRotation().getDegrees(), Math.toDegrees(driveState.Speeds.omegaRadiansPerSecond),0.0,0.0,0.0,0.0);
+      } else {
+        LimelightHelpers.SetRobotOrientation(name, driveState.Pose.getRotation().getDegrees(), Math.toDegrees(driveState.Speeds.omegaRadiansPerSecond),0.0,0.0,0.0,0.0);
+      }
       PoseEstimate poseEstimate = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2(name);
-      return new double[] {
-        poseEstimate.pose.getX(),
-        poseEstimate.pose.getY(),
-        poseEstimate.pose.getRotation().getDegrees(),
-        poseEstimate.timestampSeconds
-      };
+      return poseEstimate;
     }
 
     /**
