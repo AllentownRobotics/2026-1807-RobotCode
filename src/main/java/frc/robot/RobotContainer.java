@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.ClimbConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.ClimbCMDs.ClimbDownManual;
 import frc.robot.commands.ClimbCMDs.ClimbIncrement;
 import frc.robot.commands.ClimbCMDs.ClimbToHome;
 import frc.robot.commands.ClimbCMDs.ClimbToL1;
@@ -19,6 +20,8 @@ import frc.robot.subsystems.Climb.ClimbSubsys;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,12 +44,24 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    NamedCommands.registerCommand("ClimbToL1", new ClimbToL1(climbSubsystem));
-    NamedCommands.registerCommand("ClimbToHome", new ClimbToHome(climbSubsystem));
-    NamedCommands.registerCommand("ClimbWaitforL1", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.L1PositionLock)));
-    NamedCommands.registerCommand("ClimbWaitforHome", new WaitUntilCommand(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
 
-  
+    //Goes to point slightly above L1
+    NamedCommands.registerCommand("ClimbToL1Start", Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoStartPosition), climbSubsystem)); 
+
+    //Reverses and latches down to complete L1
+    NamedCommands.registerCommand("ClimbToL1EndPos", Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoEndPosition), climbSubsystem)); 
+
+    //Goes back to home, must go back to L1 Start first
+    NamedCommands.registerCommand("ClimbToHome", Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition), climbSubsystem)); 
+
+    //Waiting Commands
+    NamedCommands.registerCommand("ClimbWaitforL1Start", Commands.waitUntil(climbSubsystem.isAtPosition(ClimbConstants.L1AutoStartPosition)));
+    NamedCommands.registerCommand("ClimbWaitforL1EndPos", Commands.waitUntil(climbSubsystem.isAtPosition(ClimbConstants.L1AutoEndPosition)));
+    NamedCommands.registerCommand("ClimbWaitforHome", Commands.waitUntil(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
+
     // Configure the trigger bindings
     configureBindings();
   }
@@ -70,11 +85,15 @@ public class RobotContainer {
     // cancelling on release.
 
     //Sequential Command Group so the climb goes to L1, then L2, then L3
-    operatorController.a().whileTrue(new ClimbToL1(climbSubsystem).andThen(new ClimbToL2(climbSubsystem).andThen(new ClimbToL3(climbSubsystem))));
+    //operatorController.a().whileTrue(new ClimbToL1(climbSubsystem).andThen(new ClimbToL2(climbSubsystem).andThen(new ClimbToL3(climbSubsystem))));
    
-    /*Manual Commands */
-    //operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
-    //operatorController.y().whileTrue(new ClimbUpManual(climbSubsystem));
+    operatorController.rightTrigger().whileTrue(new ClimbToL1(climbSubsystem)); //Test
+
+    //Manual Commands 
+    operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
+    operatorController.y().whileTrue(new ClimbDownManual(climbSubsystem));
+    operatorController.a().onTrue(Commands.runOnce(() -> 
+      climbSubsystem.resetEncoderPos(), climbSubsystem)); 
   }
 
   /**

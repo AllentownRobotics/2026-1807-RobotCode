@@ -12,8 +12,8 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
 import frc.utils.Kraken;
 
@@ -33,8 +33,10 @@ public class ClimbSubsys extends SubsystemBase {
     rightClimbMotor.restoreFactoryDefaults();
     leftClimbMotor.restoreFactoryDefaults();
 
+    leftClimbMotor.setInverted();
+
     //Right motor follows the left motor, they are inverted (opposed)
-    rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Opposed);
+    rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Aligned);
 
     //Encoder for PID, only need one for left because right follows it
     leftClimbMotor.addEncoder(climbEncoder);
@@ -57,7 +59,7 @@ public class ClimbSubsys extends SubsystemBase {
 
     //Desired setpoint starts off as home position, Encoder starts at 0, desired encoder position moves your robot to the desired setpoint
     desiredSetpoint = ClimbConstants.climbHomePosition;
-    climbEncoder.setPosition(0);
+    climbEncoder.setPosition(ClimbConstants.climbHomePosition);
     leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
   }
 
@@ -80,7 +82,7 @@ public class ClimbSubsys extends SubsystemBase {
 
   //Gets climb position in inches
   public double getClimbPositionInInches(){
-    return leftClimbMotor.getPosition();
+    return leftClimbMotor.getPosition()*2*Math.PI*ClimbConstants.climbSprocketRadius;
   }
 
   //Returns a boolean as to if the mechanism has reached its desired position
@@ -97,9 +99,15 @@ public class ClimbSubsys extends SubsystemBase {
   public void stopClimbVolts(){
     leftClimbMotor.setVolts(Voltage.ofBaseUnits(0, Volts));
   }
+
+  public void resetEncoderPos(){
+    climbEncoder.setPosition(0);
+  }
   
   @Override
   public void periodic() {
+    
+    SmartDashboard.putNumber("position in inches", getClimbPositionInInches());
     // This method will be called once per scheduler run
   }
 }
