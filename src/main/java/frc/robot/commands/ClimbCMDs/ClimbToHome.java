@@ -32,6 +32,7 @@ public class ClimbToHome extends Command {
 
   @Override 
   public void execute(){
+    isAtL1 = climb.isAtPosition(ClimbConstants.L1Position);
     //If the climb has reached the L1Position, it can then be brought from there to the home position
     if(isAtL1.getAsBoolean()){
       //Uses PID to move climb to Home Position

@@ -19,7 +19,7 @@ public class ClimbToL2 extends Command {
     this.climb = climb;
 
     //Checks if climb is at the L2Position which it has to reach before it reverses back
-    this.isAtL2 = climb.isAtPosition(ClimbConstants.L2Position);
+    this.isAtL2 = climb.isAtPosition(ClimbConstants.L2Position/ClimbConstants.climbSprocketCircumference);
 
     addRequirements(climb);
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,7 +29,7 @@ public class ClimbToL2 extends Command {
   @Override
   public void initialize() {
     //Uses PID to move climb to L2Position
-    climb.setClimbSetpoint(ClimbConstants.L2Position);
+    climb.setClimbSetpoint(ClimbConstants.L2Position/ClimbConstants.climbSprocketCircumference);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -37,7 +37,7 @@ public class ClimbToL2 extends Command {
   public void execute() {
     //If the climb has reached the L2Position, it can then be brought from there to the L2LockPosition 
     if(isAtL2.getAsBoolean()){
-      climb.setClimbSetpoint(ClimbConstants.L2PositionLock);
+      climb.setClimbSetpoint(ClimbConstants.L2PositionLock/ClimbConstants.climbSprocketCircumference);
     }
   }
 
@@ -49,6 +49,6 @@ public class ClimbToL2 extends Command {
   @Override
   public boolean isFinished() {
     //If climb reached L2positionLock then the command is over
-    return climb.isAtPosition(ClimbConstants.L2PositionLock).getAsBoolean();
+    return climb.isAtPosition(ClimbConstants.L2PositionLock/ClimbConstants.climbSprocketCircumference).getAsBoolean();
   }
 }

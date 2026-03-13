@@ -86,8 +86,32 @@ public class RobotContainer {
 
     //Sequential Command Group so the climb goes to L1, then L2, then L3
     //operatorController.a().whileTrue(new ClimbToL1(climbSubsystem).andThen(new ClimbToL2(climbSubsystem).andThen(new ClimbToL3(climbSubsystem))));
-   
-    operatorController.rightTrigger().whileTrue(new ClimbToL1(climbSubsystem)); //Test
+  
+    operatorController.povDown().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition)));
+
+    operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
+
+    operatorController.povUp().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L2Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L2PositionLock), climbSubsystem));
+
+    operatorController.povRight().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L3Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L3PositionLock), climbSubsystem));
+
+
+    /*operatorController.rightTrigger().onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem)); */  
+
+    //operatorController.rightTrigger().onTrue(new ClimbToL1(climbSubsystem)); //Test
 
     //Manual Commands 
     operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));

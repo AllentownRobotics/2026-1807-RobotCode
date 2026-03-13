@@ -33,17 +33,17 @@ public class ClimbSubsys extends SubsystemBase {
     rightClimbMotor.restoreFactoryDefaults();
     leftClimbMotor.restoreFactoryDefaults();
 
-    leftClimbMotor.setInverted();
-
     //Right motor follows the left motor, they are inverted (opposed)
-    rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Aligned);
+    rightClimbMotor.follow(ClimbConstants.leftClimbMotorID, MotorAlignmentValue.Opposed);
 
     //Encoder for PID, only need one for left because right follows it
     leftClimbMotor.addEncoder(climbEncoder);
 
+    
+
     //Gear Ratio and Circumference 
     leftClimbMotor.setRotorToSensorRatio(ClimbConstants.climbGearing);
-    leftClimbMotor.setSensorToMechanismRatio(ClimbConstants.climbEncoderToMechanismRatio);
+    leftClimbMotor.setSensorToMechanismRatio(-ClimbConstants.climbEncoderToMechanismRatio);
 
     //PID Values, can be changed in constants
     leftClimbMotor.setPIDValues(ClimbConstants.CLIMB_P, ClimbConstants.CLIMB_I, ClimbConstants.CLIMB_D, 
@@ -59,8 +59,7 @@ public class ClimbSubsys extends SubsystemBase {
 
     //Desired setpoint starts off as home position, Encoder starts at 0, desired encoder position moves your robot to the desired setpoint
     desiredSetpoint = ClimbConstants.climbHomePosition;
-    climbEncoder.setPosition(ClimbConstants.climbHomePosition);
-    leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
+    //leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint/(2*Math.PI*ClimbConstants.climbSprocketRadius));
   }
 
   //For manual version of the command, change speed in constants
@@ -71,7 +70,7 @@ public class ClimbSubsys extends SubsystemBase {
   //Creates a desired setpoint for the mechanism to go to
   public void setClimbSetpoint(double setpoint){
     desiredSetpoint = setpoint;
-    leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint);
+    leftClimbMotor.setDesiredEncoderPosition(desiredSetpoint/ClimbConstants.climbSprocketCircumference);
   }
 
   //Adjusts position of climb by a set increment

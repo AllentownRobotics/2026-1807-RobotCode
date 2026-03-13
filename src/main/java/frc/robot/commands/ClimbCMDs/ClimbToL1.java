@@ -35,6 +35,8 @@ public class ClimbToL1 extends Command {
   @Override
   public void execute(){
     //If the climb has reached the L1Position, it can then be brought from there to the L1LockPosition 
+    isAtL1 = climb.isAtPosition(ClimbConstants.L1Position);
+
     if(isAtL1.getAsBoolean()){
       climb.setClimbSetpoint(ClimbConstants.L1PositionLock);
     }
