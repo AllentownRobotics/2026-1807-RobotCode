@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class extendPivotCommand extends Command {
-  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+public class stop extends Command {
   private final GroundCollector groundCollectionSubsystem;
 
   /**
@@ -20,7 +19,7 @@ public class extendPivotCommand extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public extendPivotCommand(GroundCollector subsystem) {
+  public stop(GroundCollector subsystem) {
     groundCollectionSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
@@ -32,7 +31,7 @@ public class extendPivotCommand extends Command {
    *sets pivot position when intaking
    */
   public void initialize() {
-    groundCollectionSubsystem.setPivotPosition(-0.21);
+    // groundCollectionSubsystem.setPivotPosition(-0.21);
     // groundCollectionSubsystem.setPivotPosition(pivotConsants.pivotOutPosition);
   }
 
@@ -42,16 +41,17 @@ public class extendPivotCommand extends Command {
    *spins pivot motor
    */
   public void execute() {
-    double error = groundCollectionSubsystem.getPivotPosition() / 360.0;
+    // double error = groundCollectionSubsystem.getPivotPosition() / 360.0;
     
-    error = -0.21 - error;
-    if(Math.abs(error) < 0.1){
-      groundCollectionSubsystem.drivePivotVolts(0.6);
-    }else{
+    // error = -0.21 - error;
+    // if(Math.abs(error) < 0.1){
+    //   groundCollectionSubsystem.drivePivotVolts(0.6);
+    // }else{
     
-    groundCollectionSubsystem.setPivotPositionFeedforwards(-0.21,0.6);
-    SmartDashboard.putNumber("error", error);
-    }
+    // groundCollectionSubsystem.setPivotPositionFeedforwards(-0.21,0.6);
+    // SmartDashboard.putNumber("error", error);
+    // }
+    groundCollectionSubsystem.stopPivotMotor();
   }
 
   // Called once the command ends or is interrupted.
@@ -60,13 +60,13 @@ public class extendPivotCommand extends Command {
    *stops pivot motor
    */
   public void end(boolean interrupted) {
-    //  groundCollectionSubsystem.stopPivotMotor();
+     groundCollectionSubsystem.stopPivotMotor();
   }
 
   // Returns the intake position when the command should end.
   @Override
   public boolean isFinished() {
-    // return groundCollectionSubsystem.isAtPosition(Constants.pivotConsants.pivotOutPosition);
-    return false;
+    return groundCollectionSubsystem.isAtPosition(-0.21);
+    // return false;
   }
 }

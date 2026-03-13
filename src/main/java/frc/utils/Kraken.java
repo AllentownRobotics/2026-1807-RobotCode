@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.hardware.core.CoreCANcoder;
@@ -18,6 +19,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -28,12 +30,12 @@ public class Kraken extends SubsystemBase {
   // https://github.com/PeddieRobotics/2024Itsumade/blob/dev/2024-I/src/main/java/frc/robot/utils/Kraken.java
   // https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/index.html 
 
-  TalonFX kraken;
-  TalonFXConfiguration krakenConfiguration;
-  CANcoderConfiguration encoderConfiguration;
-  int krakenID;
-  Slot0Configs slot0Configs;
-  Orchestra music;
+  public TalonFX kraken;
+  public TalonFXConfiguration krakenConfiguration;
+  public CANcoderConfiguration encoderConfiguration;
+  public int krakenID;
+  public Slot0Configs slot0Configs;
+  public Orchestra music;
 
   /** Creates a new Kraken. */
   public Kraken(int krakenID) {
@@ -68,6 +70,18 @@ public class Kraken extends SubsystemBase {
     PositionVoltage request = new PositionVoltage(position).withSlot(0);
     kraken.setControl(request);
   }
+
+
+  public void setDesiredEncoderPosition(double position, double voltage) {
+    PositionVoltage request = new PositionVoltage(position).withFeedForward(voltage).withSlot(0);
+    kraken.setControl(request);
+  }
+
+  public void setVelocity(double rps){
+    VelocityVoltage request = new VelocityVoltage(rps).withSlot(0);
+    kraken.setControl(request);
+  }
+
 
   /** Sets motor speed to zero. */
   public void stopMotor() {
@@ -186,6 +200,11 @@ public class Kraken extends SubsystemBase {
   }
 
   public void setVolts(Voltage volts) {
+    VoltageOut request = new VoltageOut(volts);
+    kraken.setControl(request);
+  }
+
+  public void setVolts(Double volts) {
     VoltageOut request = new VoltageOut(volts);
     kraken.setControl(request);
   }
