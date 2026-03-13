@@ -5,11 +5,14 @@
 package frc.robot;
 
 import frc.robot.Constants;
-import frc.robot.commands.retractPivotCommand;
-import frc.robot.commands.runCollectorCommands;
-import frc.robot.commands.stop;
-import frc.robot.commands.collectorVoltage;
+import frc.robot.commands.collectorMoveVoltsIn;
+import frc.robot.commands.collectorMoveVoltsOut;
+// import frc.robot.commands.retractPivotCommand;
+// import frc.robot.commands.runCollectorCommands;
+// import frc.robot.commands.stop;
+// import frc.robot.commands.collectorVoltage;
 import frc.robot.commands.extendPivotCommand;
+import frc.robot.commands.runCollectorCommands;
 // import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.LEDConstants;
 // import frc.robot.Constants.operatorConstants;
@@ -21,6 +24,8 @@ import frc.robot.subsystems.LEDSubsystem;
 // import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
+// import frc.robot.subsystems.GroundCollector.GroundCollector;
+// import frc.robot.subsystems.GroundCollector.newCollector;
 // import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -57,7 +62,7 @@ public class RobotContainer {
   // private final SpinIndexerCMD m_SpinIndexerCMD = new SpinIndexerCMD(m_indexerSubsystem);
   // private final AutosSpinIndexerCMD m_AutosSpinIndexerCMD = new AutosSpinIndexerCMD(m_indexerSubsystem);
 
-  private final runCollectorCommands m_RunCollectorCommands = new runCollectorCommands(m_GroundCollectionSubsystem);
+  // private final runCollectorCommands m_RunCollectorCommands = new runCollectorCommands(m_GroundCollectionSubsystem);
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_operatorController =
       new CommandXboxController(Constants.operatorConstants.operatorController);//creates new operator controller
@@ -118,23 +123,23 @@ public class RobotContainer {
    /**
     *when pressing y on controller, the pivot motor spins to intake position
     */
-    m_xboxController.y().whileTrue(
-      new extendPivotCommand(m_GroundCollectionSubsystem)
-    ).whileFalse(new stop(m_GroundCollectionSubsystem));
+    // m_xboxController.y().whileTrue(
+    //   new extendPivotCommand(m_GroundCollectionSubsystem)
+    // );
     /**
      *when pressing x on controller, the pivot motor spins to home position
      */
-    m_xboxController.x().whileTrue(
-      new retractPivotCommand(m_GroundCollectionSubsystem)
-    ).whileFalse(new stop(m_GroundCollectionSubsystem));
+    // m_xboxController.x().whileTrue(
+    //   new retractPivotCommand(m_GroundCollectionSubsystem)
+    // );
 
-    m_xboxController.start().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
-      setPivotPosition(-0.21), m_GroundCollectionSubsystem).
-        withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.21))));
+    // m_xboxController.start().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
+    //   setPivotPosition(-0.21), m_GroundCollectionSubsystem).
+    //     withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.21))));
 
-    m_xboxController.back().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
-      setPivotPosition(-0.0), m_GroundCollectionSubsystem).
-        withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.0))));
+    // m_xboxController.back().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
+    //   setPivotPosition(-0.0), m_GroundCollectionSubsystem).
+    //     withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.0))));
     // m_xboxController.a().whileTrue(m_RunCollectorCommands);
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     /**
@@ -143,9 +148,11 @@ public class RobotContainer {
     // m_operatorController.start().whileTrue(Commands.run(
     //         () -> LEDSubsystem.setPattern(
     //             LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
-
-      m_xboxController.leftBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(-1.0), m_GroundCollectionSubsystem));
-      m_xboxController.rightBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(1.0), m_GroundCollectionSubsystem));
+      m_xboxController.a().whileTrue(new runCollectorCommands(m_GroundCollectionSubsystem));
+      // m_xboxController.leftBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(-1.5), m_GroundCollectionSubsystem));
+      m_xboxController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
+      // m_xboxController.rightBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(1.5), m_GroundCollectionSubsystem));
+      m_xboxController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
 
         LEDSubsystem.setDefaultCommand(Commands.runOnce(
             () -> LEDSubsystem.setPattern(
@@ -154,6 +161,7 @@ public class RobotContainer {
     // cancelling on release.
     ////m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
     
+
     // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
     // m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
 

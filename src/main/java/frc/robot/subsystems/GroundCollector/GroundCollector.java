@@ -196,11 +196,12 @@ public class GroundCollector extends SubsystemBase {
    */
   public void setCollectorMotorSpeed(){
 
-    collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
-      collectorMotor.getPosition()
-    );//uses PID loop to calculate motor speed
+    // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
+    //   collectorMotor.getPosition()
+    // );//uses PID loop to calculate motor speed
 
-    collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
+    // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
+    collectorMotor.setMotorSpeed(1);
   }
 
   /**
@@ -210,6 +211,9 @@ public class GroundCollector extends SubsystemBase {
     collectorMotor.stopMotor();
   }
 
+  public boolean isCollectorAtBottomPos(){
+    return (pivotEncoder.getAbsolutePosition().getValueAsDouble() >= 0.18);
+  }
   /**
     * only start the collector motor when the pivot reaches its intake position,
     * when pivot is at the intake position, the collector starts spinning
@@ -247,13 +251,13 @@ public class GroundCollector extends SubsystemBase {
     double targetVelocity = correction + rotationController.getSetpoint().velocity;
 
     SmartDashboard.putNumber("target vel", targetVelocity);
-    double closedLoopVoltage = tempController.calculate(pivotEncoder.getVelocity().getValueAsDouble(), targetVelocity);
+    // double closedLoopVoltage = tempController.calculate(pivotEncoder.getVelocity().getValueAsDouble(), targetVelocity);
 
-    // closedLoopVoltage + pivotConsants.kS + targetVelocity * pivotConsants.kV
-    double finalVoltage = closedLoopVoltage + (pivotConsants.kS * Math.signum(targetVelocity) + targetVelocity * pivotConsants.kV);
+    // // closedLoopVoltage + pivotConsants.kS + targetVelocity * pivotConsants.kV
+    // double finalVoltage = closedLoopVoltage + (pivotConsants.kS * Math.signum(targetVelocity) + targetVelocity * pivotConsants.kV);
 
-    SmartDashboard.putNumber("computed voltage", finalVoltage);
-    pivotMotor.setVolts(finalVoltage);
+    // SmartDashboard.putNumber("computed voltage", finalVoltage);
+    // pivotMotor.setVolts(finalVoltage);
   }
 
 
