@@ -26,12 +26,12 @@ public class IndexerSubsys extends SubsystemBase {
   /**
    * The beam break at the top of the hopper that returns values representing whether the hopper is full of fuel or not.
    */
-  private final DigitalInput topHopperBeamBreak; 
+  // private final DigitalInput topHopperBeamBreak; 
   
   /**
    * The beam break near the bottom of the hopper that detects if there is any fuel in the hopper on this side.
    */
-  private final DigitalInput bottomHopperBeamBreak;
+  // private final DigitalInput bottomHopperBeamBreak;
 
   /**
    * Boolean that returns true if the indexer is spinning, and false if it is not spinning.
@@ -46,7 +46,7 @@ public class IndexerSubsys extends SubsystemBase {
   /**
    * Returns false if full hopper beam break is broken, and true if it is not broken.
    */
-  private boolean hopperFullBeamBreak;
+  // private boolean hopperFullBeamBreak;
 
   /**
    * Returns opposite value of hopperFullBeamBreak to display on SmartDashboard.
@@ -66,8 +66,8 @@ public class IndexerSubsys extends SubsystemBase {
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsys() {
     // Assigns beam break IDs to their corresponding beam breaks.
-    topHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.topBeamBreakID);
-    bottomHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.bottomBeamBreakID);
+    // topHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.topBeamBreakID);
+    // bottomHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.bottomBeamBreakID);
 
     // Assigns PID constants to PIDController.
     indexerPIDController = new PIDController(
@@ -106,17 +106,17 @@ public class IndexerSubsys extends SubsystemBase {
   /**
    * Sets indexer motor to a desired speed using PID ONLY if one of the beam breaks detects fuel. Used in auto.
    */
-  public void autosSetIndexerSpeed() {
-    if (bottomHopperBeamBreak.get()) {
-      indexerMotor.setMotorSpeed(
-        indexerPIDController.calculate(
-          indexerMotor.getVelocity()
-        ) + indexerMotor.getVelocity()
-      );
-    } else {
-      indexerMotor.setMotorSpeed(0);
-    }
-  }
+  // public void autosSetIndexerSpeed() {
+  //   if (bottomHopperBeamBreak.get()) {
+  //     indexerMotor.setMotorSpeed(
+  //       indexerPIDController.calculate(
+  //         indexerMotor.getVelocity()
+  //       ) + indexerMotor.getVelocity()
+  //     );
+  //   } else {
+  //     indexerMotor.setMotorSpeed(0);
+  //   }
+  // }
 
   /**
    * Gets the indexer's velocity from indexerSpeed and determines if the indexer is spinning.
@@ -151,9 +151,9 @@ public class IndexerSubsys extends SubsystemBase {
    * Gives the value of topHopperBeamBreak.
    * @return topHopperBeamBreak: the value of the beam break (true if not broken, false if broken by fuel).
    */
-  public boolean getTopHopper() {
-    return hopperFullBeamBreak;
-  }
+  // public boolean getTopHopper() {
+  //   return hopperFullBeamBreak;
+  // }
 
   /**
    * Gives the value of bottomHopperBeamBreak.
@@ -168,15 +168,15 @@ public class IndexerSubsys extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // Gets the value of the top hopper beam break. 
-    hopperFullBeamBreak = topHopperBeamBreak.get(); 
+    // hopperFullBeamBreak = topHopperBeamBreak.get(); 
 
     //Gets the value of the bottom hopper beam break.
-    bottomFuelBeamBreak = bottomHopperBeamBreak.get();
+    // bottomFuelBeamBreak = bottomHopperBeamBreak.get();
 
     // Sets the variables to the opposite value to represent on SmartDashboard if there is fuel,
     // rather than if the beam break sensor detects the beam.
-    isHopperFull = !hopperFullBeamBreak;
-    doesHopperHaveFuel = !bottomFuelBeamBreak;
+    // isHopperFull = !hopperFullBeamBreak;
+    // doesHopperHaveFuel = !bottomFuelBeamBreak;
 
     // Gets the velocity/speed of the motor.
     indexerSpeed = indexerMotor.getVelocity();

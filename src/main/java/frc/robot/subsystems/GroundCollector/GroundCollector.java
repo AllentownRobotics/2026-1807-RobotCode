@@ -145,10 +145,10 @@ public class GroundCollector extends SubsystemBase {
     // pivotFeedbackLoop.setSetpoint(setpoint);//gives the PID loop the needed setpoint
   } //update to setPivotRotations, say what setpoint is in comments
 
-  public void setPivotPositionFeedforwards(double setpoint, double feedforwards){
-    desiredSetpoint = setpoint;
-    pivotMotor.setDesiredEncoderPosition(desiredSetpoint, voltage);
-  }
+  // public void setPivotPositionFeedforwards(double setpoint, double feedforwards){
+  //   desiredSetpoint = setpoint;
+  //   pivotMotor.setDesiredEncoderPosition(desiredSetpoint, voltage);
+  // }
 
 
  /**

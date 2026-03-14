@@ -4,50 +4,40 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.Kicker.KickerSubsys;
+// import frc.robot.subsystems.Shooter.Flywheel;
+import frc.robot.subsystems.Shooter.FlywheelSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class KickFuelCMD extends Command {
-  private KickerSubsys kicker;//Establishes the kicker
-  private final Timer timer = new Timer();
-  /** Creates a new KickFuel. */
-  public KickFuelCMD(KickerSubsys kicker) {
-    this.kicker = kicker;//Instantiates the kicker
+public class setFlywheelVelocity extends Command {
+  /** Creates a new setFlywheelVelocity. */
+  FlywheelSubsys flywheel;
+
+  public setFlywheelVelocity(FlywheelSubsys flywheel) {
+    this.flywheel = flywheel;
+    addRequirements(flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(kicker);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    timer.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  //TODO unsure if there should be an initialize, possibly just have an execute
-  //TODO figure out how to keep the command running even is there are discrepencies in the flow of fuel
   public void execute() {
-    
-      kicker.kickFuel();
-      
-    
+    flywheel.setFlywheelVelocity();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    kicker.stopKickerMotors();
-    // timer.stop();
+    flywheel.setIdleSpeed();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return timer.hasElapsed(Constants.TimeConstants.kickDurationAsSec);
     return false;
   }
 }
