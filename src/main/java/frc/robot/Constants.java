@@ -13,8 +13,10 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+   public static final int kDriverControllerPort  = 0;
   public static class MotorIDs {
     public static final int indexerMotorID = 30; // Motor ID for indexer
+    
   }
   public static class IndexerConstants {
     public static final double desiredIndexerSpeed = 0.1; // PID setpoint (aka desired motor speed)
@@ -26,9 +28,6 @@ public final class Constants {
     // Beam break IDs
     public static final int topBeamBreakID = 40; 
     public static final int bottomBeamBreakID = 41;
-  }
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort  = 0;
   }
 
   public static class KickerConstansts {
@@ -63,8 +62,6 @@ public final class Constants {
       IDLE(idle),
       ALIGNED_WITH_HUB(alignedWithHub),
       CLIMB_COMPLETE(off),
-      CLIMB_COMPLETE_RED(climbCompleteRed),
-      CLIMB_COMPLETE_BLUE(climbCompleteBlue),
       PIVOT_AT_INTAKE_POSITION(pivotAtIntakePosition),
       PIVOT_AT_HOME_POSITION(pivotAtHomePosition),
       FUEL_READY_TO_SHOOT(fuelReadyToShoot),
@@ -77,11 +74,10 @@ public final class Constants {
       }
     }
     //color codes
-    public static final double off = -0.89;//change after color is confirmed
+    public static final double off = 0.99;//change after color is confirmed
     public static final double idle = -0.89;//change after color is confirmed
-    public static final double alignedWithHub = 0;//change after color is confirmed
-    public static final double climbCompleteRed = 0;//change after color is confirmed
-    public static final double climbCompleteBlue = 0;//change after color is confirmed
+    public static final double alignedWithHub = 0.77;//change after color is confirmed - green
+    public static final double climbComplete = 0;//change after color is confirmed - 
     public static final double pivotAtIntakePosition = 0;//change after color is confirmed
     public static final double pivotAtHomePosition = 0;//change after color is confirmed
     public static final double fuelReadyToShoot = 0;//change after color is confirmed
@@ -98,17 +94,17 @@ public final class Constants {
     public static final int homeLimitSwitchPort = 8;//change according to limit switch port - pivot upper limit switch port number
 
     //PID values for pivot
-    public static final double kP = 0.1;//change according to pid value
+    public static final double kP = 1.1211;//change according to pid value
     public static final double kI = 0;//change according to pid value
     public static final double kD = 0;//change according to pid value 
-    public static final double kS = 0;//change if needed
-    public static final double kV = 0;//change if needed
-    public static final double kA = 0;//change if needed
-    public static final double kG = 0;//change if needed
+    public static final double kS = 0.45145;//change if needed
+    public static final double kV = 0.11565;//change if needed
+    public static final double kA = 2.9024;//change if needed
+    public static final double kG = 0;//change if needed // 1.9482
 
-    public static final double intakePosition = 5.5;//change according to intake position - pivot intake position
+    public static final double pivotOutPosition = -0.21;//change according to intake position - pivot intake position
 
-    public static final double homePosition = 0;//change according to position - start position of the pivot
+    public static final double pivotInPosition = 0;//change according to position - start position of the pivot
     public static final double positionTolerance = 0;//change according to position tolerance - pivot position tolerance
 
     public static final double softLimitMinPosition = 0;//min position that the pivot deploy can go

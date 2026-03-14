@@ -29,8 +29,8 @@ public class LEDSubsystem extends SubsystemBase {
     patternmap.put(LEDConstants.LEDPatterns.OFF, LEDConstants.off);
     patternmap.put(LEDConstants.LEDPatterns.IDLE, LEDConstants.idle);
     patternmap.put(LEDConstants.LEDPatterns.ALIGNED_WITH_HUB, LEDConstants.alignedWithHub);
-    patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED, LEDConstants.climbCompleteRed);
-    patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, LEDConstants.climbCompleteBlue);
+    // patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED, LEDConstants.climbCompleteRed);
+    // patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, LEDConstants.climbCompleteBlue);
     patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION, LEDConstants.pivotAtIntakePosition);
     patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION, LEDConstants.pivotAtHomePosition);
     patternmap.put(LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT, LEDConstants.fuelReadyToShoot);
