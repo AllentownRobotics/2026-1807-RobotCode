@@ -204,6 +204,16 @@ public class GroundCollector extends SubsystemBase {
     collectorMotor.setMotorSpeed(1);
   }
 
+  public void setCollectorMotorReverse(){
+
+    // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
+    //   collectorMotor.getPosition()
+    // );//uses PID loop to calculate motor speed
+
+    // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
+    collectorMotor.setMotorSpeed(-1);
+  }
+
   /**
    * stops collector motor
    */
