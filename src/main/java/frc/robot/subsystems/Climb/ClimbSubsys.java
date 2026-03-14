@@ -39,8 +39,6 @@ public class ClimbSubsys extends SubsystemBase {
     //Encoder for PID, only need one for left because right follows it
     leftClimbMotor.addEncoder(climbEncoder);
 
-    
-
     //Gear Ratio and Circumference 
     leftClimbMotor.setRotorToSensorRatio(ClimbConstants.climbGearing);
     leftClimbMotor.setSensorToMechanismRatio(-ClimbConstants.climbEncoderToMechanismRatio);

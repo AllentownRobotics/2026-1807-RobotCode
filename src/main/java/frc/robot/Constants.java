@@ -18,6 +18,7 @@ public final class Constants {
     public static final int kOperatorControllerPort = 0;
   }
 
+  //fix these
   public static class ClimbConstants {
     public static final int leftClimbMotorID = 57;
     public static final int rightClimbMotorID = 55;
@@ -25,11 +26,11 @@ public final class Constants {
     public static final int rightClimbCANCoderID = 56;
 
     //Climb Setpoints (inches)
-    public static final double L1AutoStartPosition = 8; // Must be lower than position where slidehook comes out
-    public static final double L1AutoEndPosition = 4; 
-    public static final double deploySliderPosition = 9; // Position where slider is deployed
-    public static final double L1Position = 7;
-    public static final double L1PositionLock = 0;
+    public static final double L1AutoStartPosition = 4; // Must be lower than position where slidehook comes out
+    public static final double L1AutoEndPosition = 2; 
+    public static final double deploySliderPosition = 4; // Position where slider is deployed
+    public static final double L1Position = 8.9;
+    public static final double L1PositionLock = 2;
     public static final double L2Position = 7;
     public static final double L2PositionLock = 0;
     public static final double L3Position = 7;

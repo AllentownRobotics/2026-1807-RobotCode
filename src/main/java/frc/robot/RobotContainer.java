@@ -97,7 +97,8 @@ public class RobotContainer {
       .onFalse(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
 
-    operatorController.povUp().whileTrue(Commands.runOnce(() -> 
+    //L2 and L3 Commands
+    /*operatorController.povUp().whileTrue(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L2Position), climbSubsystem))
       .onFalse(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L2PositionLock), climbSubsystem));
@@ -105,7 +106,7 @@ public class RobotContainer {
     operatorController.povRight().whileTrue(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L3Position), climbSubsystem))
       .onFalse(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L3PositionLock), climbSubsystem));
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L3PositionLock), climbSubsystem));*/
 
 
     /*operatorController.rightTrigger().onFalse(Commands.runOnce(() -> 
