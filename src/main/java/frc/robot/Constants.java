@@ -16,11 +16,14 @@ public final class Constants {
   public static class IndexerConstants {
     public static final int indexerMotorID = 30; // Motor ID for indexer
 
-    public static final double desiredIndexerSpeed = 0.1; // PID setpoint (aka desired motor speed)
+    public static final double indexerVelocity = 1; // PID setpoint/velocity in rps
     // PID values (not calibrated yet):
-    public static final double kp = 0.1;
+    public static final double kp = 0;
     public static final double ki = 0;
     public static final double kd = 0;
+    public static final double kv = 0.01;
+    public static final double ka = 0.01;
+    public static final double kg = 0;
 
     // Beam break IDs
     public static final int topBeamBreakID = 40; 

@@ -106,7 +106,8 @@ public class RobotContainer {
      */
     m_xboxController.x().whileTrue(
       new retractPivotCommand(m_GroundCollectionSubsystem)
-    );
+    ); 
+    //TODO UNCOMMENT THIS BEFORE COMMITTING
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     /**
      * sets pattern alignedWithHumanPlayerStation when you press the start button

@@ -18,11 +18,6 @@ public class IndexerSubsys extends SubsystemBase {
    */
   private final Kraken indexerMotor; 
 
-  /** 
-   * The PID controller used on the indexer motor.
-   */ 
-  private final PIDController indexerPIDController; 
-
   /**
    * The beam break at the top of the hopper that returns values representing whether the hopper is full of fuel or not.
    */
@@ -68,57 +63,64 @@ public class IndexerSubsys extends SubsystemBase {
     // Assigns beam break IDs to their corresponding beam breaks.
     topHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.topBeamBreakID);
     bottomHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.bottomBeamBreakID);
-
-    // Assigns PID constants to PIDController.
-    indexerPIDController = new PIDController(
-      Constants.IndexerConstants.kp, 
-      Constants.IndexerConstants.ki, 
-      Constants.IndexerConstants.kd);
     
     // Assigns motor ID to indexer motor.
     indexerMotor = new Kraken(Constants.IndexerConstants.indexerMotorID); 
     indexerMotor.setCoastMode();
+
+    // Assigns PID values to indexer motor.
+    indexerMotor.setPIDValues(0, 0, 0, 0, Constants.IndexerConstants.kv, Constants.IndexerConstants.ka, 0);
   }
 
   // The motor methods are not used for Seneca because the robot is temporarily built to use a non-motorized indexer 
 
   /**
    * Sets the desired speed (setpoint) for the indexer PID.
-   */
-  public void setIndexerDesiredSpeed(double speed) {
-    // Assigns setpoint value to PID controller.
-    indexerPIDController.setSetpoint(Constants.IndexerConstants.desiredIndexerSpeed);
-  }
+  //  */
+  // 
+  // Old PID setpoint method (Note: indexerPIDController no longer exists)
+  //
+  // public void setIndexerDesiredSpeed(double speed) {
+  //   // Assigns setpoint value to PID controller.
+  //   indexerPIDController.setSetpoint(Constants.IndexerConstants.desiredIndexerSpeed);
+  // }
 
   /**
    * Sets indexer motor to a desired speed using PID with our setpoint and values.
    */
   public void setIndexerSpeed() {
     // Calculates motor speed by getting motor velocity and using PID.
-    indexerMotor.setMotorSpeed(
-      indexerPIDController.calculate(
-        indexerMotor.getVelocity()
-      ) + indexerMotor.getVelocity() 
-      // The PID loop returns the amount to change by to get to the setpoint (aka the amount the motor wants to increase by).
-      // In order for the motor to increase in speed, it needs to add this amount to its current velocity.
-      // NOTE: there is a simpler way of implementing this using the new Kraken utils. Should be looked into later
-    );
+    // indexerMotor.setMotorSpeed(
+    //   indexerPIDController.calculate(
+    //     indexerMotor.getVelocity()
+    //   ) + indexerMotor.getVelocity() 
+    // );
+    indexerMotor.setVelocity(Constants.IndexerConstants.desiredIndexerSpeed);
   }
 
   /**
    * Sets indexer motor to a desired speed using PID ONLY if one of the beam breaks detects fuel. Used in auto.
    */
   public void autosSetIndexerSpeed() {
+    // The commented PID loop works but is inefficient.
+
+    // if (bottomHopperBeamBreak.get()) {
+    //   indexerMotor.setMotorSpeed(
+    //     indexerPIDController.calculate(
+    //       indexerMotor.getVelocity()
+    //     ) + indexerMotor.getVelocity()
+    //   );
+    // } else {
+    //   indexerMotor.setMotorSpeed(0);
+    // }
+
     if (bottomHopperBeamBreak.get()) {
-      indexerMotor.setMotorSpeed(
-        indexerPIDController.calculate(
-          indexerMotor.getVelocity()
-        ) + indexerMotor.getVelocity()
-      );
+      indexerMotor.setVelocity(Constants.IndexerConstants.desiredIndexerSpeed);
     } else {
       indexerMotor.setMotorSpeed(0);
     }
-  } // (Not urgent) TODO is there a more efficient way to use PID for motor speed?
+    
+  } // (Not urgent) TODO finish/test new PID
 
   /**
    * Gets the indexer's velocity from indexerSpeed and determines if the indexer is spinning.
@@ -133,7 +135,7 @@ public class IndexerSubsys extends SubsystemBase {
     }
 
     return isMotorSpinning;
-  } // (Not urgent) TODO there is almost definitely a simpler way to do this
+  } // (Not urgent) TODO is there a simpler way to do this?
 
   /**
    * Sets indexer motor speed to 0 so that it slows to a stop.
@@ -196,6 +198,5 @@ public class IndexerSubsys extends SubsystemBase {
 
     //Displays whether or not there is any fuel in the hopper as a boolean.
     SmartDashboard.putBoolean("Is there fuel in hopper: ", doesHopperHaveFuel);
-    // TODO adjust SmartDashboard items (may be done at comp)
   }
 }
