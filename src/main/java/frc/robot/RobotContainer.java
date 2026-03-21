@@ -18,6 +18,7 @@ import frc.robot.commands.runCollectorCommands;
 import frc.robot.commands.setFlywheelVelocity;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 import frc.robot.generated.TunerConstants;
+import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.LEDConstants;
 // import frc.robot.Constants.operatorConstants;
@@ -268,6 +269,21 @@ public class RobotContainer {
         // joystick.povUp().whileTrue(new example(drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+    operatorController.povDown().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition)));
+
+    operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
+
+
+    operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
+    operatorController.y().whileTrue(new ClimbDownManual(climbSubsystem));
+    operatorController.a().onTrue(Commands.runOnce(() -> 
+      climbSubsystem.resetEncoderPos(), climbSubsystem)); 
  
     }
   

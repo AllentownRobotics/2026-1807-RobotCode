@@ -45,10 +45,10 @@ public class extendPivotCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   /**
-   *stops pivot motor
+   *stops the pivot motor
    */
   public void end(boolean interrupted) {
-     groundCollectionSubsystem.stopPivotMotor();
+    groundCollectionSubsystem.stopPivotMotor();
   }
 
   // Returns true when the command should end.

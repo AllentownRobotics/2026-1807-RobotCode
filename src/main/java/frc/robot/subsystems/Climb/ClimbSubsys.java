@@ -14,7 +14,6 @@ import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ClimbConstants;
 import frc.utils.Kraken;
 
@@ -28,7 +27,6 @@ public class ClimbSubsys extends SubsystemBase {
     rightClimbMotor = new Kraken(ClimbConstants.rightClimbMotorID);
     leftClimbMotor = new Kraken(ClimbConstants.leftClimbMotorID);
     climbEncoder = new CANcoder(ClimbConstants.leftClimbCANCoderID);
-    //add another encoder
 
     //Resets Motors
     rightClimbMotor.restoreFactoryDefaults();
@@ -39,6 +37,9 @@ public class ClimbSubsys extends SubsystemBase {
 
     //Encoder for PID, only need one for left because right follows it
     leftClimbMotor.addEncoder(climbEncoder);
+
+    //Resets encoder to start
+    leftClimbMotor.resetEncoder();
 
     //Gear Ratio and Circumference 
     leftClimbMotor.setRotorToSensorRatio(ClimbConstants.climbGearing);
@@ -53,7 +54,7 @@ public class ClimbSubsys extends SubsystemBase {
     rightClimbMotor.setBrakeMode();
 
     //Prevents motors from breaking, sets limits for their speed
-    leftClimbMotor.setMotorCurrentLimits(40);
+    leftClimbMotor.setMotorCurrentLimits(ClimbConstants.climbCurrentLimit);
     leftClimbMotor.setSoftLimits(ClimbConstants.softLimitMinPosition, ClimbConstants.softLimitMaxPosition);
 
     //Desired setpoint starts off as home position, Encoder starts at 0, desired encoder position moves your robot to the desired setpoint
