@@ -21,50 +21,6 @@ public final class Constants {
     public static final int indexerMotorID = 30; // Motor ID for indexer
     
   }
-
-   public static class ClimbConstants {
-    public static final int leftClimbMotorID = 57;
-    public static final int rightClimbMotorID = 55;
-    public static final int leftClimbCANCoderID = 58;
-    public static final int rightClimbCANCoderID = 56;
-
-    //Climb Setpoints (inches)
-    public static final double L1AutoStartPosition = 4; // Must be lower than position where slidehook comes out
-    public static final double L1AutoEndPosition = 2; 
-    public static final double deploySliderPosition = 4; // Position where slider is deployed
-    public static final double L1Position = 8.9;
-    public static final double L1PositionLock = 2;
-    public static final double L2Position = 7;
-    public static final double L2PositionLock = 0;
-    public static final double L3Position = 7;
-    public static final double L3PositionLock = 0;
-    public static final double positionTolerance = 0.05;
-    public static final double softLimitMinPosition = 0;
-    public static final double softLimitMaxPosition = 0;
-    public static final double incrementMeasurement = 0;
-    public static final double climbHomePosition = 0;
-
-    // Climb Motor PID
-    public static final double CLIMB_P = 35;
-    public static final double CLIMB_I = 2;
-    public static final double CLIMB_D = 0.25;
-    public static final double CLIMB_SFF = 0; // static feedforward
-    public static final double CLIMB_VFF = 0; // velocity feedforward
-    public static final double CLIMB_AFF = 0; // acceleration feedforward
-    public static final double CLIMB_GFF = 0; // gravity feedforward 0.296
-    public static final double CLIMB_MIN_OUTPUT = -1;
-    public static final double CLIMB_MAX_OUTPUT = 1;
-
-    public static final double climbSpeed = 0.25;
-
-
-    public static final double climbGearing = -9*9; 
-    public static final double climbSprocketRadius = 2.16/2; //Pitch Diameter: 2.16", Outside Diameter: 2.36", Sprocket Type: AM-4791
-    public static final double climbSprocketCircumference = 2 * Math.PI * climbSprocketRadius; // inches
-    public static final double climbEncoderToMechanismRatio = 1; //Encoder mounted directly to sprocket shaft
-
-  }
-  
   public static class hoodConstants {
     public static final double hoodkP = 1;
     public static final double hoodkI = 0;
@@ -167,11 +123,14 @@ public final class Constants {
       IDLE(idle),
       ALIGNED_WITH_HUB(alignedWithHub),
       CLIMB_COMPLETE(off),
+      //CLIMB_COMPLETE_RED(climbCompleteRed),
+      //CLIMB_COMPLETE_BLUE(climbCompleteBlue),
       PIVOT_AT_INTAKE_POSITION(pivotAtIntakePosition),
-      PIVOT_AT_HOME_POSITION(pivotAtHomePosition),
+      //PIVOT_AT_HOME_POSITION(pivotAtHomePosition),
       FUEL_READY_TO_SHOOT(fuelReadyToShoot),
-      FUEL_IN_TWINDEXER(fuelInTwindexer),
-      ALIGNED_WITH_HUMAN_PLAYER_STATION(alignedWithHumanPlayerStation);
+      //FUEL_IN_TWINDEXER(fuelInTwindexer),
+      ALIGNED_WITH_HUMAN_PLAYER_STATION(alignedWithHumanPlayerStation),
+      PANIC(panic);
 
       public final double value;
       private LEDPatterns(double val){
@@ -179,18 +138,21 @@ public final class Constants {
       }
     }
     //color codes
-    public static final double off = 0.99;//change after color is confirmed
-    public static final double idle = -0.89;//change after color is confirmed
-    public static final double alignedWithHub = 0.77;//change after color is confirmed - green
-    public static final double climbComplete = 0;//change after color is confirmed - 
-    public static final double pivotAtIntakePosition = 0;//change after color is confirmed
-    public static final double pivotAtHomePosition = 0;//change after color is confirmed
-    public static final double fuelReadyToShoot = 0;//change after color is confirmed
-    public static final double fuelInTwindexer = 0;//change after color is confirmed
-    public static final double alignedWithHumanPlayerStation = 0;//change after color is confirmed
+    public static final double off = 0.99;//black
+    public static final double idle = 0.61;// solid red
+    public static final double alignedWithHub = 0.77;//solid green
+    //public static final double climbCompleteRed = -0.85;//shot, red
+    //public static final double climbCompleteBlue = -0.83;//shot, blue
+    public static final double climbComplete = 0.65;//solid orange
+    public static final double pivotAtIntakePosition = 0.57;//solid hot pink
+    //public static final double pivotAtHomePosition = 0;//change after color is confirmed
+    public static final double fuelReadyToShoot = 0.15;//strobe green(color 1)
+    //public static final double fuelInTwindexer = 0;//change after color is confirmed
+    public static final double alignedWithHumanPlayerStation = 0;//purple
+    public static final double panic = -0.11;//strobe red
   }
 
-  public static class pivotConsants{
+ public static class pivotConsants{
 
     public static final int pivotMotorID = 16; //change according to motor id number - pivot motor ID number
     public static final int pivotEncoderID = 17; //change according to encoder id number - pivot encoder ID number
@@ -214,6 +176,7 @@ public final class Constants {
 
     public static final double softLimitMinPosition = 0;//min position that the pivot deploy can go
     public static final double softLimitMaxPosition = 0;//max position that the pivot deploy can go
+    public static final double currentLimit = 35;
   }
 
   public static class collectorConstants{
@@ -225,6 +188,48 @@ public final class Constants {
 
   public static class controllerConstants{
     public static final int controllerPort = 1;//change according to controller number - controller ID number
+  }
+  public static class ClimbConstants {
+    public static final int leftClimbMotorID = 57;
+    public static final int rightClimbMotorID = 55;
+    public static final int leftClimbCANCoderID = 58;
+    public static final int rightClimbCANCoderID = 56;
+
+    //Climb Setpoints (inches)
+    public static final double L1AutoStartPosition = 4; // Must be lower than position where slidehook comes out
+    public static final double L1AutoEndPosition = 2; 
+    public static final double deploySliderPosition = 4; // Position where slider is deployed
+    public static final double L1Position = 8.9;
+    public static final double L1PositionLock = 2;
+    public static final double L2Position = 7;
+    public static final double L2PositionLock = 0;
+    public static final double L3Position = 7;
+    public static final double L3PositionLock = 0;
+    public static final double positionTolerance = 0.05;
+    public static final double softLimitMinPosition = 0;
+    public static final double softLimitMaxPosition = 0;
+    public static final double incrementMeasurement = 0;
+    public static final double climbHomePosition = 0;
+
+    // Climb Motor PID
+    public static final double CLIMB_P = 35;
+    public static final double CLIMB_I = 2;
+    public static final double CLIMB_D = 0.25;
+    public static final double CLIMB_SFF = 0; // static feedforward
+    public static final double CLIMB_VFF = 0; // velocity feedforward
+    public static final double CLIMB_AFF = 0; // acceleration feedforward
+    public static final double CLIMB_GFF = 0; // gravity feedforward 0.296
+    public static final double CLIMB_MIN_OUTPUT = -1;
+    public static final double CLIMB_MAX_OUTPUT = 1;
+
+    public static final double climbSpeed = 0.25;
+
+
+    public static final double climbGearing = -9*9; 
+    public static final double climbSprocketRadius = 2.16/2; //Pitch Diameter: 2.16", Outside Diameter: 2.36", Sprocket Type: AM-4791
+    public static final double climbSprocketCircumference = 2 * Math.PI * climbSprocketRadius; // inches
+    public static final double climbEncoderToMechanismRatio = 1; //Encoder mounted directly to sprocket shaft
+
   }
 }
 

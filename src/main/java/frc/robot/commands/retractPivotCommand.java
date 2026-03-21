@@ -24,7 +24,7 @@ public class retractPivotCommand extends Command {
    *sets pivot position at the start
    */
   public void initialize() {
-    groundCollectionSubsystem.setPivotPosition(Constants.pivotConsants.intakePosition);
+    groundCollectionSubsystem.setPivotPosition(Constants.pivotConsants.pivotInPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

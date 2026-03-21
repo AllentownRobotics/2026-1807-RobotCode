@@ -30,7 +30,7 @@ public class extendPivotCommand extends Command {
    *sets pivot position when intaking
    */
   public void initialize() {
-    groundCollectionSubsystem.setPivotPosition(pivotConsants.homePosition);
+    groundCollectionSubsystem.setPivotPosition(pivotConsants.pivotOutPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

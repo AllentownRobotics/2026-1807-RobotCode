@@ -15,12 +15,9 @@ import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.collectorVoltage;
 // import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.runCollectorCommands;
-import frc.robot.commands.runCollectorReverse;
-import frc.robot.commands.runCollectorReverse;
 import frc.robot.commands.setFlywheelVelocity;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 import frc.robot.generated.TunerConstants;
-import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.LEDConstants;
 // import frc.robot.Constants.operatorConstants;
@@ -28,7 +25,6 @@ import frc.robot.Constants.LEDConstants;
 // import frc.robot.commands.AutosSpinIndexerCMD;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.Climb.ClimbSubsys;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 // import frc.robot.commands.SpinIndexerCMD;
 // import frc.robot.subsystems.Kicker.KickerSubsys;
@@ -41,7 +37,6 @@ import frc.robot.subsystems.Shooter.TurretSubsys;
 // import frc.robot.subsystems.GroundCollector.newCollector;
 // import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.runCollectorReverse;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -75,7 +70,6 @@ public class RobotContainer {
   //  private final CommandXboxController m_xboxController = new CommandXboxController(0);
    private KickerSubsys kickerSubsys = new KickerSubsys();
    private FlywheelSubsys flywheel = new FlywheelSubsys();
-   private ClimbSubsys climbSubsystem = new ClimbSubsys();
   // The robot's subsystems and commands are defined here...
   // private final KickerSubsys m_kicker = new KickerSubsys();
   // private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
@@ -127,27 +121,11 @@ public class RobotContainer {
     // NamedCommands.registerCommand("LED PatternClimbCompleteRed", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED), LEDSubsystem));
     // NamedCommands.registerCommand("LED PatternClimbCompleteBlue", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternPivotAtIntakePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
+    //NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternFuelReadyToShoot", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
+    //NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
-
-     NamedCommands.registerCommand("ClimbToL1Start", Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoStartPosition), climbSubsystem)); 
-
-    //Reverses and latches down to complete L1
-    NamedCommands.registerCommand("ClimbToL1EndPos", Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoEndPosition), climbSubsystem)); 
-
-    //Goes back to home, must go back to L1 Start first
-    NamedCommands.registerCommand("ClimbToHome", Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition), climbSubsystem)); 
-
-    //Waiting Commands
-    NamedCommands.registerCommand("ClimbWaitforL1Start", Commands.waitUntil(climbSubsystem.isAtPosition(ClimbConstants.L1AutoStartPosition)));
-    NamedCommands.registerCommand("ClimbWaitforL1EndPos", Commands.waitUntil(climbSubsystem.isAtPosition(ClimbConstants.L1AutoEndPosition)));
-    NamedCommands.registerCommand("ClimbWaitforHome", Commands.waitUntil(climbSubsystem.isAtPosition(ClimbConstants.climbHomePosition)));
-    
+    NamedCommands.registerCommand("LEDPatternPanic", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PANIC), LEDSubsystem));
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -178,15 +156,6 @@ public class RobotContainer {
     // m_xboxController.back().and(m_xboxController.b()).whileTrue(m_GroundCollectionSubsystem.sysIdDynamic(Direction.kReverse));
     
 
-      operatorController.povDown().whileTrue(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
-      .onFalse(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition)));
-
-    operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
-      .onFalse(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
 
 
     
@@ -220,6 +189,9 @@ public class RobotContainer {
     // m_operatorController.start().whileTrue(Commands.run(
     //         () -> LEDSubsystem.setPattern(
     //             LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
+      operatorController.x().whileTrue(Commands.run(
+        ()-> LEDSubsystem.setPattern(
+          LEDConstants.LEDPatterns.PANIC), LEDSubsystem));//TODO: idk what button panic is so change asap
       operatorController.a().whileTrue(new runCollectorCommands(m_GroundCollectionSubsystem));
       // m_xboxController.leftBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(-1.5), m_GroundCollectionSubsystem));
       operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
@@ -286,20 +258,17 @@ public class RobotContainer {
         // Reset the field-centric heading on left bumper press.
         joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
 
-
         // joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); 
         // joystick.povUp().whileTrue(new SmartDashValues(turret, drivetrain));
         // turret.setDefaultCommand(new targetHUB(turret));
         // hood.setDefaultCommand(new autoSetHoodAngle(hood));
         operatorController.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
-        operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));
         // joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
         // joystick.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
         // joystick.povUp().whileTrue(new example(drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
  
-
     }
   
 

@@ -66,12 +66,13 @@ public class GroundCollector extends SubsystemBase {
     collectorMotor = new Kraken(collectorConstants.collectorMotorID);//makes a new collector motor
 
     pivotMotor.setBrakeMode();//stop motor 
-
+    
     pivotMotor.setPIDValues( Constants.pivotConsants.kP, pivotConsants.kI, pivotConsants.kD, pivotConsants.kS, pivotConsants.kV, pivotConsants.kA, pivotConsants.kG);
 
-    pivotMotor.setMotorCurrentLimits(40);
+    pivotMotor.setMotorCurrentLimits(pivotConsants.currentLimit);
+    collectorMotor.setMotorCurrentLimits(pivotConsants.currentLimit);
 
-    //desiredSetpoint = pivotConsants.pivotInPosition;//sets desiredSetpoint to the needed position
+    //desiredSetpoint = pivotConsants.homePosition;//sets desiredSetpoint to the needed position
 
     pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
 
@@ -102,6 +103,16 @@ public class GroundCollector extends SubsystemBase {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction){
     return pivotSysID.dynamic(direction);
+  }
+  
+   public void setCollectorMotorReverse(){
+
+    // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
+    //   collectorMotor.getPosition()
+    // );//uses PID loop to calculate motor speed
+
+    // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
+    collectorMotor.setMotorSpeed(-1);
   }
   /**
    *pid loop for motor speed
@@ -204,16 +215,6 @@ public class GroundCollector extends SubsystemBase {
     collectorMotor.setMotorSpeed(1);
   }
 
-  public void setCollectorMotorReverse(){
-
-    // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
-    //   collectorMotor.getPosition()
-    // );//uses PID loop to calculate motor speed
-
-    // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
-    collectorMotor.setMotorSpeed(-1);
-  }
-
   /**
    * stops collector motor
    */
@@ -252,6 +253,8 @@ public class GroundCollector extends SubsystemBase {
     SmartDashboard.putNumber("kraken volts", pivotMotor.kraken.getMotorVoltage().getValueAsDouble());
     SmartDashboard.putNumber("desired voltage", voltage);
     SmartDashboard.putNumber("desired state", desiredSetpoint);
+    SmartDashboard.putNumber("pivot motor current", pivotMotor.getSupplyCurrent());
+    SmartDashboard.putNumber("collector motor current", collectorMotor.getSupplyCurrent());
 
 
     // State goalState = new State(desiredSetpoint, 0);
