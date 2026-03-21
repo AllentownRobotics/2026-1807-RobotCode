@@ -196,7 +196,7 @@ public class RobotContainer {
     // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
     // m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
 
-    // Currently a test binding - this command will be used for autos.
+    // Test binding
     // m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
     //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
     //m_kicker.setDefaultCommand(m_kickFuel);
