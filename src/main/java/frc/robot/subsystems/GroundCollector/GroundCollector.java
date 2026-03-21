@@ -70,6 +70,7 @@ public class GroundCollector extends SubsystemBase {
     pivotMotor.setPIDValues( Constants.pivotConsants.kP, pivotConsants.kI, pivotConsants.kD, pivotConsants.kS, pivotConsants.kV, pivotConsants.kA, pivotConsants.kG);
 
     pivotMotor.setMotorCurrentLimits(40);
+    
 
     //desiredSetpoint = pivotConsants.pivotInPosition;//sets desiredSetpoint to the needed position
 

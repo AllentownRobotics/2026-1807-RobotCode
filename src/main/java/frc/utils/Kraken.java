@@ -6,6 +6,8 @@ package frc.utils;
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.ClosedLoopRampsConfigs;
+import com.ctre.phoenix6.configs.OpenLoopRampsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
@@ -104,9 +106,30 @@ public class Kraken extends SubsystemBase {
         .apply(krakenConfiguration.MotorOutput.withNeutralMode(NeutralModeValue.Coast));
   }
 
-  /** Sets the current limits (in amps) on the motor. Takes in values from -1.0 to 1.0. */
-  public void setMotorCurrentLimits(double amps) {
+  /** Sets the current limits (in amps) on the motor.*/
+  public void setMotorSupplyCurrentLimits(double amps) {
     kraken.getConfigurator().apply(krakenConfiguration.CurrentLimits.withSupplyCurrentLimit(amps));
+  }
+
+  /**
+   * Sets the stator current limite (in amos) on the motor.
+   */
+  public void setMotorStatorCurrentLimits(double amps) {
+    kraken.getConfigurator().apply(krakenConfiguration.CurrentLimits.withStatorCurrentLimit(amps));
+  }
+
+  /**Sets the ramp up period time when not using PID */
+  public void setMotorOpenLoopRampPeriod(double seconds) {
+    kraken.getConfigurator().apply(krakenConfiguration.withOpenLoopRamps(
+      new OpenLoopRampsConfigs().withVoltageOpenLoopRampPeriod(seconds)
+    ));
+  }
+
+  /**Sets the ramp up period time when using PID */
+  public void setMotorClosedLoopRampPeriod(double seconds) {
+    kraken.getConfigurator().apply(krakenConfiguration.withClosedLoopRamps(
+      new ClosedLoopRampsConfigs().withVoltageClosedLoopRampPeriod(seconds)
+    ));
   }
 
   /** Sets the motor's speed. Takes in values from -1.0 to 1.0. */

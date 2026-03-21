@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
@@ -225,6 +230,11 @@ public final class Constants {
 
   public static class controllerConstants{
     public static final int controllerPort = 1;//change according to controller number - controller ID number
+  }
+
+  public static class powerMonitorConstants {
+    public static final HashMap<String, Integer> portNames = new HashMap<String, Integer>(24);
+    
   }
 }
 
