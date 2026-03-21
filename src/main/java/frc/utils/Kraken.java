@@ -18,6 +18,8 @@ import com.ctre.phoenix6.hardware.core.CoreCANcoder;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -65,8 +67,13 @@ public class Kraken extends SubsystemBase {
     kraken.setControl(request);
   }
 
-  /** Sets a motor to a specified velicity in rotations per second with user given PID Values */
-  public void setVelocity(double rps) {
+
+  // public void setDesiredEncoderPosition(double position, double voltage) {
+  //   PositionVoltage request = new PositionVoltage(position).withFeedForward(voltage).withSlot(0);
+  //   kraken.setControl(request);
+  // }
+
+  public void setVelocity(double rps){
     VelocityVoltage request = new VelocityVoltage(rps).withSlot(0);
     kraken.setControl(request);
   }
@@ -209,10 +216,15 @@ public class Kraken extends SubsystemBase {
     VoltageOut request = new VoltageOut(volts);
     kraken.setControl(request);
   }
-  public void setVolts(Double volts) {
-    VoltageOut request = new VoltageOut(volts);
-    kraken.setControl(request);
-  }
+  // public void setVolts(Double volts) {
+  //   VoltageOut request = new VoltageOut(volts);
+  //   kraken.setControl(request);
+  // }
+
+  // public void setVolts(Double volts) {
+  //   VoltageOut request = new VoltageOut(volts);
+  //   kraken.setControl(request);
+  // }
 
   public double getSupplyCurrent() {
     return kraken.getSupplyCurrent().getValueAsDouble();

@@ -5,42 +5,39 @@
 // package frc.robot.commands;
 
 // import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.Constants;
-// import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
+// import frc.robot.subsystems.GroundCollector.GroundCollector;
 
 // /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-// public class AutosSpinIndexerCMD extends Command {
-//   public IndexerSubsys indexerSubsys;
+// public class collectorVoltage extends Command {
+//   /** Creates a new collectorVoltage. */
+//   GroundCollector collector;
+//   Double voltage;
+//   public collectorVoltage(GroundCollector collector) {
+//     this.collector = collector;
+//     voltage = 0.0;
 
-//   /** Creates a new AutosSpinIndexerCMD. */
-//   public AutosSpinIndexerCMD(IndexerSubsys indexerSubsys) {
+//     addRequirements(collector);
 //     // Use addRequirements() here to declare subsystem dependencies.
-//     this.indexerSubsys = indexerSubsys;
-
-//     addRequirements(indexerSubsys);
 //   }
 
 //   // Called when the command is initially scheduled.
 //   @Override
 //   public void initialize() {
-//     // Sets motor's desired speed.
-//     indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed);
 //   }
 
 //   // Called every time the scheduler runs while the command is scheduled.
 //   @Override
 //   public void execute() {
-//     // Continuously sets the setpoint so that the motor keeps aiming to reach the desired speed.
-//     indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed);
+//     // voltage = voltage + 0.25*0.02;
+//       collector.voltage += 0.25*0.02;
+//       collector.drivePivotVolts(collector.voltage);
 
-//     // Uses PID to set motor speed if one or more of the sensors detects fuel in the hopper.
-//     indexerSubsys.autosSetIndexerSpeed();
 //   }
 
 //   // Called once the command ends or is interrupted.
 //   @Override
 //   public void end(boolean interrupted) {
-//     indexerSubsys.stopIndexer();
+//     collector.drivePivotVolts(0.0);
 //   }
 
 //   // Returns true when the command should end.
