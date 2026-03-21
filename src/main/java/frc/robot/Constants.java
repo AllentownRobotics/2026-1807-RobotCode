@@ -23,7 +23,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
    public static final int kDriverControllerPort  = 0;
   public static class MotorIDs {
-    public static final int indexerMotorID = 30; // Motor ID for indexer
+    public static final int indexerMotorID = 1; // Motor ID for indexer
     
   }
 
@@ -159,7 +159,7 @@ public final class Constants {
     public static final int operatorController = 1;
   }
   public static class DriverConstants {
-    public static final int driverController = 1;
+    public static final int driverController = 0;
   }
 
   public static class LEDConstants{

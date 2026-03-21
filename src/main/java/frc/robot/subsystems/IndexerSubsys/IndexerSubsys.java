@@ -78,6 +78,9 @@ public class IndexerSubsys extends SubsystemBase {
     // Assigns motor ID to indexer motor.
     indexerMotor = new Kraken(Constants.MotorIDs.indexerMotorID); 
     indexerMotor.setCoastMode();
+    indexerMotor.setMotorClosedLoopRampPeriod(0);
+    indexerMotor.setMotorOpenLoopRampPeriod(0);
+    indexerMotor.setPIDValues(0,0,0,0,0.05,0.05,0);
   }
 
   /**
@@ -93,14 +96,15 @@ public class IndexerSubsys extends SubsystemBase {
    */
   public void setIndexerSpeed() {
     // Calculates motor speed by getting motor velocity and using PID.
-    indexerMotor.setMotorSpeed(
-      indexerPIDController.calculate(
-        indexerMotor.getVelocity()
-      ) + indexerMotor.getVelocity() 
+    // indexerMotor.setMotorSpeed(
+    //   indexerPIDController.calculate(
+    //     indexerMotor.getVelocity()
+    //   ) + indexerMotor.getVelocity() 
       // The PID loop returns the amount to change by to get to the setpoint (aka the amount the motor wants to increase by).
       // In order for the motor to increase in speed, it needs to add this amount to its current velocity.
       // NOTE: there is a simpler way of implementing this using the new Kraken utils. Should be looked into later
-    );
+    // );
+    indexerMotor.setVelocity(100);
   }
 
   /**
