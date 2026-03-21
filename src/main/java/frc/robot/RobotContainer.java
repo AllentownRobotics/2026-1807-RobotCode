@@ -104,10 +104,10 @@ public class RobotContainer {
     /**
      *when pressing x on controller, the pivot motor spins to home position
      */
-    m_xboxController.x().whileTrue(
-      new retractPivotCommand(m_GroundCollectionSubsystem)
-    ); 
-    //TODO UNCOMMENT THIS BEFORE COMMITTING
+    // m_xboxController.x().whileTrue(
+    //   new retractPivotCommand(m_GroundCollectionSubsystem)
+    // ); 
+    // TODO uncomment
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     /**
      * sets pattern alignedWithHumanPlayerStation when you press the start button

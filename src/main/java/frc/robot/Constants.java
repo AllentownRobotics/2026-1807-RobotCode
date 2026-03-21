@@ -17,6 +17,7 @@ public final class Constants {
     public static final int indexerMotorID = 30; // Motor ID for indexer
 
     public static final double indexerVelocity = 1; // PID setpoint/velocity in rps
+    public static final int indexerCurrentLimit = 35; // Indexer current limit
     // PID values (not calibrated yet):
     public static final double kp = 0;
     public static final double ki = 0;

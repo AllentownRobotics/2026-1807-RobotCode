@@ -4,7 +4,7 @@
 
 package frc.robot.subsystems.IndexerSubsys;
 
-import edu.wpi.first.math.controller.PIDController;
+// import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -58,6 +58,8 @@ public class IndexerSubsys extends SubsystemBase {
    */
   private boolean doesHopperHaveFuel;
 
+  private double indexerCurrent;
+
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsys() {
     // Assigns beam break IDs to their corresponding beam breaks.
@@ -67,6 +69,9 @@ public class IndexerSubsys extends SubsystemBase {
     // Assigns motor ID to indexer motor.
     indexerMotor = new Kraken(Constants.IndexerConstants.indexerMotorID); 
     indexerMotor.setCoastMode();
+    indexerMotor.setMotorCurrentLimits(Constants.IndexerConstants.indexerCurrentLimit);
+    
+    indexerCurrent = indexerMotor.getSupplyCurrent();
 
     // Assigns PID values to indexer motor.
     indexerMotor.setPIDValues(0, 0, 0, 0, Constants.IndexerConstants.kv, Constants.IndexerConstants.ka, 0);
@@ -76,7 +81,7 @@ public class IndexerSubsys extends SubsystemBase {
 
   /**
    * Sets the desired speed (setpoint) for the indexer PID.
-  //  */
+  */
   // 
   // Old PID setpoint method (Note: indexerPIDController no longer exists)
   //
@@ -95,7 +100,7 @@ public class IndexerSubsys extends SubsystemBase {
     //     indexerMotor.getVelocity()
     //   ) + indexerMotor.getVelocity() 
     // );
-    indexerMotor.setVelocity(Constants.IndexerConstants.desiredIndexerSpeed);
+    indexerMotor.setVelocity(Constants.IndexerConstants.indexerVelocity);
   }
 
   /**
@@ -114,13 +119,14 @@ public class IndexerSubsys extends SubsystemBase {
     //   indexerMotor.setMotorSpeed(0);
     // }
 
+    // Uses PID to get motor up to speed set in constants.
     if (bottomHopperBeamBreak.get()) {
-      indexerMotor.setVelocity(Constants.IndexerConstants.desiredIndexerSpeed);
+      indexerMotor.setVelocity(Constants.IndexerConstants.indexerVelocity);
     } else {
       indexerMotor.setMotorSpeed(0);
     }
     
-  } // (Not urgent) TODO finish/test new PID
+  } // (Not urgent) TODO test new PID
 
   /**
    * Gets the indexer's velocity from indexerSpeed and determines if the indexer is spinning.
@@ -198,5 +204,8 @@ public class IndexerSubsys extends SubsystemBase {
 
     //Displays whether or not there is any fuel in the hopper as a boolean.
     SmartDashboard.putBoolean("Is there fuel in hopper: ", doesHopperHaveFuel);
+
+    // Displays the indexer's current.
+    SmartDashboard.putNumber("Indexer current: ", indexerCurrent);
   }
 }
