@@ -15,6 +15,7 @@ import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.collectorVoltage;
 // import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.runCollectorCommands;
+import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.LEDConstants;
 // import frc.robot.Constants.operatorConstants;
@@ -174,6 +175,22 @@ public class RobotContainer {
     // m_driverController.a().whileTrue(m_expelFuel);
     // m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
     // m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they joystick is pressed down it runs the method
+
+    operatorController.povDown().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition)));
+
+    operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      .onFalse(Commands.runOnce(() -> 
+      climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
+
+
+    operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
+    operatorController.y().whileTrue(new ClimbDownManual(climbSubsystem));
+    operatorController.a().onTrue(Commands.runOnce(() -> 
+      climbSubsystem.resetEncoderPos(), climbSubsystem)); 
  
     }
   
