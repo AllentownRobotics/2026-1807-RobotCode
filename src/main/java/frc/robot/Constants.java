@@ -221,6 +221,7 @@ public final class Constants {
     public static final double CLIMB_GFF = 0; // gravity feedforward 0.296
     public static final double CLIMB_MIN_OUTPUT = -1;
     public static final double CLIMB_MAX_OUTPUT = 1;
+    public static final double climbCurrentLimit = 40;
 
     public static final double climbSpeed = 0.25;
 
