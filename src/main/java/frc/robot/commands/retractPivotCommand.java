@@ -6,7 +6,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.GroundCollector;
+import frc.robot.Constants.pivotConsants;
+import frc.robot.subsystems.GroundCollector.GroundCollector;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class retractPivotCommand extends Command {
   /** Creates a new retractPivotCommand. */
@@ -23,7 +24,7 @@ public class retractPivotCommand extends Command {
    *sets pivot position at the start
    */
   public void initialize() {
-    groundCollectionSubsystem.setPivotPosition(pivotConsants.intakePosition);
+    groundCollectionSubsystem.setPivotPosition(pivotConsants.pivotInPosition);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

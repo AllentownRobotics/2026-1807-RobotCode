@@ -16,6 +16,8 @@ import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.collectorVoltage;
 // import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.runCollectorCommands;
+import frc.robot.commands.ClimbCMDs.ClimbDownManual;
+import frc.robot.commands.ClimbCMDs.ClimbUpManual;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.OperatorConstants;
@@ -25,6 +27,7 @@ import frc.robot.Constants.LEDConstants;
 // import frc.robot.commands.AutosSpinIndexerCMD;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Climb.ClimbSubsys;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 // import frc.robot.commands.SpinIndexerCMD;
 // import frc.robot.subsystems.Kicker.KickerSubsys;
@@ -76,6 +79,7 @@ public class RobotContainer {
       new CommandXboxController(Constants.operatorConstants.operatorController);//creates new operator controller
 
   private final LEDSubsystem LEDSubsystem = new LEDSubsystem();//makes new LEDSubsystem
+  private final ClimbSubsys climbSubsystem = new ClimbSubsys();
   // private final ExpelFuelCMD m_expelFuel = new ExpelFuelCMD(m_kicker);
   // private final KickFuelCMD m_kickFuel = new KickFuelCMD(m_kicker);
 
@@ -106,9 +110,9 @@ public class RobotContainer {
     // NamedCommands.registerCommand("LED PatternClimbCompleteRed", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED), LEDSubsystem));
     // NamedCommands.registerCommand("LED PatternClimbCompleteBlue", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternPivotAtIntakePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternFuelReadyToShoot", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
 
     SmartDashboard.putData(LEDSubsystem);//puts data into smart dashboard
@@ -204,20 +208,20 @@ public class RobotContainer {
     // m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
     // m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they joystick is pressed down it runs the method
 
-    operatorController.povDown().whileTrue(Commands.runOnce(() -> 
+    m_operatorController.povDown().whileTrue(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
       .onFalse(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition)));
 
-    operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
+    m_operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
       .onFalse(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
 
 
-    operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
-    operatorController.y().whileTrue(new ClimbDownManual(climbSubsystem));
-    operatorController.a().onTrue(Commands.runOnce(() -> 
+    m_operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
+    m_operatorController.y().whileTrue(new ClimbDownManual(climbSubsystem));
+    m_operatorController.a().onTrue(Commands.runOnce(() -> 
       climbSubsystem.resetEncoderPos(), climbSubsystem)); 
  
     }

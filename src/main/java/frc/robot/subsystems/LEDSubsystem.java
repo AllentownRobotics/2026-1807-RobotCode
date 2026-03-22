@@ -32,9 +32,9 @@ public class LEDSubsystem extends SubsystemBase {
     // patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED, LEDConstants.climbCompleteRed);
     // patternmap.put(LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE, LEDConstants.climbCompleteBlue);
     patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION, LEDConstants.pivotAtIntakePosition);
-    patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION, LEDConstants.pivotAtHomePosition);
+    // patternmap.put(LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION, LEDConstants.pivotAtHomePosition);
     patternmap.put(LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT, LEDConstants.fuelReadyToShoot);
-    patternmap.put(LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER, LEDConstants.fuelInTwindexer);
+    // patternmap.put(LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER, LEDConstants.fuelInTwindexer);
     patternmap.put(LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION, LEDConstants.alignedWithHumanPlayerStation);
 
     blinkin.set(LEDConstants.idle);//sets the idle blinkin constant
