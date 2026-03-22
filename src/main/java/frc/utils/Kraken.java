@@ -1,9 +1,9 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.utils;
-
 
 import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -18,8 +18,6 @@ import com.ctre.phoenix6.hardware.core.CoreCANcoder;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-
-import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -28,7 +26,7 @@ public class Kraken extends SubsystemBase {
 
   // https://pro.docs.ctr-electronics.com/en/2023-pro/docs/api-reference/api-usage/configuration.html
   // https://github.com/PeddieRobotics/2024Itsumade/blob/dev/2024-I/src/main/java/frc/robot/utils/Kraken.java
-  // https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/index.html 
+  // https://v6.docs.ctr-electronics.com/en/stable/docs/migration/migration-guide/index.html
 
   public TalonFX kraken;
   public TalonFXConfiguration krakenConfiguration;
@@ -39,7 +37,8 @@ public class Kraken extends SubsystemBase {
 
   /** Creates a new Kraken. */
   public Kraken(int krakenID) {
-    // Default motor configs are here. Additional motor configs can be applied with the methods listed below.
+    // Default motor configs are here. Additional motor configs can be applied with the methods
+    // listed below.
     this.kraken = new TalonFX(krakenID);
     this.krakenID = krakenID;
     krakenConfiguration = new TalonFXConfiguration();
@@ -50,12 +49,7 @@ public class Kraken extends SubsystemBase {
     music.addInstrument(kraken);
   }
 
-
-  public Kraken() {
-    //TODO Auto-generated constructor stub
-}
-
-/** Factory resets the motor. */
+  /** Factory resets the motor. */
   public void restoreFactoryDefaults() {
     kraken.getConfigurator().apply(new TalonFXConfiguration());
   }
@@ -71,17 +65,11 @@ public class Kraken extends SubsystemBase {
     kraken.setControl(request);
   }
 
-
-  public void setDesiredEncoderPosition(double position, double voltage) {
-    PositionVoltage request = new PositionVoltage(position).withFeedForward(voltage).withSlot(0);
-    kraken.setControl(request);
-  }
-
-  public void setVelocity(double rps){
+  /** Sets a motor to a specified velicity in rotations per second with user given PID Values */
+  public void setVelocity(double rps) {
     VelocityVoltage request = new VelocityVoltage(rps).withSlot(0);
     kraken.setControl(request);
   }
-
 
   /** Sets motor speed to zero. */
   public void stopMotor() {
@@ -89,23 +77,32 @@ public class Kraken extends SubsystemBase {
   }
 
   /** Sets default motor config inverted. */
-  public void setInverted() {  
-    kraken.getConfigurator().apply(krakenConfiguration.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive));
+  public void setInverted() {
+    kraken
+        .getConfigurator()
+        .apply(
+            krakenConfiguration.MotorOutput.withInverted(InvertedValue.CounterClockwise_Positive));
   }
 
   /** Sets default motor config not inverted. */
-  public void setNotInverted() {  
-    kraken.getConfigurator().apply(krakenConfiguration.MotorOutput.withInverted(InvertedValue.Clockwise_Positive));
+  public void setNotInverted() {
+    kraken
+        .getConfigurator()
+        .apply(krakenConfiguration.MotorOutput.withInverted(InvertedValue.Clockwise_Positive));
   }
 
   /** Puts disabled motor in brake mode. */
   public void setBrakeMode() {
-    kraken.getConfigurator().apply(krakenConfiguration.MotorOutput.withNeutralMode(NeutralModeValue.Brake));
+    kraken
+        .getConfigurator()
+        .apply(krakenConfiguration.MotorOutput.withNeutralMode(NeutralModeValue.Brake));
   }
 
   /** Puts disabled motor in coast mode. */
   public void setCoastMode() {
-    kraken.getConfigurator().apply(krakenConfiguration.MotorOutput.withNeutralMode(NeutralModeValue.Coast));
+    kraken
+        .getConfigurator()
+        .apply(krakenConfiguration.MotorOutput.withNeutralMode(NeutralModeValue.Coast));
   }
 
   /** Sets the current limits (in amps) on the motor. Takes in values from -1.0 to 1.0. */
@@ -118,9 +115,12 @@ public class Kraken extends SubsystemBase {
     kraken.set(speed);
   }
 
-  /** Allows a motor to follow another motor. Setting the inverted boolean to true allows motor to turn opposite the leader. */
-  public void follow(int leaderCANID, MotorAlignmentValue MotorAlignmentValue) {
-    kraken.setControl(new Follower(leaderCANID, MotorAlignmentValue));
+  /**
+   * Allows a motor to follow another motor. Setting the inverted boolean to true allows motor to
+   * turn opposite the leader.
+   */
+  public void follow(int leaderCANID, MotorAlignmentValue motorAlignment) {
+    kraken.setControl(new Follower(leaderCANID, motorAlignment));
   }
 
   /** Connects a CANCoder to the specified motor. */
@@ -155,13 +155,14 @@ public class Kraken extends SubsystemBase {
     return kraken.getPosition().getValueAsDouble();
   }
 
- /** Returns the velocity of the motor. */
+  public double currentVelocityInRPS() {
+    return kraken.getVelocity().getValueAsDouble();
+  }
+  /** Returns the velocity of the motor. */
   public double getVelocity() {
     return kraken.get();
-    //the line below is for Kraken X44s since their max speed is 20% the max speed of X60s.
-    //return kraken.getVelocity().getValueAsDouble() / 25;
   }
-  
+
   public void setMotionMagicParameters(double maxVelocity, double maxAccel, double maxJerk) {
     krakenConfiguration.MotionMagic.MotionMagicCruiseVelocity = maxVelocity;
     krakenConfiguration.MotionMagic.MotionMagicAcceleration = maxAccel;
@@ -170,8 +171,9 @@ public class Kraken extends SubsystemBase {
     kraken.getConfigurator().apply(krakenConfiguration);
   }
 
-  //** Allows preset PID values to be passed to the motor. */
-  public void setPIDValues(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
+  // ** Allows preset PID values to be passed to the motor. */
+  public void setPIDValues(
+      double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
     krakenConfiguration.Slot0.kP = kP;
     krakenConfiguration.Slot0.kI = kI;
     krakenConfiguration.Slot0.kD = kD;
@@ -185,8 +187,12 @@ public class Kraken extends SubsystemBase {
 
   /** PID soft limits are built in limit switches for the motor. */
   public void setSoftLimits(double reverseLimit, double forwardLimit) {
-    kraken.getConfigurator().apply(krakenConfiguration.SoftwareLimitSwitch.withReverseSoftLimitThreshold(reverseLimit));
-    kraken.getConfigurator().apply(krakenConfiguration.SoftwareLimitSwitch.withForwardSoftLimitThreshold(forwardLimit));
+    kraken
+        .getConfigurator()
+        .apply(krakenConfiguration.SoftwareLimitSwitch.withReverseSoftLimitThreshold(reverseLimit));
+    kraken
+        .getConfigurator()
+        .apply(krakenConfiguration.SoftwareLimitSwitch.withForwardSoftLimitThreshold(forwardLimit));
   }
 
   /** Plays loaded music soundtrack. */
@@ -203,7 +209,6 @@ public class Kraken extends SubsystemBase {
     VoltageOut request = new VoltageOut(volts);
     kraken.setControl(request);
   }
-
   public void setVolts(Double volts) {
     VoltageOut request = new VoltageOut(volts);
     kraken.setControl(request);
