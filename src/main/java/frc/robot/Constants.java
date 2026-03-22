@@ -128,9 +128,11 @@ public final class Constants {
       PIVOT_AT_INTAKE_POSITION(pivotAtIntakePosition),
       //PIVOT_AT_HOME_POSITION(pivotAtHomePosition),
       FUEL_READY_TO_SHOOT(fuelReadyToShoot),
+      ROBOT_IS_SHOOTING(robotIsShooting),
       //FUEL_IN_TWINDEXER(fuelInTwindexer),
       ALIGNED_WITH_HUMAN_PLAYER_STATION(alignedWithHumanPlayerStation),
       PANIC(panic);
+      
 
       public final double value;
       private LEDPatterns(double val){
@@ -147,6 +149,7 @@ public final class Constants {
     public static final double pivotAtIntakePosition = 0.57;//solid hot pink
     //public static final double pivotAtHomePosition = 0;//change after color is confirmed
     public static final double fuelReadyToShoot = 0.15;//strobe green(color 1)
+    public static final double robotIsShooting = 0.5;
     //public static final double fuelInTwindexer = 0;//change after color is confirmed
     public static final double alignedWithHumanPlayerStation = 0;//purple
     public static final double panic = -0.11;//strobe red

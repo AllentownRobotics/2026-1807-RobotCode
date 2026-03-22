@@ -205,14 +205,14 @@ public class GroundCollector extends SubsystemBase {
   /**
    * sets collector motor speed
    */
-  public void setCollectorMotorSpeed(){
+  public void setCollectorMotorSpeed(Double speed){
 
     // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
     //   collectorMotor.getPosition()
     // );//uses PID loop to calculate motor speed
 
     // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
-    collectorMotor.setMotorSpeed(1);
+    collectorMotor.setMotorSpeed(speed);
   }
 
   /**

@@ -41,7 +41,8 @@ public class TurretSubsys extends SubsystemBase {
 
   public TurretSubsys(CommandSwerveDrivetrain drive) {
     this.drive = drive;
-    targetTurretState = 0.2; // degrees
+    turretTolerance = 5;
+    // targetTurretState = 0.2; // degrees
     // turretMotor = new Kraken(100); // make constants for this
     // turretEncoder = new CANcoder(200); // make constants for this
     // turretMotor.addEncoder(turretEncoder);
@@ -67,59 +68,59 @@ public class TurretSubsys extends SubsystemBase {
    * Then uses a PID loop to get the turret to a setpoint. 
    * @return nothing cuz it a void
    */
-  public void trackHUB() {
+  // public void trackHUB() {
 
-    // Alliance shift, calculates the target X and target Y of the turret for angle calculation
-    Optional<Alliance> ally = DriverStation.getAlliance();
-    if (ally.isPresent()) {
-      if (ally.get() == Alliance.Red) {
-        alliance = Alliance.Red;
-        targetX = Constants.turretConstants.RED_HUB.getX();
-        targetY = Constants.turretConstants.RED_HUB.getY();
-      }
-      if (ally.get() == Alliance.Blue) {
-        alliance = Alliance.Blue;
-        targetX = Constants.turretConstants.BLUE_HUB.getX();
-        targetY = Constants.turretConstants.BLUE_HUB.getY();
-      }
-    }
-    // current absolute encoder reading
+  //   // Alliance shift, calculates the target X and target Y of the turret for angle calculation
+  //   Optional<Alliance> ally = DriverStation.getAlliance();
+  //   if (ally.isPresent()) {
+  //     if (ally.get() == Alliance.Red) {
+  //       alliance = Alliance.Red;
+  //       targetX = Constants.turretConstants.RED_HUB.getX();
+  //       targetY = Constants.turretConstants.RED_HUB.getY();
+  //     }
+  //     if (ally.get() == Alliance.Blue) {
+  //       alliance = Alliance.Blue;
+  //       targetX = Constants.turretConstants.BLUE_HUB.getX();
+  //       targetY = Constants.turretConstants.BLUE_HUB.getY();
+  //     }
+  //   }
+  //   // current absolute encoder reading
 
-    currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
-    robotHeading = drive.getState().Pose.getRotation().getDegrees();
+  //   currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+  //   robotHeading = drive.getState().Pose.getRotation().getDegrees();
 
-    currentRobotPosX = drive.getState().Pose.getX();
-    currentRobotPosY = drive.getState().Pose.getY();
-    Translation2d currentPose = new Translation2d(currentRobotPosX,currentRobotPosY);
+  //   currentRobotPosX = drive.getState().Pose.getX();
+  //   currentRobotPosY = drive.getState().Pose.getY();
+  //   Translation2d currentPose = new Translation2d(currentRobotPosX,currentRobotPosY);
 
     
   
-    /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
-     * robot heading allows you to get a robot relative angle*/
-    targetTurretState =
-        Math.toDegrees(
-            Math.atan2(targetY - currentRobotPosY, targetX -currentRobotPosX)
-                - drive.getState().Pose.getRotation().getRadians());
+  //   /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
+  //    * robot heading allows you to get a robot relative angle*/
+  //   targetTurretState =
+  //       Math.toDegrees(
+  //           Math.atan2(targetY - currentRobotPosY, targetX -currentRobotPosX)
+  //               - drive.getState().Pose.getRotation().getRadians());
 
     
-    // only allows angles between -pi to +pi because every angle after that can be reprsensted by a
-    // smaller angle in that interval
-    targetTurretState = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(targetTurretState)));
-    // Clamps between -25 and 25 so the degrees returned can never be above 25 or below -25.
-    targetTurretState = MathUtil.clamp(targetTurretState, -20, 20);
-    // tells the encoder to get to that target state. divided by 360 because it wants rotations and
-    // turretState returns a degree
-    turretMotor.setDesiredEncoderPosition(targetTurretState / 360);
+  //   // only allows angles between -pi to +pi because every angle after that can be reprsensted by a
+  //   // smaller angle in that interval
+  //   targetTurretState = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(targetTurretState)));
+  //   // Clamps between -25 and 25 so the degrees returned can never be above 25 or below -25.
+  //   targetTurretState = MathUtil.clamp(targetTurretState, -20, 20);
+  //   // tells the encoder to get to that target state. divided by 360 because it wants rotations and
+  //   // turretState returns a degree
+  //   turretMotor.setDesiredEncoderPosition(targetTurretState / 360);
 
-    // various smartDashboard variables to test / tune
-    SmartDashboard.putNumber("Turret current state", currentTurretState);
-    SmartDashboard.putNumber("Turret target state", targetTurretState);
-    SmartDashboard.putNumber("RobotPoseX", drive.getState().Pose.getX());
-    SmartDashboard.putNumber("RobotPoseY", drive.getState().Pose.getY());
-    SmartDashboard.putNumber("HubTargetX", targetX);
-    SmartDashboard.putNumber("HubTargetY", targetY);
-    SmartDashboard.putNumber("Pidgeon reading", robotHeading);
-  }
+  //   // various smartDashboard variables to test / tune
+  //   SmartDashboard.putNumber("Turret current state", currentTurretState);
+  //   SmartDashboard.putNumber("Turret target state", targetTurretState);
+  //   SmartDashboard.putNumber("RobotPoseX", drive.getState().Pose.getX());
+  //   SmartDashboard.putNumber("RobotPoseY", drive.getState().Pose.getY());
+  //   SmartDashboard.putNumber("HubTargetX", targetX);
+  //   SmartDashboard.putNumber("HubTargetY", targetY);
+  //   SmartDashboard.putNumber("Pidgeon reading", robotHeading);
+  // }
 
   public Rotation2d getTargetTurretAngle(){
      Optional<Alliance> ally = DriverStation.getAlliance();
@@ -190,7 +191,7 @@ public class TurretSubsys extends SubsystemBase {
     }else{
       if(alliance == Alliance.Red && currentRobotPosX <= AimingConstants.redAllianceTrench && currentRobotPosY >= AimingConstants.middleLine){
         targetX = AimingConstants.redRightFeedingTargetX;
-        targetY = AimingConstants.redRightFeedingTargetX; 
+        targetY = AimingConstants.redRightFeedingTargetY;
         // targetTurretState = // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
         // Math.toDegrees(
         //     Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
@@ -207,17 +208,15 @@ public class TurretSubsys extends SubsystemBase {
       }
       
     }
-
+    targetTurretState = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(targetTurretState)));
+    currentTurretState = drive.getState().Pose.getRotation().getDegrees();
     return Rotation2d.fromDegrees(targetTurretState);
     
   }
 
-
-
-// TODO Make a method for targetTurretState so it's written better
   public double targetTurretHeading(Double targetX, Double TargetY, Double currentPoseX, Double currentPoseY){
      return Math.toDegrees(
-            Math.atan2(targetY - currentPoseY, targetX -  currentPoseX));
+            Math.atan2(targetY - currentPoseY, targetX -  currentPoseX)) + 180;
   }
 
   /**
@@ -231,7 +230,10 @@ public class TurretSubsys extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // System.out.println("Yo sim so cool");
+    SmartDashboard.putBoolean("Is the drivetrain facing the hub", isTurretWithinTolerance());
+    SmartDashboard.putNumber("currrent robot heading is da way", currentTurretState);
+    SmartDashboard.putNumber("Target Turret State woah", targetTurretState);
+    SmartDashboard.putNumber("rotation check", drive.getState().Pose.getRotation().getDegrees());
   }
 }
 

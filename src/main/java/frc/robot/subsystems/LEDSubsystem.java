@@ -36,6 +36,7 @@ public class LEDSubsystem extends SubsystemBase {
     patternmap.put(LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT, LEDConstants.fuelReadyToShoot);
     // patternmap.put(LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER, LEDConstants.fuelInTwindexer);
     patternmap.put(LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION, LEDConstants.alignedWithHumanPlayerStation);
+    patternmap.put(LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING, LEDConstants.robotIsShooting);
 
     blinkin.set(LEDConstants.idle);//sets the idle blinkin constant
   }
