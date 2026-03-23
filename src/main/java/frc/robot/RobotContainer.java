@@ -43,7 +43,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -196,7 +195,7 @@ public class RobotContainer {
     // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
     // m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
 
-    // Test binding
+    // Test bindings
     // m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
     //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
     //m_kicker.setDefaultCommand(m_kickFuel);

@@ -24,12 +24,12 @@ public class IndexerSubsys extends SubsystemBase {
   private final DigitalInput topHopperBeamBreak; 
   
   /**
-   * The beam break near the bottom of the hopper that detects if there is any fuel in the hopper on this side.
+   * The beam break near the bottom of the hopper that detects if there is any fuel in the hopper.
    */
   private final DigitalInput bottomHopperBeamBreak;
 
   /**
-   * Boolean that returns true if the indexer is spinning, and false if it is not spinning.
+   * Returns true if the indexer is spinning, and false if it is not spinning.
    */
   private boolean isIndexerSpinning;
 
@@ -39,22 +39,22 @@ public class IndexerSubsys extends SubsystemBase {
   private double indexerSpeed;
 
   /**
-   * Returns false if full hopper beam break is broken, and true if it is not broken.
+   * Returns true if full hopper beam break is broken, and false if it is not broken.
    */
   private boolean hopperFullBeamBreak;
 
   /**
-   * Returns opposite value of hopperFullBeamBreak to display on SmartDashboard.
+   * Returns opposite value of hopperFullBeamBreak to display on SmartDashboard (true if there is fuel, false if there is no fuel).
    */
   private boolean isHopperFull;
 
   /**
-   * Returns false if bottom hopper beam break is broken, and true if it is not broken.
+   * Returns true if bottom hopper beam break is broken, and false if it is not broken.
    */
   private boolean bottomFuelBeamBreak;
 
   /**
-   * Returns opposite value of bottomFuelBeamBreak to display on SmartDashboard.
+   * Returns opposite value of bottomFuelBeamBreak to display on SmartDashboard (true if there is fuel, false if there is no fuel).
    */
   private boolean doesHopperHaveFuel;
 
