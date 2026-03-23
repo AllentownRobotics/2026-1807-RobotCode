@@ -6,16 +6,17 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 import frc.robot.Constants;
+import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.collectorMoveVoltsIn;
 import frc.robot.commands.collectorMoveVoltsOut;
-// import frc.robot.commands.collectorMoveVoltsIn;
-// import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.retractPivotCommand;
 // import frc.robot.commands.runCollectorCommands;
 // import frc.robot.commands.stop;
 // import frc.robot.commands.collectorVoltage;
 // import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.runCollectorCommands;
+import frc.robot.commands.setFlywheelVelocity;
+import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.OperatorConstants;
@@ -25,11 +26,15 @@ import frc.robot.Constants.LEDConstants;
 // import frc.robot.commands.AutosSpinIndexerCMD;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Climb.ClimbSubsys;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 // import frc.robot.commands.SpinIndexerCMD;
 // import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
+import frc.robot.subsystems.Kicker.KickerSubsys;
+import frc.robot.subsystems.Shooter.FlywheelSubsys;
+import frc.robot.subsystems.Shooter.TurretSubsys;
 // import frc.robot.subsystems.GroundCollector.GroundCollector;
 // import frc.robot.subsystems.GroundCollector.newCollector;
 // import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
@@ -39,13 +44,19 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Telemetry;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 /**
@@ -58,21 +69,24 @@ public class RobotContainer {
    // The robot's subsystems and commands are defined here...
    private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
    //private final extendPivotCommand m_GroundCollectionCommand = new extendPivotCommand(m_GroundCollectionSubsystem);
-   private final CommandXboxController m_xboxController = new CommandXboxController(0);
+  //  private final CommandXboxController m_xboxController = new CommandXboxController(0);
+   private KickerSubsys kickerSubsys = new KickerSubsys();
+   private FlywheelSubsys flywheel = new FlywheelSubsys();
   // The robot's subsystems and commands are defined here...
   // private final KickerSubsys m_kicker = new KickerSubsys();
   // private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(Constants.kDriverControllerPort);
+  // private final CommandXboxController m_driverController =
+  //     new CommandXboxController(Constants.kDriverControllerPort);
   // private final SpinIndexerCMD m_SpinIndexerCMD = new SpinIndexerCMD(m_indexerSubsystem);
   // private final AutosSpinIndexerCMD m_AutosSpinIndexerCMD = new AutosSpinIndexerCMD(m_indexerSubsystem);
 
   // private final runCollectorCommands m_RunCollectorCommands = new runCollectorCommands(m_GroundCollectionSubsystem);
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_operatorController =
-      new CommandXboxController(Constants.operatorConstants.operatorController);//creates new operator controller
+  private final CommandXboxController operatorController =
+      new CommandXboxController(Constants.operatorConstants.operatorController);//creates new operator controller\
+  private final ClimbSubsys climbSubsys = new ClimbSubsys();
 
   private final LEDSubsystem LEDSubsystem = new LEDSubsystem();//makes new LEDSubsystem
   // private final ExpelFuelCMD m_expelFuel = new ExpelFuelCMD(m_kicker);
@@ -94,6 +108,11 @@ public class RobotContainer {
     private final CommandXboxController joystick = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final TurretSubsys turret = new TurretSubsys(drivetrain);
+    // private final Flywheel flywheel = new Flywheel();
+    // private final Hood hood = new Hood(drivetrain);
+     /* Path follower */
+    private final SendableChooser<Command> autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -105,11 +124,14 @@ public class RobotContainer {
     // NamedCommands.registerCommand("LED PatternClimbCompleteRed", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED), LEDSubsystem));
     // NamedCommands.registerCommand("LED PatternClimbCompleteBlue", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternPivotAtIntakePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
+    //NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternFuelReadyToShoot", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
+    //NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
+    NamedCommands.registerCommand("LEDPatternPanic", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PANIC), LEDSubsystem));
 
+    autoChooser = AutoBuilder.buildAutoChooser("Tests");
+        SmartDashboard.putData("Auto Mode", autoChooser);
     SmartDashboard.putData(LEDSubsystem);//puts data into smart dashboard
         
     // Configure the trigger bindings
@@ -178,15 +200,18 @@ public class RobotContainer {
     // m_operatorController.start().whileTrue(Commands.run(
     //         () -> LEDSubsystem.setPattern(
     //             LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
-      m_xboxController.a().whileTrue(new runCollectorCommands(m_GroundCollectionSubsystem));
+      operatorController.x().whileTrue(Commands.run(
+        ()-> LEDSubsystem.setPattern(
+          LEDConstants.LEDPatterns.PANIC), LEDSubsystem));//TODO: idk what button panic is so change asap
+      operatorController.a().whileTrue(new runCollectorCommands(m_GroundCollectionSubsystem));
       // m_xboxController.leftBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(-1.5), m_GroundCollectionSubsystem));
-      m_xboxController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
-      // // m_xboxController.rightBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(1.5), m_GroundCollectionSubsystem));
-      m_xboxController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
+      operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
+      // m_xboxController.rightBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(1.5), m_GroundCollectionSubsystem));
+      operatorController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
 
-        LEDSubsystem.setDefaultCommand(Commands.runOnce(
-            () -> LEDSubsystem.setPattern(
-                LEDConstants.LEDPatterns.IDLE), LEDSubsystem));//set idle as default pattern
+        // LEDSubsystem.setDefaultCommand(Commands.runOnce(
+        //     () -> LEDSubsystem.setPattern(
+        //         LEDConstants.LEDPatterns.IDLE), LEDSubsystem));//set idle as default pattern
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     ////m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
@@ -198,26 +223,77 @@ public class RobotContainer {
     // Test bindings
     // m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
     //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
-    //m_kicker.setDefaultCommand(m_kickFuel);
+    // kickerSubsys.(new KickFuelCMD(new KickerSubsys()));
+    operatorController.y().whileTrue(new KickFuelCMD(kickerSubsys));
     // m_driverController.a().whileTrue(m_expelFuel);
     // m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
     // m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they joystick is pressed down it runs the method
 
+        // Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+        drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
+
+
+        // joystick.rightBumper().whileTrue(drivetrain.applyRequest(() ->
+        //         drive.withVelocityX(-joystick.getLeftY() * slowSpeed) // Drive forward with negative Y (forward)
+        //             .withVelocityY(-joystick.getLeftX() * slowSpeed) // Drive left with negative X (left)
+        //             .withRotationalRate(-joystick.getRightX() * MaxAngularRate)) // Drive counterclockwise with negative X (left)
+        // );
+
+        // Idle while the robot is disabled. This ensures the configured
+        // neutral mode is applied to the drive motors while disabled.
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
+
+        joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
+        // ));
+
+        // Run SysId routines when holding back/start and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+        // Reset the field-centric heading on left bumper press.
+        joystick.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
+
+        // joystick.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, joystick, turret)); 
+        // joystick.povUp().whileTrue(new SmartDashValues(turret, drivetrain));
+        // turret.setDefaultCommand(new targetHUB(turret));
+        // hood.setDefaultCommand(new autoSetHoodAngle(hood));
+        operatorController.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
+        // joystick.povRight().whileTrue(new manualSetHoodAngle(hood));
+        // joystick.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
+        // joystick.povUp().whileTrue(new example(drivetrain));
+
+        drivetrain.registerTelemetry(logger::telemeterize);
     operatorController.povDown().whileTrue(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      climbSubsys.setClimbSetpoint(ClimbConstants.L1Position), climbSubsys))
       .onFalse(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.climbHomePosition)));
+      climbSubsys.setClimbSetpoint(ClimbConstants.climbHomePosition)));
 
     operatorController.povLeft().whileTrue(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1Position), climbSubsystem))
+      climbSubsys.setClimbSetpoint(ClimbConstants.L1Position), climbSubsys))
       .onFalse(Commands.runOnce(() -> 
-      climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
+      climbSubsys.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsys));
 
 
-    operatorController.x().whileTrue(new ClimbUpManual(climbSubsystem));
-    operatorController.y().whileTrue(new ClimbDownManual(climbSubsystem));
+    // operatorController.x().whileTrue(new ClimbUpManual(climbSubsys));
+    // operatorController.y().whileTrue(new ClimbDownManual(climbSubsys));
     operatorController.a().onTrue(Commands.runOnce(() -> 
-      climbSubsystem.resetEncoderPos(), climbSubsystem)); 
+      climbSubsys.resetEncoderPos(), climbSubsys)); 
  
     }
   

@@ -83,14 +83,15 @@ public final class Constants {
     public static final double indexerVelocity = 10; // Indexer velocity in rpms
     public static final double indexerCurrentLimit = 40; 
 
-    // PID values (not calibrated yet):
+    // PID values (not calibrated yet) - most of these are placeholders
     public static final double kp = 0;
     public static final double ki = 0;
     public static final double kd = 0;
+    public static final double ks = 0;
     public static final double ka = 0.01;
     public static final double kv = 0.01;
-    public static final double ks = 0;
-
+    public static final double kg = 0;
+    
     // Beam break IDs
     public static final int topBeamBreakID = 40; 
     public static final int bottomBeamBreakID = 41;
