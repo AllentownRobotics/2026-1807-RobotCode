@@ -6,7 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 import frc.robot.Constants;
-import frc.robot.commands.KickFuelCMD;
+// import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.collectorMoveVoltsIn;
 import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.retractPivotCommand;
@@ -27,14 +27,15 @@ import frc.robot.Constants.LEDConstants;
 // import frc.robot.commands.AutosSpinIndexerCMD;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Climb.ClimbSubsys;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
- import frc.robot.commands.SpinIndexerCMD;
+//  import frc.robot.commands.SpinIndexerCMD;
 // import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
-import frc.utils.PowerMonitor;
+// import frc.utils.PowerMonitor;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
-import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
-import frc.robot.subsystems.Kicker.KickerSubsys;
+// import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
+// import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.TurretSubsys;
 // import frc.robot.subsystems.GroundCollector.GroundCollector;
@@ -68,49 +69,49 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
  */
 public class RobotContainer {
    // The robot's subsystems and commands are defined here...
-   //private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
+   private final GroundCollector m_GroundCollectionSubsystem = new GroundCollector();
    //private final extendPivotCommand m_GroundCollectionCommand = new extendPivotCommand(m_GroundCollectionSubsystem);
   //  private final CommandXboxController m_xboxController = new CommandXboxController(0);
    //private KickerSubsys kickerSubsys = new KickerSubsys();
    //private FlywheelSubsys flywheel = new FlywheelSubsys();
 
-   private PowerMonitor pdh = new PowerMonitor();
-  //  private ClimbSubsys climbSubsystem = new ClimbSubsys();
+  //  private PowerMonitor pdh = new PowerMonitor();
+   private ClimbSubsys climbSubsystem = new ClimbSubsys();
   // The robot's subsystems and commands are defined here...
   // private final KickerSubsys m_kicker = new KickerSubsys();
-   private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
+  //  private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-   private final CommandXboxController m_driverController =
-       new CommandXboxController(Constants.kDriverControllerPort);
+  //  private final CommandXboxController m_driverController =
+      //  new CommandXboxController(Constants.kDriverControllerPort);
 
   // private final AutosSpinIndexerCMD m_AutosSpinIndexerCMD = new AutosSpinIndexerCMD(m_indexerSubsystem);
 
   // private final runCollectorCommands m_RunCollectorCommands = new runCollectorCommands(m_GroundCollectionSubsystem);
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  //private final CommandXboxController operatorController =
-    //  new CommandXboxController(0);//creates new operator controller
+  private final CommandXboxController operatorController =
+     new CommandXboxController(1);//creates new operator controller
 
   //private final LEDSubsystem LEDSubsystem = new LEDSubsystem();//makes new LEDSubsystem
   // private final ExpelFuelCMD m_expelFuel = new ExpelFuelCMD(m_kicker);
   // private final KickFuelCMD m_kickFuel = new KickFuelCMD(m_kicker);
 
   //final ButtonBoard m_buttonboard = new ButtonBoard(0);
-  //private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    //private double MaxAngularRate =  RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
-    //private double slowSpeed = 0.5 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
+  private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    private double MaxAngularRate =  RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double slowSpeed = 0.5 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
     /* Setting up bindings for necessary control of the swerve drive platform */
-    //private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      //      .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-        //    .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    //private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    //private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
-    //private final Telemetry logger = new Telemetry(MaxSpeed);
+    private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    //private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick = new CommandXboxController(0);
 
-    //public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     //private final TurretSubsys turret = new TurretSubsys(drivetrain);
     // private final Flywheel flywheel = new Flywheel();
     // private final Hood hood = new Hood(drivetrain);
@@ -188,8 +189,10 @@ public class RobotContainer {
     //   .onFalse(Commands.runOnce(() -> 
     //   climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
 
-
-    
+    operatorController.povLeft().whileTrue(Commands.runOnce(() -> climbSubsystem.setClimbSpeed(0.5), climbSubsystem))
+          .onFalse(Commands.runOnce(() -> climbSubsystem.setClimbSpeed(0), climbSubsystem));
+    operatorController.povUp().whileTrue(Commands.runOnce(() -> climbSubsystem.setClimbSpeed(-0.5), climbSubsystem))
+          .onFalse(Commands.runOnce(() -> climbSubsystem.setClimbSpeed(0), climbSubsystem));
 
     // m_xboxController.start().whileTrue(new collectorVoltage(m_GroundCollectionSubsystem));
    /**
@@ -212,7 +215,8 @@ public class RobotContainer {
     // m_xboxController.back().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
     //   setPivotPosition(-0.0), m_GroundCollectionSubsystem).
     //     withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.0))));
-    // m_xboxController.a().whileTrue(m_RunCollectorCommands);
+    operatorController.a().whileTrue(new runCollectorCommands(m_GroundCollectionSubsystem));
+    operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     /**
      * sets pattern alignedWithHumanPlayerStation when you press the start button
@@ -222,9 +226,9 @@ public class RobotContainer {
     //             LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
      // operatorController.a().whileTrue(new runCollectorCommands(m_GroundCollectionSubsystem));
       // m_xboxController.leftBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(-1.5), m_GroundCollectionSubsystem));
-     // operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
+     operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
       // m_xboxController.rightBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(1.5), m_GroundCollectionSubsystem));
-     // operatorController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
+     operatorController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
 
         // LEDSubsystem.setDefaultCommand(Commands.runOnce(
         //     () -> LEDSubsystem.setPattern(
@@ -235,7 +239,7 @@ public class RobotContainer {
     
 
     // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
-     m_driverController.x().toggleOnTrue(new SpinIndexerCMD(m_indexerSubsystem));
+    //  m_driverController.x().toggleOnTrue(new SpinIndexerCMD(m_indexerSubsystem));
 
     // Currently a test binding - this command will be used for autos.
     // m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
@@ -248,30 +252,30 @@ public class RobotContainer {
 
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
-        //drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-          //  drivetrain.applyRequest(() ->
-            //    drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-              //      .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                //    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            //)
-        //);
+        drivetrain.setDefaultCommand(
+            //Drivetrain will execute this command periodically
+           drivetrain.applyRequest(() ->
+               drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                   .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                   .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
 
 
-        // joystick.rightBumper().whileTrue(drivetrain.applyRequest(() ->
-        //         drive.withVelocityX(-joystick.getLeftY() * slowSpeed) // Drive forward with negative Y (forward)
-        //             .withVelocityY(-joystick.getLeftX() * slowSpeed) // Drive left with negative X (left)
-        //             .withRotationalRate(-joystick.getRightX() * MaxAngularRate)) // Drive counterclockwise with negative X (left)
-        // );
+        joystick.rightBumper().whileTrue(drivetrain.applyRequest(() ->
+                drive.withVelocityX(-joystick.getLeftY() * slowSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * slowSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate)) // Drive counterclockwise with negative X (left)
+        );
 
         // Idle while the robot is disabled. This ensures the configured
         // neutral mode is applied to the drive motors while disabled.
-        // final var idle = new SwerveRequest.Idle();
-        // RobotModeTriggers.disabled().whileTrue(
-        //     drivetrain.applyRequest(() -> idle).ignoringDisable(true)
-        // );
+        final var idle = new SwerveRequest.Idle();
+        RobotModeTriggers.disabled().whileTrue(
+            drivetrain.applyRequest(() -> idle).ignoringDisable(true)
+        );
 
-        // joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.x().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
         //     point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         // ));
