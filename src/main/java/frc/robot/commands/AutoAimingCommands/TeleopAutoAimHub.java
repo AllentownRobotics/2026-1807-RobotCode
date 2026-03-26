@@ -6,6 +6,8 @@ package frc.robot.commands.AutoAimingCommands;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.TimerTask;
+
 // import java.security.PublicKey;
 // import java.util.function.Function;
 
@@ -20,8 +22,11 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 // import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 // import frc.robot.Constants;
 import frc.robot.Constants.AimingConstants;
@@ -34,6 +39,7 @@ public class TeleopAutoAimHub extends Command {
   /** Creates a new autoAimHUB. */
   CommandSwerveDrivetrain drivetrain;
   CommandXboxController driverController;
+  CommandXboxController operatorController;
   TurretSubsys turret;
   // PIDController thetaController;
   double targetHubAngle;
@@ -44,10 +50,11 @@ public class TeleopAutoAimHub extends Command {
   // private TrapezoidProfile headingControl;
   private ProfiledPIDController thetaController;
 
-  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret) {
+  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController) {
     this.drivetrain = drivetrain;
     this.driverController = driverController;
     this.turret = turret;
+    this.operatorController = operatorController;
     
     MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -129,6 +136,10 @@ public class TeleopAutoAimHub extends Command {
   @Override
   public void end(boolean interrupted) {
     // make LEDS go VROOOOM
+    if(turret.isTurretWithinTolerance()){
+        operatorController.setRumble(RumbleType.kBothRumble, 0.5);
+        new WaitCommand(1).andThen(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0));
+    }
   }
 
   // Returns true when the command should end.

@@ -40,24 +40,23 @@ public class shootingSequence extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(turret.isTurretWithinTolerance()){
-      new ParallelCommandGroup(
-        Commands.runOnce(() -> hood.setHoodAutomaticallyFromDistance())
-          , Commands.runOnce(() -> flywheel.setFlywheelVelocity()));
-    }
-    if(flywheel.isFlywheelAtVelocity()){
-      Commands.runOnce(() -> kicker.kickFuel())
-      .andThen(Commands.runOnce(() -> indexer.setIndexerSpeed()));
-    }
 
-    LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);
-    
+    flywheel.setFlywheelVelocity();
+    hood.setHoodAutomaticallyFromDistance();
+
+    if(turret.isTurretWithinTolerance() && flywheel.isFlywheelAtVelocity()){
+        kicker.kickFuel();
+        indexer.setIndexerSpeedRPS();
+        LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);
+    }    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     hood.setHoodToHome();
+    kicker.stopKickerMotors();
+    indexer.stopIndexer();
     LEDs.setPattern(Constants.LEDConstants.LEDPatterns.IDLE);
   }
 

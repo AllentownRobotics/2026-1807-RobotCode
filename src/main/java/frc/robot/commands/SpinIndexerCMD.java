@@ -24,7 +24,7 @@ public class SpinIndexerCMD extends Command {
   @Override
   public void initialize() {
     // Sets motor's desired speed.
-    indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed); 
+    // indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -34,7 +34,7 @@ public class SpinIndexerCMD extends Command {
     // indexerSubsys.setIndexerDesiredSpeed(Constants.IndexerConstants.desiredIndexerSpeed);
     
     // Uses PID to set motor speed.
-    indexerSubsys.setIndexerSpeed();
+    indexerSubsys.setIndexerSpeedRPS();
   }
 
   // Called once the command ends or is interrupted.

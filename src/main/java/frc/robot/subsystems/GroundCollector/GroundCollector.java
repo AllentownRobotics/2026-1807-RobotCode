@@ -41,6 +41,7 @@ public class GroundCollector extends SubsystemBase {
   private CANcoder pivotEncoder;//establishes the pivot encoder
   private double desiredSetpoint;//set pivot encoder position
   private DigitalInput intakeLimitSwitch, homeLimitSwitch;//establishes the 2 pivot limit switches
+  private double collectorVoltage; 
   private Kraken collectorMotor;//establishes the collector motor
   private PIDController pivotFeedbackLoop = new PIDController(pivotConsants.kP, pivotConsants.kI, pivotConsants.kD);//establishes pid constants for pivot
   private PIDController collectorFeedbackLoop = new PIDController(collectorConstants.collectorP, collectorConstants.collectorI, collectorConstants.collectorD);//establishes pid constants for collector
@@ -114,6 +115,10 @@ public class GroundCollector extends SubsystemBase {
     // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
     collectorMotor.setMotorSpeed(-1);
   }
+
+  public void setCollectorMotorSpeed(double speed){
+    collectorMotor.setMotorSpeed(speed);
+  }
   /**
    *pid loop for motor speed
    */
@@ -172,6 +177,8 @@ public class GroundCollector extends SubsystemBase {
 
 
   public void drivePivotVolts(Double voltage){
+
+    
     pivotMotor.setVolts(voltage);
   }
   
@@ -205,14 +212,15 @@ public class GroundCollector extends SubsystemBase {
   /**
    * sets collector motor speed
    */
-  public void setCollectorMotorSpeed(Double speed){
+  public void setCollectorVoltage(Double speed){
 
+    collectorVoltage = speed;
     // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
     //   collectorMotor.getPosition()
     // );//uses PID loop to calculate motor speed
 
     // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
-    collectorMotor.setMotorSpeed(speed);
+    // collectorMotor.setMotorSpeed(collectorVoltage);
   }
 
   /**
@@ -271,6 +279,8 @@ public class GroundCollector extends SubsystemBase {
 
     // SmartDashboard.putNumber("computed voltage", finalVoltage);
     // pivotMotor.setVolts(finalVoltage);
+
+    drivePivotVolts(collectorVoltage);
   }
 
 

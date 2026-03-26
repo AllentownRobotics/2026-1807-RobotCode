@@ -18,7 +18,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
    public static final int kDriverControllerPort  = 0;
   public static class MotorIDs {
-    public static final int indexerMotorID = 30; // Motor ID for indexer
+    public static final int indexerMotorID = 20; // Motor ID for indexer
     
   }
   public static class hoodConstants {
@@ -82,9 +82,16 @@ public final class Constants {
   public static class IndexerConstants {
     public static final double desiredIndexerSpeed = 0.0; // PID setpoint (aka desired motor speed)
     // PID values (not calibrated yet):
-    public static final double kp = 0.0;
+    public static final double kp = 0.1;
     public static final double ki = 0;
     public static final double kd = 0;
+    public static final double ks = 0;
+    public static final double kv = 1;
+    public static final double ka = 0;
+    public static final double kg = 0;
+
+    public static final double indexerSpeedRPS = 50;
+
 
     // Beam break IDs
     public static final int topBeamBreakID = 40; 

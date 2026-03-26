@@ -5,11 +5,14 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+
+import org.ejml.dense.block.MatrixOps_MT_DDRB;
+
 import frc.robot.Constants;
-import frc.robot.commands.KickFuelCMD;
+// import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.SpinIndexerCMD;
-import frc.robot.commands.collectorMoveVoltsIn;
-import frc.robot.commands.collectorMoveVoltsOut;
+// import frc.robot.commands.collectorMoveVoltsIn;
+// import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.retractPivotCommand;
 // import frc.robot.commands.runCollectorCommands;
 // import frc.robot.commands.stop;
@@ -17,12 +20,14 @@ import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.runCollectorForward;
 import frc.robot.commands.runCollectorReverse;
+import frc.robot.commands.shootingSequence;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
-import frc.robot.commands.AutoAimingCommands.TeleopAutoSetHoodAngle;
+// import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
+// import frc.robot.commands.AutoAimingCommands.TeleopAutoSetHoodAngle;
 import frc.robot.commands.ClimbCMDs.ClimbDownManual;
 import frc.robot.commands.ClimbCMDs.ClimbUpManual;
-import frc.robot.commands.setFlywheelVelocity;
-import frc.robot.commands.shootingSequence;
+// import frc.robot.commands.setFlywheelVelocity;
+// import frc.robot.commands.shootingSequence;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.ClimbConstants;
 // import frc.robot.Constants.OperatorConstants;
@@ -43,6 +48,10 @@ import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.HoodSubsys;
 import frc.robot.subsystems.Shooter.TurretSubsys;
+// import frc.robot.subsystems.Kicker.KickerSubsys;
+// import frc.robot.subsystems.Shooter.FlywheelSubsys;
+// import frc.robot.subsystems.Shooter.HoodSubsys;
+// import frc.robot.subsystems.Shooter.TurretSubsys;
 // import frc.robot.subsystems.GroundCollector.GroundCollector;
 // import frc.robot.subsystems.GroundCollector.newCollector;
 // import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
@@ -58,6 +67,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.LEDPattern;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -83,8 +93,6 @@ public class RobotContainer {
    private KickerSubsys kickerSubsys = new KickerSubsys();
    private FlywheelSubsys flywheel = new FlywheelSubsys();
    private ClimbSubsys climbSubsystem = new ClimbSubsys();
-  // The robot's subsystems and commands are defined here...
-  // private final KickerSubsys m_kicker = new KickerSubsys();
   private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
 
   // Replace with CommandPS4Controller or CommanddriverController if needed
@@ -226,7 +234,7 @@ public class RobotContainer {
 
         // Target HUB
 
-    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret));
+    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret, operatorController));
 
 
 
@@ -235,12 +243,15 @@ public class RobotContainer {
 
       // ------------------Operator CONTROLS--------------------\\
 
-    // Ground Collector Out
-    operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
+    // // Ground Collector Out
+    // operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
 
-    // Ground Collector In
-    operatorController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
+    // // Ground Collector In
+    // operatorController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
 
+    operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));
+    // operatorController.y().whileTrue(new InstantCommand(() -> operatorController.setRumble(RumbleType.kBothRumble, 0.5))).onFalse(new InstantCommand(() -> operatorController.setRumble(RumbleType.kBothRumble, 0)));
+    operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));
     // Run Indexer command
     operatorController.leftTrigger().whileTrue(new SpinIndexerCMD(m_indexerSubsystem)); // Run Indexer
 
@@ -248,10 +259,12 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
 
     // Set hood to home position. This should be done automatically but is here for manual override
-    operatorController.y().onTrue(Commands.runOnce(() -> hood.setHoodToHome()));
+    // operatorController.y().onTrue(Commands.runOnce(() -> hood.setHoodToHome()));
     
     // Run Collector forward
-    operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));
+    // operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));
+    operatorController.rightBumper().onTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setCollectorVoltage(-1.5)));
+    operatorController.leftBumper().onTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setCollectorVoltage(1.5)));
 
     // Run Collector Backward
     operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));
@@ -268,98 +281,7 @@ public class RobotContainer {
       climbSubsystem.resetEncoderPos(), climbSubsystem)); 
 
     
-
-
-
-         
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // m_xboxController.leftBumper().onTrue(Commands.runOnce(SignalLogger::start));
-    // m_xboxController.rightBumper().onTrue(Commands.runOnce(SignalLogger::stop));
+    //ground collector sys id
 
     // m_xboxController.start().and(m_xboxController.a()).whileTrue(m_GroundCollectionSubsystem.sysIdQuasistatic(Direction.kForward));
     // m_xboxController.start().and(m_xboxController.b()).whileTrue(m_GroundCollectionSubsystem.sysIdQuasistatic(Direction.kReverse));
@@ -377,107 +299,12 @@ public class RobotContainer {
       .onFalse(Commands.runOnce(() -> 
       climbSubsystem.setClimbSetpoint(ClimbConstants.L1PositionLock), climbSubsystem));
 
-
-    
-
-    // m_xboxController.start().whileTrue(new collectorVoltage(m_GroundCollectionSubsystem));
-   /**
-    *when pressing y on controller, the pivot motor spins to intake position
-    */
-    // m_xboxController.y().whileTrue(
-    //   new extendPivotCommand(m_GroundCollectionSubsystem)
-    // );
-    /**
-     *when pressing x on controller, the pivot motor spins to home position
-     */
-    // m_xboxController.x().whileTrue(
-    //   new retractPivotCommand(m_GroundCollectionSubsystem)
-    // );
-
-    // m_xboxController.start().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
-    //   setPivotPosition(-0.21), m_GroundCollectionSubsystem).
-    //     withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.21))));
-
-    // m_xboxController.back().onTrue(Commands.runOnce(() -> m_GroundCollectionSubsystem.
-    //   setPivotPosition(-0.0), m_GroundCollectionSubsystem).
-    //     withDeadline(Commands.waitUntil(()->m_GroundCollectionSubsystem.isAtPosition(-0.0))));
-    // m_xboxController.a().whileTrue(m_RunCollectorCommands);
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    /**
-     * sets pattern alignedWithHumanPlayerStation when you press the start button
-     */
-    // m_operatorController.start().whileTrue(Commands.run(
-    //         () -> LEDSubsystem.setPattern(
-    //             LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
-      operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));
-      // m_xboxController.leftBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(-1.5), m_GroundCollectionSubsystem));
-      operatorController.leftBumper().whileTrue(new collectorMoveVoltsOut(m_GroundCollectionSubsystem));
-      // m_xboxController.rightBumper().whileTrue(Commands.run(() -> m_GroundCollectionSubsystem.drivePivotVolts(1.5), m_GroundCollectionSubsystem));
-      operatorController.rightBumper().whileTrue(new collectorMoveVoltsIn(m_GroundCollectionSubsystem));
-
-        // LEDSubsystem.setDefaultCommand(Commands.runOnce(
-        //     () -> LEDSubsystem.setPattern(
-        //         LEDConstants.LEDPatterns.IDLE), LEDSubsystem));//set idle as default pattern
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
-    ////m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-    
-
-    // Final bindings TBD: test binding toggles the SpinIndexerCMD when X is pressed.
-    // m_driverController.x().toggleOnTrue(m_SpinIndexerCMD);
-
-    // Currently a test binding - this command will be used for autos.
-    // m_driverController.y().toggleOnTrue(m_AutosSpinIndexerCMD);
-    //m_driverController.b().whileTrue(new KickFuelCMD(m_kicker));
-    // kickerSubsys.(new KickFuelCMD(new KickerSubsys()));
-    operatorController.y().whileTrue(new KickFuelCMD(kickerSubsys));
-    // m_driverController.a().whileTrue(m_expelFuel);
-    // m_buttonboard.b1().whileTrue(m_kickFuel);//when you press b1, it runs the method while the button is being pressed
-    // m_buttonboard.getTrigger(13).whileTrue(m_expelFuel);//when they driverController is pressed down it runs the method
-
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
-        drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driverController.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driverController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-driverController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
-
-
-        // driverController.rightBumper().whileTrue(drivetrain.applyRequest(() ->
-        //         drive.withVelocityX(-driverController.getLeftY() * slowSpeed) // Drive forward with negative Y (forward)
-        //             .withVelocityY(-driverController.getLeftX() * slowSpeed) // Drive left with negative X (left)
-        //             .withRotationalRate(-driverController.getRightX() * MaxAngularRate)) // Drive counterclockwise with negative X (left)
-        // );
-
-        driverController.x().whileTrue(drivetrain.applyRequest(() -> brake));
-        // driverController.b().whileTrue(drivetrain.applyRequest(() ->
-        //     point.withModuleDirection(new Rotation2d(-driverController.getLeftY(), -driverController.getLeftX()))
-        // ));
-
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
         // driverController.back().and(driverController.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
         // driverController.back().and(driverController.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
         // driverController.start().and(driverController.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        // driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
-        // Reset the field-centric heading on left bumper press.
-        driverController.leftTrigger().onTrue(drivetrain.runOnce(drivetrain::seedFieldCentric));
-
-
-        driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret)); 
-        // driverController.povUp().whileTrue(new SmartDashValues(turret, drivetrain));
-        // turret.setDefaultCommand(new targetHUB(turret));
-        // hood.setDefaultCommand(new autoSetHoodAngle(hood));
-        operatorController.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
-        // operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));
-        // driverController.povRight().whileTrue(new manualSetHoodAngle(hood));
-        // driverController.povUp().whileTrue(new AutonAutoAimHub(drivetrain, turret));
-        // driverController.povUp().whileTrue(new example(drivetrain));
+        // driverController.start().and(driverController.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse))
 
         drivetrain.registerTelemetry(logger::telemeterize);
  
