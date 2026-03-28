@@ -51,14 +51,17 @@ public class HoodSubsys extends SubsystemBase {
             Interpolator.forDouble()); // makes a new interpolating table, use case is for degree
     // calculation
 
-    // hoodMotor = new Kraken(101); // make constants for this
-    // hoodEncoder = new CANcoder(201); // make constants for this
-    // hoodMotor.addEncoder(hoodEncoder);
+    hoodMotor = new Kraken(45); // make constants for this
+    hoodEncoder = new CANcoder(50); // make constants for this
+    hoodMotor.addEncoder(hoodEncoder);
 
-    // hoodMotor.setBrakeMode(); // sets break mode when not in use
+    hoodMotor.setBrakeMode(); // sets break mode when not in use
 
-    // hoodMotor.setRotorToSensorRatio(1);
-    // hoodMotor.setSensorToMechanismRatio(30); // needs to be changed, gear ratio of the mechanism
+    hoodMotor.setRotorToSensorRatio(30);
+    hoodMotor.setSensorToMechanismRatio(10); // needs to be changed, gear ratio of the mechanism
+    hoodMotor.resetEncoder();
+    hoodEncoder.setPosition(0.0);
+    
     // turretMotor.setMotorCurrentLimits(40);     MAKE SURE TO SET THIS BEFORE TESTING
     // PID gains for Hood, test different number to get accurately get hood to specified angle
     // hoodMotor.setPIDValues(
@@ -74,12 +77,13 @@ public class HoodSubsys extends SubsystemBase {
 
     // arbitrary numbers for testing change once testing
     // "Key" in our case represents distance, value is degrees of rotation
-    hoodMap.put(1.4, 30.0);
-    hoodMap.put(2.0, 40.0);
-    hoodMap.put(2.5, 45.0);
-    hoodMap.put(1.6, 32.0);
-    hoodMap.put(2.3, 44.0);
-    hoodMap.put(2.6, 46.0);
+    hoodMap.put(1.33, 0.0);
+    hoodMap.put(1.9, 0.07);
+    hoodMap.put(2.39, 0.18);
+    hoodMap.put(3.06, 0.23);
+    // hoodMap.put(2.3, 44.0);
+    // hoodMap.put(2.6, 46.0);
+
   }
 
   /**
@@ -130,8 +134,32 @@ public class HoodSubsys extends SubsystemBase {
     SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
   }
 
+  public double manualHoodChecks(){
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+        hubX = Constants.turretConstants.RED_HUB.getX();
+        hubY = Constants.turretConstants.RED_HUB.getY();
+      }
+      if (ally.get() == Alliance.Blue) {
+        hubX = Constants.turretConstants.BLUE_HUB.getX();
+        hubY = Constants.turretConstants.BLUE_HUB.getY();
+      }
+    }
+
+    double currentPosX = drive.getState().Pose.getX();
+    double currentPosY = drive.getState().Pose.getY();
+    Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
+    Translation2d targetPoint = new Translation2d(hubX, hubY);
+
+    // distance formula using the hub as x2 and current drive pose as x1
+    
+    distanceToHub = currentPoint.getDistance(targetPoint);
+    return distanceToHub;
+  }
+
   public void manualSetHoodAngle() {
-    targetHoodState = SmartDashboard.getNumber("Hood target", 0);
+    targetHoodState = 10;
     currentHoodState = hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     targetHoodState = MathUtil.clamp(targetHoodState, 0, 45);
     hoodMotor.setDesiredEncoderPosition(targetHoodState / 360);
@@ -165,6 +193,9 @@ public class HoodSubsys extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("distance to HUB", manualHoodChecks());
+    SmartDashboard.putNumber("Hood current angle yo", hoodEncoder.getPosition().getValueAsDouble());
 
     // SmartDashboard.putBoolean("Hood at target?", isHoodWithinTolerance());
   }

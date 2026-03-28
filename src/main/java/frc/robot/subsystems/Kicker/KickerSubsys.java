@@ -17,10 +17,10 @@ public class KickerSubsys extends SubsystemBase {
   private DigitalInput beamBreak;//Establishes the beam break
   /** Creates a new Kicker. */
   public KickerSubsys() {
-    beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);//Creates a new beam break
+    // beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);//Creates a new beam break
     
     bottomKickerMotor  = new Kraken(Constants.KickerConstansts.bottomKickerMotorID);//Creates a new bottom kicker motor
-    topKickerMotor = new Kraken(Constants.KickerConstansts.topKickerMotorID);//Creates a new top kicker motor
+    // topKickerMotor = new Kraken(Constants.KickerConstansts.topKickerMotorID);//Creates a new top kicker motor
   }
   /**
    * Kicks the fuel into the turret.
@@ -28,7 +28,7 @@ public class KickerSubsys extends SubsystemBase {
    */
   public void kickFuel() {
     bottomKickerMotor.setMotorSpeed(Constants.KickerConstansts.bottomKickerSpeed);//Set the bottom kicker motor's speed to a constant
-    topKickerMotor.setMotorSpeed(Constants.KickerConstansts.topKickerMotorSpeedKick);//Set the top kicker motor's speed to a constant
+    // topKickerMotor.setMotorSpeed(Constants.KickerConstansts.topKickerMotorSpeedKick);//Set the top kicker motor's speed to a constant
   }
   /**
    * Expels the fuel to the ground
@@ -42,19 +42,19 @@ public class KickerSubsys extends SubsystemBase {
    */
   public void stopKickerMotors() {
     bottomKickerMotor.stopMotor();//Stops the bottom kicker motor
-    topKickerMotor.stopMotor();//Stops the top kicker motor
+    // topKickerMotor.stopMotor();//Stops the top kicker motor
   }
   /**
    * Determines if fuel is in the Kicker
    * @return
    */
-  public boolean isFuelInKicker() {
-    return beamBreak.get();//Returns true if beam is broken and false if beam is not
-  }
+  // public boolean isFuelInKicker() {
+  //   return beamBreak.get();//Returns true if beam is broken and false if beam is not
+  // }
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("is fuel in the kicker", isFuelInKicker());
+    // SmartDashboard.putBoolean("is fuel in the kicker", isFuelInKicker());
     // This method will be called once per scheduler run
   }
 }

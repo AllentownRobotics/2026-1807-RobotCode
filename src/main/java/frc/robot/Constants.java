@@ -90,7 +90,7 @@ public final class Constants {
     public static final double ka = 0;
     public static final double kg = 0;
 
-    public static final double indexerSpeedRPS = 50;
+    public static final double indexerSpeedRPS = 20;
 
 
     // Beam break IDs
@@ -102,7 +102,7 @@ public final class Constants {
     public static final int topKickerMotorID = 30;
     public static final double topKickerMotorSpeedKick = -0.8;
     public static final double topKickerMotorSpeedExpel = 0.8;
-    public static final int  bottomKickerMotorID = 33;
+    public static final int  bottomKickerMotorID = 40;
     public static final double bottomKickerSpeed = -0.8;
   }
 
