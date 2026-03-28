@@ -34,7 +34,7 @@ public class FlywheelSubsys extends SubsystemBase {
 
   /** sets flywheel to a user wanted velocity from smart dash */
   public void setFlywheelVelocity() {
-    targetVelocity = 26;
+    targetVelocity = 26; // realistically reaches 25 with current KV
         // SmartDashboard.getNumber("Target Velocity", 0); // gets velocity from smart dash
     targetVelocity =
         MathUtil.clamp(
