@@ -18,7 +18,7 @@ public class FlywheelSubsys extends SubsystemBase {
   private double targetVelocity;
 
   public FlywheelSubsys() {
-    flywheelTolerance = 0.1; // rps
+    flywheelTolerance = 1; // rps
     leftFlywheelKraken = new Kraken(46);
     rightFlywheelKraken = new Kraken(40);
     rightFlywheelKraken.follow(45, MotorAlignmentValue.Opposed);
@@ -57,10 +57,17 @@ public class FlywheelSubsys extends SubsystemBase {
   }
 
   public void setIdleSpeed() {
-    targetVelocity =
+    targetVelocity = 5;
         SmartDashboard.getNumber("Target Velocity", 0); // gets velocity from smart dash
     leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to
   }
+
+
+  public void stopFlywheel(){
+    leftFlywheelKraken.setVelocity(0);
+  }
+
+
 
   
   @Override

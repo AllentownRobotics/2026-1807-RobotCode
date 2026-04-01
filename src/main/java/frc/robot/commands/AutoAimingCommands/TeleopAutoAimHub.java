@@ -136,10 +136,10 @@ public class TeleopAutoAimHub extends Command {
   @Override
   public void end(boolean interrupted) {
     // make LEDS go VROOOOM
-    if(turret.isTurretWithinTolerance()){
-        operatorController.setRumble(RumbleType.kBothRumble, 0.5);
-        new WaitCommand(1).andThen(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0));
-    }
+    // if(turret.isTurretWithinTolerance()){
+    //     operatorController.setRumble(RumbleType.kBothRumble, 0.5);
+    //     new WaitCommand(1).andThen(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0));
+    // }
   }
 
   // Returns true when the command should end.

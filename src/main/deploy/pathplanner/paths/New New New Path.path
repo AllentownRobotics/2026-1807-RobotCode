@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.456228915662651,
-        "y": 7.400734939759036
+        "x": 5.460405629139074,
+        "y": 2.423294701986755
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.2646506024096364,
-        "y": 7.4444457831325295
+        "x": 6.738153973509933,
+        "y": 2.953269867549669
+      },
+      "isLocked": false,
+      "linkedName": "end2"
+    },
+    {
+      "anchor": {
+        "x": 7.986862582781457,
+        "y": 1.8787996688741715
+      },
+      "prevControl": {
+        "x": 8.044942052980131,
+        "y": 2.597533112582781
+      },
+      "nextControl": {
+        "x": 7.906317053036567,
+        "y": 0.8820487382811253
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.778,
-        "y": 6.122
+        "x": 4.640033112582781,
+        "y": 0.6300910596026483
       },
       "prevControl": {
-        "x": 8.0075199843261,
-        "y": 7.608383724613179
+        "x": 6.092019867549669,
+        "y": 0.3396937086092726
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,20 +47,7 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "",
-      "waypointRelativePos": 0.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,10 +58,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Orbit Neutral Auto",
+  "folder": "BumpDoubleSwipe",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

@@ -14,7 +14,7 @@ import frc.utils.Kraken;
 public class KickerSubsys extends SubsystemBase {
   private Kraken bottomKickerMotor;//Establishes the Bottom kicker motor
   private Kraken topKickerMotor;//Establishes the Top kicker motor
-  private DigitalInput beamBreak;//Establishes the beam break
+  // private DigitalInput beamBreak;//Establishes the beam break
   /** Creates a new Kicker. */
   public KickerSubsys() {
     // beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);//Creates a new beam break
@@ -35,7 +35,7 @@ public class KickerSubsys extends SubsystemBase {
    */
   public void expelFuel() {
     bottomKickerMotor.setMotorSpeed(Constants.KickerConstansts.bottomKickerSpeed);//Set the bottom kicker motor's speed to a constant
-    topKickerMotor.setMotorSpeed(Constants.KickerConstansts.topKickerMotorSpeedExpel);//Set the top kicker motor's speed to a constant
+    // topKickerMotor.setMotorSpeed(Constants.KickerConstansts.topKickerMotorSpeedExpel);//Set the top kicker motor's speed to a constant
   }
   /**
    * Stops all kicker motors
@@ -44,6 +44,7 @@ public class KickerSubsys extends SubsystemBase {
     bottomKickerMotor.stopMotor();//Stops the bottom kicker motor
     // topKickerMotor.stopMotor();//Stops the top kicker motor
   }
+  
   /**
    * Determines if fuel is in the Kicker
    * @return

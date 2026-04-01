@@ -58,20 +58,20 @@ public class HoodSubsys extends SubsystemBase {
     hoodMotor.setBrakeMode(); // sets break mode when not in use
 
     hoodMotor.setRotorToSensorRatio(30);
-    hoodMotor.setSensorToMechanismRatio(10); // needs to be changed, gear ratio of the mechanism
+    hoodMotor.setSensorToMechanismRatio(-10); // needs to be changed, gear ratio of the mechanism
     hoodMotor.resetEncoder();
-    hoodEncoder.setPosition(0.0);
+    // hoodEncoder.setPosition(0.0);
     
     // turretMotor.setMotorCurrentLimits(40);     MAKE SURE TO SET THIS BEFORE TESTING
     // PID gains for Hood, test different number to get accurately get hood to specified angle
-    // hoodMotor.setPIDValues(
-    //     Constants.hoodConstants.hoodkP,
-    //     Constants.hoodConstants.hoodkI,
-    //     Constants.hoodConstants.hoodkD,
-    //     Constants.hoodConstants.hoodkS,
-    //     Constants.hoodConstants.hoodkV,
-    //     Constants.hoodConstants.hoodkA,
-    //     Constants.hoodConstants.hoodkG);
+    hoodMotor.setPIDValues(
+        Constants.hoodConstants.hoodkP,
+        Constants.hoodConstants.hoodkI,
+        Constants.hoodConstants.hoodkD,
+        Constants.hoodConstants.hoodkS,
+        Constants.hoodConstants.hoodkV,
+        Constants.hoodConstants.hoodkA,
+        Constants.hoodConstants.hoodkG);
 
     SmartDashboard.putNumber("Hood target", 0);
 
@@ -127,7 +127,7 @@ public class HoodSubsys extends SubsystemBase {
             90); // clamps between 0 - 90 so if it ever breaks it will never go
     // below 0 degrees or above 90 degrees.
     hoodMotor.setDesiredEncoderPosition(
-        autoTargetHoodState / 360); // applies that position in rotations
+        autoTargetHoodState); // applies that position in rotations
 
     // various smartDashboard numbers to test user wanted values
     SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);

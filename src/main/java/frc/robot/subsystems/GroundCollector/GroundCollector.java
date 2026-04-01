@@ -87,7 +87,7 @@ public class GroundCollector extends SubsystemBase {
     pivotMotor.krakenConfiguration.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
     pivotMotor.kraken.getConfigurator().apply(pivotMotor.krakenConfiguration);
     //pivotMotor.setInverted();
-    pivotSysID = new SysIdRoutine(new Config(Volts.of(0.3).per(Second),Volts.of(1), null, (state) -> SignalLogger.writeString("Collector Sys Id", state.toString())), new Mechanism(pivotMotor::setVolts, null, this));
+    // pivotSysID = new SysIdRoutine(new Config(Volts.of(0.3).per(Second),Volts.of(1), null, (state) -> SignalLogger.writeString("Collector Sys Id", state.toString())), new Mechanism(pivotMotor::setVolts, null, this));
 
     rotationController = new ProfiledPIDController(0.4,0,0, new Constraints(maxVelocity, maxVelocity * 5));
 
@@ -95,7 +95,7 @@ public class GroundCollector extends SubsystemBase {
     0.01);
 
 
-    SignalLogger.start();
+    // SignalLogger.start();
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction){

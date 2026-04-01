@@ -22,8 +22,8 @@ public final class Constants {
     
   }
   public static class hoodConstants {
-    public static final double hoodkP = 1;
-    public static final double hoodkI = 0;
+    public static final double hoodkP = 40;
+    public static final double hoodkI = 4;
     public static final double hoodkD = 0;
     public static final double hoodkS = 0;
     public static final double hoodkV = 0;
