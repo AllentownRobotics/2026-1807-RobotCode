@@ -20,14 +20,14 @@ public class FlywheelSubsys extends SubsystemBase {
   public FlywheelSubsys() {
     flywheelTolerance = 0.1; // rps
     leftFlywheelKraken = new Kraken(46);
-    rightFlywheelKraken = new Kraken(40);
-    rightFlywheelKraken.follow(45, MotorAlignmentValue.Opposed);
+    rightFlywheelKraken = new Kraken(41);
+    rightFlywheelKraken.follow(46, MotorAlignmentValue.Opposed);
 
     leftFlywheelKraken.setCoastMode();
     leftFlywheelKraken.setRotorToSensorRatio(1);
     leftFlywheelKraken.setSensorToMechanismRatio(1); // needs to be changed
 
-    leftFlywheelKraken.setPIDValues(0.25, 0, 0, 0.14, 0.12, 0.02, 0);
+    leftFlywheelKraken.setPIDValues(0.25, 0, 0, 1.5, 0.12, 0.02, 0);
 
     SmartDashboard.putNumber("Target Velocity", 0);
   }

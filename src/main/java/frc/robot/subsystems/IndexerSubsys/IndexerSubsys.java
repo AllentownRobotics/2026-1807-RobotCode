@@ -79,7 +79,8 @@ public class IndexerSubsys extends SubsystemBase {
     // Assigns motor ID to indexer motor.
     indexerMotor = new Kraken(Constants.MotorIDs.indexerMotorID); 
     indexerMotor.setCoastMode();
-    indexerMotor.setPIDValues(IndexerConstants.kp, IndexerConstants.ki, IndexerConstants.kd, IndexerConstants.ks, IndexerConstants.kv, IndexerConstants.ka, IndexerConstants.kg);
+    // indexerMotor.setPIDValues(IndexerConstants.kp, IndexerConstants.ki, IndexerConstants.kd, IndexerConstants.ks, IndexerConstants.kv, IndexerConstants.ka, IndexerConstants.kg);
+    indexerMotor.setMotorCurrentLimits(10);
   }
 
   /**
@@ -91,7 +92,7 @@ public class IndexerSubsys extends SubsystemBase {
   }
 
   public void setIndexerSpeedRPS(){
-    indexerMotor.setVelocity(IndexerConstants.indexerSpeedRPS);
+    indexerMotor.setVolts(6.0);
   }
 
   /**

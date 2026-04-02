@@ -44,12 +44,12 @@ public class shootingSequence extends Command {
   public void execute() {
 
     flywheel.setFlywheelVelocity();
-    hood.setHoodAutomaticallyFromDistance();
+    // hood.setHoodAutomaticallyFromDistance();
 
-    if(turret.isTurretWithinTolerance() && flywheel.isFlywheelAtVelocity()){
+    if(flywheel.isFlywheelAtVelocity()){
         kicker.kickFuel();
         indexer.setIndexerSpeedRPS();
-        LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);
+        // LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);
     }    
   }
 

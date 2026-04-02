@@ -100,10 +100,10 @@ public final class Constants {
 
   public static class KickerConstansts {
     public static final int topKickerMotorID = 30;
-    public static final double topKickerMotorSpeedKick = -0.8;
-    public static final double topKickerMotorSpeedExpel = 0.8;
+    public static final double topKickerMotorSpeedKick = -0.5;
+    public static final double topKickerMotorSpeedExpel = 0.5;
     public static final int  bottomKickerMotorID = 40;
-    public static final double bottomKickerSpeed = -0.8;
+    public static final double bottomKickerSpeed = -0.5;
   }
 
   public static class SensorIDs {

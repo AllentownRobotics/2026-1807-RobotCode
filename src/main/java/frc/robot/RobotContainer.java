@@ -45,7 +45,7 @@ import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 // import frc.robot.commands.SpinIndexerCMD;
 // import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
-import frc.utils.PowerMonitor;
+// import frc.utils.PowerMonitor;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
 import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import frc.robot.subsystems.Kicker.KickerSubsys;
@@ -99,7 +99,7 @@ public class RobotContainer {
    private FlywheelSubsys flywheel = new FlywheelSubsys();
   //  private ClimbSubsys climbSubsystem = new ClimbSubsys();
   private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
-  private final PowerMonitor powerMonitor = new PowerMonitor();
+  // private final PowerMonitor powerMonitor = new PowerMonitor();
 
   // Replace with CommandPS4Controller or CommanddriverController if needed
   // private final CommandXboxController m_driverController =
@@ -260,7 +260,7 @@ public class RobotContainer {
     // operatorController.y().whileTrue(new InstantCommand(() -> operatorController.setRumble(RumbleType.kBothRumble, 0.5))).onFalse(new InstantCommand(() -> operatorController.setRumble(RumbleType.kBothRumble, 0)));
     operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));
     // Run Indexer command
-    operatorController.leftTrigger().whileTrue(new SpinIndexerCMD(m_indexerSubsystem)); // Run Indexer
+    // operatorController.leftTrigger().whileTrue(new SpinIndexerCMD(m_indexerSubsystem)); // Run Indexer
 
     // shoot fuel
     // operatorController.rightTrigger().whileTrue(new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
