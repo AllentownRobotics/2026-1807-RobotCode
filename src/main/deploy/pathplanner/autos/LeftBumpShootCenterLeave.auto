@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New New New New Path"
+            "pathName": "LeftShootCenter"
           }
         },
         {
@@ -19,13 +19,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New New New New New Path"
+            "pathName": "LeftShootCenterLeave"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "ShootCenter",
   "choreoAuto": false
 }

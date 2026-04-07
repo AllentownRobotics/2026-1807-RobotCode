@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Right Part the seas"
+            "pathName": "StartCenterShoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "ShootCenter",
   "choreoAuto": false
 }

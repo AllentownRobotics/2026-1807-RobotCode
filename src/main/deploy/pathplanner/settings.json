@@ -9,7 +9,11 @@
     "Outpost then Neutral",
     "Part the seas"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "OldRobotAutos",
+    "PusherAutos",
+    "ShootCenter"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
