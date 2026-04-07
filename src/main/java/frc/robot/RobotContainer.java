@@ -23,6 +23,7 @@ import frc.robot.commands.SpinIndexerCMD;
 import frc.robot.commands.runCollectorForward;
 import frc.robot.commands.runCollectorReverse;
 import frc.robot.commands.setFlywheelVelocity;
+import frc.robot.commands.setHoodAngle;
 import frc.robot.commands.shootingSequence;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 // import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
@@ -270,7 +271,11 @@ public class RobotContainer {
     operatorController.povUp().whileTrue(new SpinIndexerCMD(m_indexerSubsystem));
 
     // Set hood to home position. This should be done automatically but is here for manual override
-    // operatorController.y().onTrue(Commands.runOnce(() -> hood.setHoodToHome()));
+    operatorController.y().whileTrue(new setHoodAngle(hood));
+    operatorController.start().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(1)));
+    operatorController.back().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(-1)));
+    // operatorController.b().whileTrue(Commands.runOnce(() -> hood.setHoodSpeed())).onFalse(Commands.runOnce(() -> hood.stopHoodMotors()));
+    // operatorController.a().whileTrue(Commands.runOnce(() -> hood.setHoodSpeedBack())).onFalse(Commands.runOnce(() -> hood.stopHoodMotors()));
     
     // Run Collector forward
     // operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));

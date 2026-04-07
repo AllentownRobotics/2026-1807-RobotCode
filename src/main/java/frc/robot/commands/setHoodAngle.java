@@ -5,17 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.subsystems.Shooter.Flywheel;
-import frc.robot.subsystems.Shooter.FlywheelSubsys;
+import frc.robot.subsystems.Shooter.HoodSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class setFlywheelVelocity extends Command {
-  /** Creates a new setFlywheelVelocity. */
-  FlywheelSubsys flywheel;
-
-  public setFlywheelVelocity(FlywheelSubsys flywheel) {
-    this.flywheel = flywheel;
-    addRequirements(flywheel);
+public class setHoodAngle extends Command {
+  /** Creates a new setHoodAngle. */
+  HoodSubsys hood;
+  public setHoodAngle(HoodSubsys hood) {
+    this.hood = hood;
+    addRequirements(hood);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -26,14 +24,12 @@ public class setFlywheelVelocity extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    flywheel.setFlywheelVelocity();
+    hood.setHoodAutomaticallyFromDistance();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    flywheel.stopSpeed();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

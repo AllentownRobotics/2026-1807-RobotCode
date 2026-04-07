@@ -4,13 +4,24 @@
 
 package frc.robot.subsystems.Shooter;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.revrobotics.spark.config.EncoderConfig;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,7 +37,7 @@ import java.util.Optional;
 public class HoodSubsys extends SubsystemBase {
   /** Creates a new Hood. */
   private Kraken hoodMotor;
-
+  private TalonFX motorHood;
   private CommandSwerveDrivetrain drive;
   private double zeroHoodState;
   private CANcoder hoodEncoder;
@@ -39,6 +50,9 @@ public class HoodSubsys extends SubsystemBase {
   private double hoodTolerance;
   private ProfiledPIDController hoodController;
   double hoodRate;
+  double Angle;
+
+  
 
   InterpolatingTreeMap<Double, Double> hoodMap;
   // private double hoodPositionError;
@@ -49,40 +63,87 @@ public class HoodSubsys extends SubsystemBase {
   public HoodSubsys(CommandSwerveDrivetrain drive) {
     this.drive = drive;
     hoodTolerance = 0.1; // degrees
-  
+    // incrementAngl
     hoodMap =
         new InterpolatingTreeMap(
             InverseInterpolator.forDouble(),
             Interpolator.forDouble()); // makes a new interpolating table, use case is for degree
     // calculation
 
-    hoodMotor = new Kraken(45); // make constants for this
-    hoodEncoder = new CANcoder(50); // make constants for this
-    hoodMotor.addEncoder(hoodEncoder);
+    motorHood = new TalonFX(45);
+    hoodEncoder = new CANcoder(50);
+    
+    var config = new TalonFXConfiguration();
+    var encoderConfig = new CANcoderConfiguration();
+    config.Slot0.kP = 0.2;
+    config.Slot0.kI = 0.1;
+    config.Slot0.kD = 0;
+    config.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
+    config.Feedback.withRemoteCANcoder(hoodEncoder);
+    config.Feedback.RotorToSensorRatio = 3;
+    config.Feedback.SensorToMechanismRatio = 10.0 / 360.0; // 10 to 1 gear ratio converted to degrees with a step down gear ratio
+    config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    
+    
+    encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    
+    hoodEncoder.getConfigurator().apply(encoderConfig);
 
-    hoodMotor.setBrakeMode(); // sets break mode when not in use
+    
+    hoodEncoder.setPosition(0);
+    // slot0Configs.kP = 40; // A position error of 2.5 rotations results in 12 V output
+    // slot0Configs.kI = 0; // no output for integrated error
+    // slot0Configs.kD = 0; // A velocity error of 1 rps results in 0.1 V output
+    motorHood.getConfigurator().apply(config);
+    // hoodEncoder.getConfigurator().apply(encoderConfig);
+    
 
-    hoodMotor.setRotorToSensorRatio(30);
-    hoodMotor.setSensorToMechanismRatio(-10); // needs to be changed, gear ratio of the mechanism
+    
+
+    // hoodMotor = new Kraken(45); // make constants for this
+    // hoodEncoder = new CANcoder(50); // make constants for this
+    // hoodMotor.addEncoder(hoodEncoder);
+
+    // hoodMotor.setBrakeMode(); // sets break mode when not in use
+
+    // hoodMotor.setRotorToSensorRatio(30);
+    // hoodMotor.setSensorToMechanismRatio(20); // needs to be changed, gear ratio of the mechanism
     // hoodMotor.resetEncoder();
     // hoodEncoder.setPosition(0.0);
     
-    hoodMotor.setMotorCurrentLimits(40);    // MAKE SURE TO SET THIS BEFORE TESTING
+    // hoodMotor.setMotorCurrentLimits(35);    // MAKE SURE TO SET THIS BEFORE TESTING
+
+    // hoodMotor.setPIDValues(hoodConstants.hoodkP, hoodConstants.hoodkI, hoodConstants.hoodkD, hoodConstants.hoodkS, hoodConstants.hoodkV, hoodConstants.hoodkA, hoodConstants.hoodkG);
     
 
-    hoodController = new ProfiledPIDController(hoodConstants.hoodkP, hoodConstants.hoodkI, hoodConstants.hoodkD, new Constraints(0.1, 0.5));
 
+    // hoodController = new ProfiledPIDController(hoodConstants.hoodkP, hoodConstants.hoodkI, hoodConstants.hoodkD, new Constraints(0.05, 0.075));
+    // hoodController.enableContinuousInput(0, 1.15);
     SmartDashboard.putNumber("Hood target", 0);
 
     // arbitrary numbers for testing change once testing
     // "Key" in our case represents distance, value is degrees of rotation
-    hoodMap.put(1.33, 0.0);
-    hoodMap.put(1.9, 0.07);
-    hoodMap.put(2.39, 0.18);
-    hoodMap.put(3.06, 0.23);
+    // hoodMap.put(1.33, 0.0);
+    // hoodMap.put(1.9, 0.07);
+    // hoodMap.put(2.39, 0.18);
+    // hoodMap.put(3.06, 0.23);
+    hoodMap.put(2.0, 0.0);
+    hoodMap.put(3.01, 5.0);
+    hoodMap.put(3.2549025209279647, 9.0);
+    hoodMap.put(3.549, 11.0);
+    hoodMap.put(3.98631579274598, 13.0);
+    hoodMap.put(4.7629567823908365, 24.0);
     // hoodMap.put(2.3, 44.0);
     // hoodMap.put(2.6, 46.0);
 
+  }
+
+
+  public void setHoodAutomatically(){
+
+    final PositionVoltage m_request = new PositionVoltage(30).withSlot(0);
+// set position to 10 rotations
+    motorHood.setControl(m_request);
   }
 
   /**
@@ -123,14 +184,12 @@ public class HoodSubsys extends SubsystemBase {
         MathUtil.clamp(
             autoTargetHoodState,
             0,
-            90); // clamps between 0 - 90 so if it ever breaks it will never go
+            45); // clamps between 0 - 90 so if it ever breaks it will never go
     // below 0 degrees or above 90 degrees.
 
 
-    hoodRate = hoodController.calculate(hoodEncoder.getAbsolutePosition().getValueAsDouble(), autoTargetHoodState);
-
-    hoodMotor.setMotorSpeed(hoodRate + hoodController.getSetpoint().velocity);
     
+    setHoodAngle(autoTargetHoodState);
 
     // hoodMotor.setDesiredEncoderPosition(
     //     autoTargetHoodState / 360); // applies that position in rotations
@@ -138,6 +197,20 @@ public class HoodSubsys extends SubsystemBase {
     // various smartDashboard numbers to test user wanted values
     SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);
     SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
+  }
+
+  public void setHoodAngle(double angle){
+    Angle = angle;
+    final PositionVoltage m_request = new PositionVoltage(angle).withSlot(0);
+// set position to 10 rotations
+    motorHood.setControl(m_request);
+  }
+
+  
+
+  public void incrementHoodAngle(double increment){
+    Angle += increment;
+    setHoodAngle(Angle);
   }
 
   public double manualHoodChecks(){
@@ -165,15 +238,15 @@ public class HoodSubsys extends SubsystemBase {
   }
 
   public void manualSetHoodAngle() {
-    targetHoodState = 10;
+    targetHoodState = 0.2;
     currentHoodState = hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     targetHoodState = MathUtil.clamp(targetHoodState, 0, 45);
-    hoodRate = hoodController.calculate(hoodEncoder.getAbsolutePosition().getValueAsDouble(), targetHoodState);
-    hoodMotor.setMotorSpeed(hoodRate);
+    // hoodRate = hoodController.calculate(hoodEncoder.getAbsolutePosition().getValueAsDouble(), targetHoodState);
+    // hoodMotor.setMotorSpeed(-hoodRate);
+    hoodMotor.setDesiredEncoderPosition(targetHoodState);
+
 
     // hoodMotor.setDesiredEncoderPosition(targetHoodState / 360);
-    SmartDashboard.putNumber("Where hood is tryna go", targetHoodState);
-    SmartDashboard.putNumber("where da hood at", currentHoodState);
   }
   /**
    * Checks if hood is in a tolerable range of where it needs to be.
@@ -195,20 +268,34 @@ public class HoodSubsys extends SubsystemBase {
     currentHoodState = hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     // targetHoodState = MathUtil.clamp(zeroHoodState, 0, 45);
     // hoodMotor.setDesiredEncoderPosition(zeroHoodState);
-    hoodRate = hoodController.calculate(hoodEncoder.getAbsolutePosition().getValueAsDouble(), zeroHoodState);
-    hoodMotor.setMotorSpeed(hoodRate);
-
+    // hoodRate = -hoodController.calculate(hoodEncoder.getAbsolutePosition().getValueAsDouble(), zeroHoodState);
+    // hoodMotor.setMotorSpeed(hoodRate + hoodController.getSetpoint().velocity);
+    // hoodEncoder.setPosition(0.2);
+    hoodMotor.setDesiredEncoderPosition(0.21);
     SmartDashboard.putNumber("Is hood trying to go to 0?", targetHoodState);
     SmartDashboard.putNumber("where da hood at", currentHoodState);
   }
 
+  public void setHoodSpeed(){
+    hoodMotor.setMotorSpeed(-0.4);
+  }
+
+  public void stopHoodMotors(){
+    hoodMotor.setMotorSpeed(0);
+  }
+
+  public void setHoodSpeedBack(){
+    hoodMotor.setMotorSpeed(0.4);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("distance to HUB", manualHoodChecks());
     SmartDashboard.putNumber("Hood current angle yo", hoodEncoder.getPosition().getValueAsDouble());
-
+    SmartDashboard.putNumber("hOOD voltage" , motorHood.getMotorVoltage().getValueAsDouble());
+    SmartDashboard.putNumber("motors position", motorHood.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("Increment angle", Angle);
     // SmartDashboard.putBoolean("Hood at target?", isHoodWithinTolerance());
   }
 }

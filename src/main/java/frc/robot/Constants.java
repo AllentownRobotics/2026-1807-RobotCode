@@ -22,8 +22,8 @@ public final class Constants {
     
   }
   public static class hoodConstants {
-    public static final double hoodkP = 0.1;
-    public static final double hoodkI = 0;
+    public static final double hoodkP = 4;
+    public static final double hoodkI = 0.03;
     public static final double hoodkD = 0;
     public static final double hoodkS = 0;
     public static final double hoodkV = 0;
@@ -45,7 +45,7 @@ public final class Constants {
         new Translation2d(
             Units.inchesToMeters(
                 158.250954 + 47.998092 / 2), // X - distance from blue alliance wall
-            Units.inchesToMeters(161.517500) // Y - centered on field width // 158.84
+            Units.inchesToMeters(158.84) // Y - centered on field width // 158.84 // 161.517500
             );
     // from onshape, calculated the inches in x and y and turned that into meters for pose.
     public static final Translation2d RED_HUB =
@@ -100,10 +100,10 @@ public final class Constants {
 
   public static class KickerConstansts {
     public static final int topKickerMotorID = 30;
-    public static final double topKickerMotorSpeedKick = -0.5;
-    public static final double topKickerMotorSpeedExpel = 0.5;
+    public static final double topKickerMotorSpeedKick = -0.8;
+    public static final double topKickerMotorSpeedExpel = 0.8;
     public static final int  bottomKickerMotorID = 40;
-    public static final double bottomKickerSpeed = -0.5;
+    public static final double bottomKickerSpeed = -0.8;
   }
 
   public static class SensorIDs {
