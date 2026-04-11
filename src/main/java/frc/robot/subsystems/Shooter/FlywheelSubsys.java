@@ -43,8 +43,12 @@ public class FlywheelSubsys extends SubsystemBase {
     var config = new TalonFXConfiguration();
 
     config.Slot0.kP = 999999;
-    config.TorqueCurrent.PeakForwardTorqueCurrent = 40;
-    config.TorqueCurrent.PeakReverseTorqueCurrent = 0;
+    config.Slot0.kD = 0.1;
+    config.Slot0.kV = 8;
+    // config.Slot0.kD = 0.1;
+    // config.Slot0.
+    // config.TorqueCurrent.PeakForwardTorqueCurrent = 50;
+    // config.TorqueCurrent.PeakReverseTorqueCurrent = 0;
     config.MotorOutput.PeakForwardDutyCycle = 1;
     config.MotorOutput.PeakReverseDutyCycle = 0;
     config.MotorOutput.withNeutralMode(NeutralModeValue.Coast);
@@ -74,7 +78,8 @@ public class FlywheelSubsys extends SubsystemBase {
     //     MathUtil.clamp(
     //         targetVelocity, 0, 1000); // clamps so velocity can't ever be below 0 or above 5 rps.
     // leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to
-    leftFlywheel.setControl(new VelocityDutyCycle(28));
+    leftFlywheel.setControl(new VelocityDutyCycle(28).withUpdateFreqHz(300));
+    // leftFlywheel.setControl(new velocity)
   }
 
   /**
@@ -107,7 +112,8 @@ public class FlywheelSubsys extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Target Flywheel Velocity", targetVelocity);
-    // SmartDashboard.putNumber(
-        // "Current Flywheel velocity (rps)", leftFlywheelKraken.currentVelocityInRPS());
+    SmartDashboard.putNumber(
+        "Current Flywheel velocity (rps)", leftFlywheel.getVelocity().getValueAsDouble());
+    SmartDashboard.putNumber("motor applied current", rightFlywheel.getVelocity().getValueAsDouble());
   }
 }

@@ -51,6 +51,7 @@ public class HoodSubsys extends SubsystemBase {
   private ProfiledPIDController hoodController;
   double hoodRate;
   double Angle;
+  private double desiredAngle;
 
   
 
@@ -75,15 +76,24 @@ public class HoodSubsys extends SubsystemBase {
     
     var config = new TalonFXConfiguration();
     var encoderConfig = new CANcoderConfiguration();
-    config.Slot0.kP = 0.2;
-    config.Slot0.kI = 0.1;
-    config.Slot0.kD = 0;
+    config.Slot0.kP = 0.15;
+    config.Slot0.kI = 0.21;
+    // config.Slot0.kD = 0.002;
+    // config.Slot0.kD = 0.01;
+    config.Slot0.kV = 0.8;
+    config.Slot0.kS = 0.2;
     config.MotorOutput.withNeutralMode(NeutralModeValue.Brake);
     config.Feedback.withRemoteCANcoder(hoodEncoder);
+    // config.Feedback.withRemoteCANcoder(hoodEncoder);
     config.Feedback.RotorToSensorRatio = 3;
     config.Feedback.SensorToMechanismRatio = 10.0 / 360.0; // 10 to 1 gear ratio converted to degrees with a step down gear ratio
     config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
     
+
+    // sensor to mechanism ratio is 10:1
+    // rotor to sensor ratio is 3:1
+    // rotor to mechanism is 30:1
+
     
     encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     
@@ -123,25 +133,27 @@ public class HoodSubsys extends SubsystemBase {
 
     // arbitrary numbers for testing change once testing
     // "Key" in our case represents distance, value is degrees of rotation
-    // hoodMap.put(1.33, 0.0);
-    // hoodMap.put(1.9, 0.07);
-    // hoodMap.put(2.39, 0.18);
-    // hoodMap.put(3.06, 0.23);
+
+
+
     hoodMap.put(2.0, 0.0);
     hoodMap.put(3.01, 5.0);
     hoodMap.put(3.2549025209279647, 9.0);
     hoodMap.put(3.549, 11.0);
     hoodMap.put(3.98631579274598, 13.0);
     hoodMap.put(4.7629567823908365, 24.0);
-    // hoodMap.put(2.3, 44.0);
-    // hoodMap.put(2.6, 46.0);
+
+
+
+    //
+    // hoodMap.put(5.196783129652328 , 16.0);
 
   }
 
 
   public void setHoodAutomatically(){
 
-    final PositionVoltage m_request = new PositionVoltage(30).withSlot(0);
+    final PositionVoltage m_request = new PositionVoltage(20).withSlot(0);
 // set position to 10 rotations
     motorHood.setControl(m_request);
   }
@@ -201,7 +213,8 @@ public class HoodSubsys extends SubsystemBase {
 
   public void setHoodAngle(double angle){
     Angle = angle;
-    final PositionVoltage m_request = new PositionVoltage(angle).withSlot(0);
+    // desiredAngle = angle;
+    final PositionVoltage m_request = new PositionVoltage(Angle).withSlot(0);
 // set position to 10 rotations
     motorHood.setControl(m_request);
   }
@@ -295,7 +308,15 @@ public class HoodSubsys extends SubsystemBase {
     SmartDashboard.putNumber("Hood current angle yo", hoodEncoder.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("hOOD voltage" , motorHood.getMotorVoltage().getValueAsDouble());
     SmartDashboard.putNumber("motors position", motorHood.getPosition().getValueAsDouble());
+    SmartDashboard.putNumber("Encoder reading for hood", hoodEncoder.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Increment angle", Angle);
+    SmartDashboard.putNumber("INterpolating map angle", autoTargetHoodState);
+
+
+//     final PositionVoltage m_request = new PositionVoltage(desiredAngle).withSlot(0);
+// // set position to 10 rotations
+//     motorHood.setControl(m_request);
+
     // SmartDashboard.putBoolean("Hood at target?", isHoodWithinTolerance());
   }
 }

@@ -279,8 +279,11 @@ public class RobotContainer {
     
     // Run Collector forward
     // operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));
-    operatorController.rightBumper().onTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setCollectorVoltage(-1.5)));
-    operatorController.leftBumper().onTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setCollectorVoltage(1.5)));
+    // operatorController.rightBumper().onTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setCollectorVoltage(-1.5)));
+    // operatorController.leftBumper().onTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setCollectorVoltage(1.5)));
+    operatorController.rightBumper().whileTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
+    operatorController.leftBumper().whileTrue(m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
+
 
     // Run Collector Backward
     // operatorController.x().whileTrue(new runCollectorReverse(m_GroundCollectionSubsystem));

@@ -54,13 +54,13 @@ public final class Constants {
                 445.250954
                     + 47.998092
                         / 2), // X - mirrored for red side // 158.84          651.22 - 157.84
-            Units.inchesToMeters(161.517500) // Y - same center
+            Units.inchesToMeters(161.517500) // Y - same center // 161.517500
             );
   }
 
   public static class AimingConstants{
       public static final double driveHubAutoAimkP = 5;  // fine tune more
-      public static final double driveHubAutoAimkI = 1; // fine tune more 
+      public static final double driveHubAutoAimkI = 0; // fine tune more 
       public static final double driveHubAutoAimkD = 0;   // fine tune more
       public static final double headingTargettingTolerance = 5;
      //------------------BLUE ALLIANCE--------------------
@@ -171,7 +171,7 @@ public final class Constants {
     public static final int homeLimitSwitchPort = 8;//change according to limit switch port - pivot upper limit switch port number
 
     //PID values for pivot
-    public static final double kP = 1.1211;//change according to pid value
+    public static final double kP = 0.1;//change according to pid value
     public static final double kI = 0;//change according to pid value
     public static final double kD = 0;//change according to pid value 
     public static final double kS = 0.45145;//change if needed
@@ -186,7 +186,7 @@ public final class Constants {
 
     public static final double softLimitMinPosition = 0;//min position that the pivot deploy can go
     public static final double softLimitMaxPosition = 0;//max position that the pivot deploy can go
-    public static final double currentLimit = 35;
+    public static final double currentLimit = 60;
   }
 
   public static class collectorConstants{
