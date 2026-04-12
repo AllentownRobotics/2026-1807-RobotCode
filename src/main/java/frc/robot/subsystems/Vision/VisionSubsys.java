@@ -35,8 +35,8 @@ public class VisionSubsys extends SubsystemBase {
   /** Creates a new Vision. */
   public VisionSubsys(CommandSwerveDrivetrain drivetrain) {
     limelights = new Limelight[]{ // add all of the limelights used for april tags here
-      // new Limelight("limelight-hl"),
-      // new Limelight("limelight-hr"),
+      new Limelight("limelight-hl"),
+      new Limelight("limelight-hr"),
       new Limelight("limelight-bl"),
       new Limelight("limelight-br")
     //   new Limelight("limelight-collect")
@@ -127,7 +127,7 @@ public class VisionSubsys extends SubsystemBase {
     
       ArrayList<PoseEstimate> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
       for(PoseEstimate poseEstimate: robotPose2dFieldSpaceEstimates) {// loop through all positions given by all cameras that see an AprilTag
-        drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.7, 0.7, 9999999)); // n1 = x, n2 = y, n3 = rotation
+        drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.2, 0.2, 9999999)); // n1 = x, n2 = y, n3 = rotation
         drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
           new Pose2d(poseEstimate.pose.getX(), poseEstimate.pose.getY(), poseEstimate.pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
           poseEstimate.timestampSeconds // use the timestamp to allow different cameras to have different latency

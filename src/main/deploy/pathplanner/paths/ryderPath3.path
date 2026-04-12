@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.778,
-        "y": 6.122
+        "x": 6.15,
+        "y": 7.418
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.512116542493375,
-        "y": 7.70180419961667
+        "x": 3.173427152317881,
+        "y": 7.425049668871951
       },
-      "isLocked": true,
+      "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.839,
-        "y": 7.357
+        "x": 2.665331125827815,
+        "y": 6.2202400662251645
       },
       "prevControl": {
-        "x": 6.707156626506018,
-        "y": 7.356734939759036
+        "x": 1.8667384105960267,
+        "y": 7.664966887417217
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "shoot 1"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.887136929460586,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -62.89170916446227
+    "rotation": 132.9545915111128
   },
   "reversed": false,
-  "folder": "Orbit Neutral Auto",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -87.99044618697876
+    "rotation": 90.57652692124334
   },
   "useDefaultConstraints": true
 }

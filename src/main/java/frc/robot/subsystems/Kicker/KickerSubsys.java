@@ -20,6 +20,7 @@ public class KickerSubsys extends SubsystemBase {
     // beamBreak = new DigitalInput(Constants.SensorIDs.sensorID);//Creates a new beam break
     
     bottomKickerMotor  = new Kraken(Constants.KickerConstansts.bottomKickerMotorID);//Creates a new bottom kicker motor
+    bottomKickerMotor.setMotorCurrentLimits(30);
     // topKickerMotor = new Kraken(Constants.KickerConstansts.topKickerMotorID);//Creates a new top kicker motor
   }
   /**

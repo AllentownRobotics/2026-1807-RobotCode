@@ -270,6 +270,10 @@ public class GroundCollector extends SubsystemBase {
     &&(targetPosition + Constants.pivotConsants.positionTolerance <= currentPosition);
   }  
 
+  public boolean collectorAtPos(){
+    return motorPivot.getPosition().getValueAsDouble() >= 68.0;
+  }
+
   /**
    * sets collector motor speed
    */

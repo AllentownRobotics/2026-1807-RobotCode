@@ -17,6 +17,8 @@ import com.revrobotics.spark.config.EncoderConfig;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.Interpolator;
@@ -52,6 +54,12 @@ public class HoodSubsys extends SubsystemBase {
   double hoodRate;
   double Angle;
   private double desiredAngle;
+  private LinearFilter filter;
+  private LinearFilter filter2;
+  public double smoothedDistance; // averaged distance after linear filter
+  public MedianFilter medianFilter;
+  private double medianDistance;
+  private double smoothedMedianDistance;
 
   
 
@@ -105,6 +113,11 @@ public class HoodSubsys extends SubsystemBase {
     // slot0Configs.kI = 0; // no output for integrated error
     // slot0Configs.kD = 0; // A velocity error of 1 rps results in 0.1 V output
     motorHood.getConfigurator().apply(config);
+
+    filter = LinearFilter.movingAverage(15);
+    medianFilter = new MedianFilter(15);
+    filter2 = LinearFilter.movingAverage(30);
+    
     // hoodEncoder.getConfigurator().apply(encoderConfig);
     
 
@@ -145,8 +158,7 @@ public class HoodSubsys extends SubsystemBase {
 
 
 
-    //
-    // hoodMap.put(5.196783129652328 , 16.0);
+   // hoodMap.put(5.196783129652328 , 16.0);
 
   }
 
@@ -185,12 +197,22 @@ public class HoodSubsys extends SubsystemBase {
     // distance formula using the hub as x2 and current drive pose as x1
     
     distanceToHub = currentPoint.getDistance(targetPoint);
+
+    medianDistance = medianFilter.calculate(distanceToHub);
+    smoothedDistance = filter.calculate(distanceToHub);
+
+    smoothedMedianDistance = filter2.calculate(medianDistance);
+
+
+    
+    
+
         // Math.sqrt(
         //     Math.pow(hubX - drive.getState().Pose.getX(), 2)
         //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
     autoTargetHoodState =
         hoodMap.get(
-            distanceToHub); // using distanceToHub, gets the value using that "key" from the hub
+            smoothedDistance); // using distanceToHub, gets the value using that "key" from the hub
     // table
     autoTargetHoodState =
         MathUtil.clamp(
@@ -207,8 +229,11 @@ public class HoodSubsys extends SubsystemBase {
     //     autoTargetHoodState / 360); // applies that position in rotations
 
     // various smartDashboard numbers to test user wanted values
-    SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);
-    SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
+    // SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);
+    // SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
+    SmartDashboard.putNumber("Median distance output", medianDistance);
+    SmartDashboard.putNumber("smoothed distanced", smoothedDistance);
+    SmartDashboard.putNumber("Smooted Median distance", smoothedMedianDistance);
   }
 
   public void setHoodAngle(double angle){
@@ -311,6 +336,7 @@ public class HoodSubsys extends SubsystemBase {
     SmartDashboard.putNumber("Encoder reading for hood", hoodEncoder.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Increment angle", Angle);
     SmartDashboard.putNumber("INterpolating map angle", autoTargetHoodState);
+    
 
 
 //     final PositionVoltage m_request = new PositionVoltage(desiredAngle).withSlot(0);

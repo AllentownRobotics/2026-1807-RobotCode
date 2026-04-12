@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.778,
-        "y": 6.122
+        "x": 7.87796357615894,
+        "y": 4.383476821192053
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.512116542493375,
-        "y": 7.70180419961667
+        "x": 7.827144039735099,
+        "y": 3.8462417218543044
       },
-      "isLocked": true,
-      "linkedName": null
+      "isLocked": false,
+      "linkedName": "moses1"
     },
     {
       "anchor": {
-        "x": 2.839,
-        "y": 7.357
+        "x": 7.87796357615894,
+        "y": 1.3706043046357603
       },
       "prevControl": {
-        "x": 6.707156626506018,
-        "y": 7.356734939759036
+        "x": 7.914263245033112,
+        "y": 2.1619370860927147
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "shoot 1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.887136929460586,
-      "rotationDegrees": 0.0
+      "waypointRelativePos": 0.0920096852300272,
+      "rotationDegrees": -90.0
     }
   ],
   "constraintZones": [],
@@ -47,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -62.89170916446227
+    "rotation": -90.88140399658218
   },
   "reversed": false,
-  "folder": "Orbit Neutral Auto",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -87.99044618697876
+    "rotation": -144.1178627537957
   },
   "useDefaultConstraints": true
 }

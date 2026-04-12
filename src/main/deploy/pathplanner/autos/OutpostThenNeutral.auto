@@ -7,43 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Collect 1"
+            "pathName": "Start to Outpost"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot 1"
+            "pathName": "Outpost to Shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Collect 2"
+            "pathName": "Shoot to Trench"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Depot Collect"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Climb"
+            "pathName": "Trench to Collect"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "OldRobotAutos",
+  "folder": null,
   "choreoAuto": false
 }

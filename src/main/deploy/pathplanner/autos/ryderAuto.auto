@@ -7,43 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Collect 1"
+            "pathName": "ryderPath1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CollectorDown"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StartCollector"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot 1"
+            "pathName": "ryderPath2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "collectorUp"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Collect 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Shoot 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Depot Collect"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Climb"
+            "pathName": "ryderPath3"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "OldRobotAutos",
+  "folder": null,
   "choreoAuto": false
 }

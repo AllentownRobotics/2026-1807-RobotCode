@@ -13,6 +13,8 @@ import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.ShootingSequenceManual;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.SpinIndexerCMD;
+import frc.robot.commands.collectorMoveVoltsIn;
+import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.collectorMoveVoltsIn;
 // import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.retractPivotCommand;
@@ -155,6 +157,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("LEDPatternFuelReadyToShoot", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT), LEDSubsystem));
     // NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
+    NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
+    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).onlyWhile(() -> m_GroundCollectionSubsystem.collectorAtPos()));
+    NamedCommands.registerCommand("ShootCommand", new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
+    NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
 
     //  NamedCommands.registerCommand("ClimbToL1Start", Commands.runOnce(() -> 
     //   climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoStartPosition), climbSubsystem)); 

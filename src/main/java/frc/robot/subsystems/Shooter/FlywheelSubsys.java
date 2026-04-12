@@ -78,7 +78,7 @@ public class FlywheelSubsys extends SubsystemBase {
     //     MathUtil.clamp(
     //         targetVelocity, 0, 1000); // clamps so velocity can't ever be below 0 or above 5 rps.
     // leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to
-    leftFlywheel.setControl(new VelocityDutyCycle(28).withUpdateFreqHz(300));
+    leftFlywheel.setControl(new VelocityDutyCycle(26).withUpdateFreqHz(300));
     // leftFlywheel.setControl(new velocity)
   }
 
