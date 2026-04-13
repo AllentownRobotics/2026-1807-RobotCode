@@ -212,7 +212,7 @@ public class HoodSubsys extends SubsystemBase {
         //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
     autoTargetHoodState =
         hoodMap.get(
-            smoothedDistance); // using distanceToHub, gets the value using that "key" from the hub
+            smoothedMedianDistance); // using distanceToHub, gets the value using that "key" from the hub
     // table
     autoTargetHoodState =
         MathUtil.clamp(

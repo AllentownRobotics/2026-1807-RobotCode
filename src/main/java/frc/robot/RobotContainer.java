@@ -159,7 +159,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
     NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
     NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).onlyWhile(() -> m_GroundCollectionSubsystem.collectorAtPos()));
-    NamedCommands.registerCommand("ShootCommand", new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
+    NamedCommands.registerCommand("ShootCommand", new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(6));
     NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
 
     //  NamedCommands.registerCommand("ClimbToL1Start", Commands.runOnce(() -> 

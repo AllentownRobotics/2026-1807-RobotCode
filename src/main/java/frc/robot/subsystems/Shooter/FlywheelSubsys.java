@@ -96,6 +96,10 @@ public class FlywheelSubsys extends SubsystemBase {
     }
   }
 
+  public boolean flywheelAtSpeed(){
+    return Math.abs(targetVelocity - leftFlywheel.getVelocity().getValueAsDouble()) <= 5; 
+  }
+
   public void setIdleSpeed() {
     // targetVelocity =
     //     SmartDashboard.getNumber("Target Velocity", 0); // gets velocity from smart dash
