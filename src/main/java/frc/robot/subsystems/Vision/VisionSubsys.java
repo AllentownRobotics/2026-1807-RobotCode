@@ -80,7 +80,7 @@ public class VisionSubsys extends SubsystemBase {
    * 
    * @return
    */
-  public ArrayList<PoseEstimate> getRobotPose2dFieldSpaceEstimates() {// TODO finish javadoc comment
+  public ArrayList<PoseEstimateAndStDevs> getRobotPose2dFieldSpaceEstimates() {// TODO finish javadoc comment
 
     // //Array of double arrays, each array is in the order of x,y, rotation, timestamp
     // ArrayList<double[]> pose2dEstimates = new ArrayList<double[]>();
@@ -103,10 +103,12 @@ public class VisionSubsys extends SubsystemBase {
 
     // return pose2dEstimates;// return the array of 2d positions from the cameras that see april tags
 
-    ArrayList<PoseEstimate> pose2dEstimates = new ArrayList<PoseEstimate>();
+    ArrayList<PoseEstimateAndStDevs> pose2dEstimates = new ArrayList<PoseEstimateAndStDevs>();
     for(Limelight limelight : limelights){//loops through all limelights
       if (limelight.hasTarget()) {//if the limelight sees an april tag
-        pose2dEstimates.add(limelight.getRobotPoseFieldSpaceEstimate());
+        PoseEstimateAndStDevs poseEstimate = new PoseEstimateAndStDevs(limelight.getRobotPoseFieldSpaceEstimate());
+        poseEstimate.addStDevs(limelight.getStdevs());
+        pose2dEstimates.add(poseEstimate);
       }
       
     }
@@ -124,15 +126,43 @@ public class VisionSubsys extends SubsystemBase {
       }
       
     }
+
     
-      ArrayList<PoseEstimate> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
-      for(PoseEstimate poseEstimate: robotPose2dFieldSpaceEstimates) {// loop through all positions given by all cameras that see an AprilTag
+      ArrayList<PoseEstimateAndStDevs> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
+      
+      for(PoseEstimateAndStDevs poseEstimate: robotPose2dFieldSpaceEstimates) {// loop through all positions given by all cameras that see an AprilTag
         drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.2, 0.2, 9999999)); // n1 = x, n2 = y, n3 = rotation
+        
+        //if () {
         drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
-          new Pose2d(poseEstimate.pose.getX(), poseEstimate.pose.getY(), poseEstimate.pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
-          poseEstimate.timestampSeconds // use the timestamp to allow different cameras to have different latency
+          new Pose2d(poseEstimate.getPoseEstimate().pose.getX(), poseEstimate.getPoseEstimate().pose.getY(), poseEstimate.getPoseEstimate().pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
+          poseEstimate.getPoseEstimate().timestampSeconds
+          // ,VecBuilder.fill(poseEstimate.getStDevs()[0], poseEstimate.getStDevs()[1], poseEstimate.getStDevs()[5]) // use the timestamp to allow different cameras to have different latency
           );// TODO add standard deviations for the vision measurements
-      }
+      //}
+    }
+  }
+
+  public class PoseEstimateAndStDevs{
+
+    private PoseEstimate poseEstimate;
+    private double[] stdevs;
+    
+    public PoseEstimateAndStDevs(PoseEstimate poseEstimate){
+      this.poseEstimate = poseEstimate;
+    }
+
+    public PoseEstimate getPoseEstimate(){
+      return poseEstimate;
+    }
+
+    public void addStDevs(double[] stdevs){
+      this.stdevs = stdevs;
+    }
+
+    public double[] getStDevs(){
+      return stdevs;
+    }
   }
 
   public class Limelight extends SubsystemBase {// extends subsystem base to allow for future use of limelight specific commands, 
@@ -176,6 +206,10 @@ public class VisionSubsys extends SubsystemBase {
       targetID = table.getEntry("tid");
 
       targetPoseRobotSpace = table.getEntry("targetpose_robotspace");
+    }
+
+    public double[] getStdevs(){
+      return table.getEntry("stdevs").getDoubleArray(new double[0]);
     }
 
     /**

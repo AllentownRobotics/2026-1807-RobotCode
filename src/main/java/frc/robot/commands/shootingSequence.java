@@ -33,7 +33,7 @@ public class shootingSequence extends Command {
     this.kicker = kicker;
     this.indexer = indexer;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(hood, flywheel, turret, LEDs, kicker, indexer);
+    addRequirements(flywheel, turret, LEDs, kicker, indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -44,10 +44,10 @@ public class shootingSequence extends Command {
   @Override
   public void execute() {
 
-    flywheel.setFlywheelVelocity();
-    // hood.setHoodAutomaticallyFromDistance();
+    flywheel.setFlywheelSpeedFromDistance();
+    hood.setHoodAutomaticallyFromDistance();
 
-    if(flywheel.flywheelAtSpeed()){
+    if(flywheel.flywheelAtSpeed() && hood.HoodWithinTolerance()){
         kicker.kickFuel();
         indexer.setIndexerSpeedRPS();
         // LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);
@@ -57,11 +57,12 @@ public class shootingSequence extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    hood.setHoodAngle(0);
+    hood.setHoodAngle(1);
+    flywheel.stopSpeed();
     kicker.stopKickerMotors();
     indexer.stopIndexer();
     // LEDs.setPattern(Constants.LEDConstants.LEDPatterns.IDLE);
-    
+
   }
 
   // Returns true when the command should end.

@@ -99,7 +99,7 @@ public class RobotContainer {
    //private final extendPivotCommand m_GroundCollectionCommand = new extendPivotCommand(m_GroundCollectionSubsystem);
   //  private final CommandXboxController m_xboxController = new CommandXboxController(0);
    private KickerSubsys kickerSubsys = new KickerSubsys();
-   private FlywheelSubsys flywheel = new FlywheelSubsys();
+
   //  private ClimbSubsys climbSubsystem = new ClimbSubsys();
   private final IndexerSubsys m_indexerSubsystem = new IndexerSubsys();
   // private final PowerMonitor powerMonitor = new PowerMonitor();
@@ -139,6 +139,7 @@ public class RobotContainer {
     private final TurretSubsys turret = new TurretSubsys(drivetrain);
     // private final Flywheel flywheel = new Flywheel();
     private final HoodSubsys hood = new HoodSubsys(drivetrain);
+    private FlywheelSubsys flywheel = new FlywheelSubsys(drivetrain);
      /* Path follower */
      private final VisionSubsys visionSubsys = new VisionSubsys(drivetrain);
     private final SendableChooser<Command> autoChooser;
@@ -158,7 +159,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
     NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
-    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).onlyWhile(() -> m_GroundCollectionSubsystem.collectorAtPos()));
+    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).withTimeout(3));
     NamedCommands.registerCommand("ShootCommand", new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(6));
     NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
 
@@ -278,10 +279,12 @@ public class RobotContainer {
 
     // Set hood to home position. This should be done automatically but is here for manual override
     operatorController.y().whileTrue(new setHoodAngle(hood));
-    operatorController.start().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(1)));
-    operatorController.back().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(-1)));
+    operatorController.start().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(0.1)));
+    operatorController.back().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(-0.1)));
     // operatorController.b().whileTrue(Commands.runOnce(() -> hood.setHoodSpeed())).onFalse(Commands.runOnce(() -> hood.stopHoodMotors()));
     // operatorController.a().whileTrue(Commands.runOnce(() -> hood.setHoodSpeedBack())).onFalse(Commands.runOnce(() -> hood.stopHoodMotors()));
+
+
     
     // Run Collector forward
     // operatorController.a().whileTrue(new runCollectorForward(m_GroundCollectionSubsystem));

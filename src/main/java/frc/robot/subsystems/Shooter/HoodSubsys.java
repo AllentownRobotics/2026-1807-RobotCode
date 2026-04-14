@@ -116,7 +116,7 @@ public class HoodSubsys extends SubsystemBase {
 
     filter = LinearFilter.movingAverage(15);
     medianFilter = new MedianFilter(15);
-    filter2 = LinearFilter.movingAverage(30);
+    filter2 = LinearFilter.movingAverage(45); // go back to 30
     
     // hoodEncoder.getConfigurator().apply(encoderConfig);
     
@@ -149,15 +149,29 @@ public class HoodSubsys extends SubsystemBase {
 
 
 
-    hoodMap.put(2.0, 0.0);
-    hoodMap.put(3.01, 5.0);
-    hoodMap.put(3.2549025209279647, 9.0);
-    hoodMap.put(3.549, 11.0);
-    hoodMap.put(3.98631579274598, 13.0);
-    hoodMap.put(4.7629567823908365, 24.0);
+    // hoodMap.put(2.0, 0.0);
+    // hoodMap.put(3.01, 5.0);
+    // hoodMap.put(3.2549025209279647, 9.0);
+    // hoodMap.put(3.549, 11.0);
+    // hoodMap.put(3.98631579274598, 13.0);
+    // hoodMap.put(4.7629567823908365, 24.0);
+
+
+    hoodMap.put(5.4 , 17.0);  //30 rps
+    hoodMap.put(5.0 , 15.8);  //28 rps
+    hoodMap.put(4.5, 14.0); //28 rps
+    hoodMap.put(4.0, 11.6); //28 rps
+    hoodMap.put(3.5, 10.0); //28 rps
+    hoodMap.put(3.0, 6.7); //26 rps
+    hoodMap.put(2.5 , 5.2); //24 rps
+    hoodMap.put(2.0, 3.2); //23 rps
+    hoodMap.put(0.0, 3.2);
+    // hoodMap.put()
 
 
 
+
+    // hoodMap.put(4.3 , 12); 
    // hoodMap.put(5.196783129652328 , 16.0);
 
   }
@@ -300,9 +314,13 @@ public class HoodSubsys extends SubsystemBase {
     }
   }
 
+  public boolean HoodWithinTolerance(){
+    return Math.abs(autoTargetHoodState - motorHood.getPosition().getValueAsDouble()) <= 0.4;
+  }
+
   /** Sends hood to the home state. */
   public void setHoodToHome() {
-    zeroHoodState = 0;
+    zeroHoodState = 0.5;
     currentHoodState = hoodEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     // targetHoodState = MathUtil.clamp(zeroHoodState, 0, 45);
     // hoodMotor.setDesiredEncoderPosition(zeroHoodState);

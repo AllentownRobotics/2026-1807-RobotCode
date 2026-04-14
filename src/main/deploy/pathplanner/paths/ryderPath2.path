@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.401,
-        "y": 4.471
+        "x": 7.8997433774834445,
+        "y": 4.376216887417218
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.076195016702004,
-        "y": 4.180592201515214
+        "x": 8.574938394185448,
+        "y": 4.085809088932432
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ryder"
     },
     {
       "anchor": {
@@ -53,7 +53,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 156.97406834187188
+    "rotation": -93.94518622903755
   },
   "useDefaultConstraints": true
 }

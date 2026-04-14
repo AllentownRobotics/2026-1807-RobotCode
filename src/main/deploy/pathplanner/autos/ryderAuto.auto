@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "ryderPath1"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "CollectorDown"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ryderPath1"
           }
         },
         {
@@ -38,6 +38,12 @@
           "type": "path",
           "data": {
             "pathName": "ryderPath3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
           }
         }
       ]
