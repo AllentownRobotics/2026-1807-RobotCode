@@ -148,7 +148,7 @@ public final class Constants {
     }
     //color codes
     public static final double off = 0.99;//black
-    public static final double idle = -0.31;// solid red
+    public static final double idle = 0.61;// solid red
     public static final double alignedWithHub = 0.77;//solid green
     //public static final double climbCompleteRed = -0.85;//shot, red
     //public static final double climbCompleteBlue = -0.83;//shot, blue
