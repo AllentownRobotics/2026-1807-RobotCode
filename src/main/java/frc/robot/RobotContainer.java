@@ -252,7 +252,7 @@ public class RobotContainer {
 
         // Target HUB
 
-    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret, operatorController));
+    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret, operatorController, LEDSubsystem));
 
 
 

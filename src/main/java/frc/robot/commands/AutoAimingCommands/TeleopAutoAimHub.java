@@ -26,11 +26,16 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 // import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.Constants;
 // import frc.robot.Constants;
 import frc.robot.Constants.AimingConstants;
+import frc.robot.Constants.LEDConstants.LEDPatterns;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Shooter.TurretSubsys;
 
@@ -41,6 +46,7 @@ public class TeleopAutoAimHub extends Command {
   CommandXboxController driverController;
   CommandXboxController operatorController;
   TurretSubsys turret;
+  LEDSubsystem LEDs; 
   // PIDController thetaController;
   double targetHubAngle;
   private final SwerveRequest.FieldCentric drive;
@@ -50,11 +56,12 @@ public class TeleopAutoAimHub extends Command {
   // private TrapezoidProfile headingControl;
   private ProfiledPIDController thetaController;
 
-  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController) {
+  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController, LEDSubsystem LEDs) {
     this.drivetrain = drivetrain;
     this.driverController = driverController;
     this.turret = turret;
     this.operatorController = operatorController;
+    this.LEDs = LEDs;
     
     MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -127,14 +134,15 @@ public class TeleopAutoAimHub extends Command {
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
     
         // add Driver feedback here
-    // if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 5){
-    //     // make LEDS turn green here, or any sort of bright color to signify it has been targetted. 
-    // }
+     if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 2){
+         LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUB);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    LEDs.setPattern(LEDPatterns.IDLE);
     // make LEDS go VROOOOM
     // if(turret.isTurretWithinTolerance()){
     //     operatorController.setRumble(RumbleType.kBothRumble, 0.5);
