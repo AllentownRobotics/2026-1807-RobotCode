@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.32,
-        "y": 7.401
+        "x": 4.669072847682119,
+        "y": 7.265670529801324
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.6027026984416017,
-        "y": 7.359510858753022
+        "x": 4.951775546123721,
+        "y": 7.224181388554346
       },
       "isLocked": false,
       "linkedName": "shoot 2"
@@ -48,7 +48,7 @@
   "folder": "Orbit Neutral Auto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -61.990823291986125
+    "rotation": 111.90799085082973
   },
   "useDefaultConstraints": true
 }

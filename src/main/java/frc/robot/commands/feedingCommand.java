@@ -16,7 +16,7 @@ import frc.robot.subsystems.Shooter.TurretSubsys;
 import frc.robot.Constants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class shootingSequence extends Command {
+public class feedingCommand extends Command {
   HoodSubsys hood;
   FlywheelSubsys flywheel;
   TurretSubsys turret;
@@ -25,7 +25,7 @@ public class shootingSequence extends Command {
   LEDSubsystem LEDs;
 
   /** Creates a new shootingSequence. */
-  public shootingSequence(HoodSubsys hood, FlywheelSubsys flywheel, TurretSubsys turret, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
+  public feedingCommand(HoodSubsys hood, FlywheelSubsys flywheel, TurretSubsys turret, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
     this.hood = hood;
     this.flywheel = flywheel;
     this.turret = turret;
@@ -44,10 +44,10 @@ public class shootingSequence extends Command {
   @Override
   public void execute() {
 
-    flywheel.setFlywheelSpeedFromDistance();
-    hood.setHoodAutomaticallyFromDistance();
+    flywheel.setMaxSpeed();
+    hood.setFeedingAngle();
 
-    if(flywheel.flywheelAtSpeed() && hood.HoodWithinTolerance()){
+    if(hood.HoodWithinTolerance()){
         kicker.kickFuel();
         indexer.setIndexerSpeedRPS();
         // LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);

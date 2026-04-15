@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.AimingConstants;
 import frc.robot.Constants.hoodConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 import frc.utils.Kraken;
@@ -64,12 +65,19 @@ public class HoodSubsys extends SubsystemBase {
   
 
   InterpolatingTreeMap<Double, Double> hoodMap;
+  InterpolatingTreeMap<Double, Double> feedingMap;
   // private double hoodPositionError;
   // private double hoodPositionTolerance; // put in constants
   // private double targetY;
   // private double targetX;
 
   public HoodSubsys(CommandSwerveDrivetrain drive) {
+
+    feedingMap =
+        new InterpolatingTreeMap(
+            InverseInterpolator.forDouble(),
+            Interpolator.forDouble());
+
     this.drive = drive;
     hoodTolerance = 0.1; // degrees
     // incrementAngl
@@ -161,12 +169,24 @@ public class HoodSubsys extends SubsystemBase {
     hoodMap.put(5.0 , 15.8);  //28 rps
     hoodMap.put(4.5, 14.0); //28 rps
     hoodMap.put(4.0, 11.6); //28 rps
-    hoodMap.put(3.5, 10.0); //28 rps
+    hoodMap.put(3.5, 7.0); //28 rps
     hoodMap.put(3.0, 6.7); //26 rps
     hoodMap.put(2.5 , 5.2); //24 rps
     hoodMap.put(2.0, 3.2); //23 rps
     hoodMap.put(0.0, 3.2);
     // hoodMap.put()
+
+
+
+    feedingMap.put(5.0, 4.0);
+    feedingMap.put(7.0, 8.0);
+    feedingMap.put(9.0, 10.0);
+    feedingMap.put(11.0, 15.0);
+    feedingMap.put(12.0, 20.0);
+    feedingMap.put(13.5, 25.0);
+    feedingMap.put(15.0, 30.0);
+    feedingMap.put(17.5, 35.0);
+    feedingMap.put(19.0, 40.0);
 
 
 
@@ -183,6 +203,84 @@ public class HoodSubsys extends SubsystemBase {
 // set position to 10 rotations
     motorHood.setControl(m_request);
   }
+
+  public void setFeedingAngle(){
+
+
+    double currentPosX = drive.getState().Pose.getX();
+    double currentPosY = drive.getState().Pose.getY();
+
+
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+          if(ally.get() == Alliance.Red && currentPosX <= AimingConstants.redAllianceTrench && currentPosY >= AimingConstants.middleLine){
+        hubX = AimingConstants.redRightFeedingTargetX;
+        hubY = AimingConstants.redRightFeedingTargetY;
+        }
+        if(ally.get() == Alliance.Red && currentPosX <= AimingConstants.redAllianceTrench && currentPosY <= AimingConstants.middleLine ){
+        hubX = AimingConstants.redLeftFeedingTargetX;
+        hubY = AimingConstants.redLeftFeedingTargetY;
+       }
+      }
+      if (ally.get() == Alliance.Blue) {
+        if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY >= AimingConstants.middleLine){
+        hubX = AimingConstants.blueRightFeedingTargetX;
+        hubY = AimingConstants.blueRightFeedingTargetY;
+        }
+        if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY <= AimingConstants.middleLine ){
+        hubX = AimingConstants.blueLeftFeedingTargetX;
+        hubY = AimingConstants.blueLeftFeedingTargetY;
+       }
+      }
+    }
+
+    Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
+    Translation2d targetPoint = new Translation2d(hubX, hubY);
+
+    // distance formula using the hub as x2 and current drive pose as x1
+    
+    distanceToHub = currentPoint.getDistance(targetPoint);
+
+    medianDistance = medianFilter.calculate(distanceToHub);
+    smoothedDistance = filter.calculate(distanceToHub);
+
+    smoothedMedianDistance = filter2.calculate(medianDistance);
+
+
+    
+    
+
+        // Math.sqrt(
+        //     Math.pow(hubX - drive.getState().Pose.getX(), 2)
+        //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
+    autoTargetHoodState =
+        feedingMap.get(
+            smoothedMedianDistance); // using distanceToHub, gets the value using that "key" from the hub
+    // table
+    autoTargetHoodState =
+        MathUtil.clamp(
+            autoTargetHoodState,
+            0,
+            45); // clamps between 0 - 90 so if it ever breaks it will never go
+    // below 0 degrees or above 90 degrees.
+
+
+    
+    setHoodAngle(autoTargetHoodState);
+
+    // hoodMotor.setDesiredEncoderPosition(
+    //     autoTargetHoodState / 360); // applies that position in rotations
+
+    // various smartDashboard numbers to test user wanted values
+    // SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);
+    // SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
+    SmartDashboard.putNumber("Median distance output", medianDistance);
+    SmartDashboard.putNumber("smoothed distanced", smoothedDistance);
+    SmartDashboard.putNumber("Smooted Median distance", smoothedMedianDistance);
+
+  }
+  
 
   /**
    * automatically calculates which alliance you are and using that side hub calculates distance to

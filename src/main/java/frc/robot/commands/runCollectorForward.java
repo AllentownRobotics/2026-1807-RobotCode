@@ -14,7 +14,7 @@ public class runCollectorForward extends Command {
   public runCollectorForward(GroundCollector subsystem) {
     groundCollectionSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    // addRequirements(subsystem);
   }
   // Called when the command is initially scheduled.
   @Override

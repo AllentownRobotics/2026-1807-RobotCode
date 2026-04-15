@@ -37,6 +37,7 @@ public class VisionSubsys extends SubsystemBase {
     limelights = new Limelight[]{ // add all of the limelights used for april tags here
       new Limelight("limelight-hl"),
       new Limelight("limelight-hr"),
+      
       new Limelight("limelight-bl"),
       new Limelight("limelight-br")
     //   new Limelight("limelight-collect")
@@ -106,7 +107,7 @@ public class VisionSubsys extends SubsystemBase {
     ArrayList<PoseEstimateAndStDevs> pose2dEstimates = new ArrayList<PoseEstimateAndStDevs>();
     for(Limelight limelight : limelights){//loops through all limelights
       if (limelight.hasTarget()) {//if the limelight sees an april tag
-        PoseEstimateAndStDevs poseEstimate = new PoseEstimateAndStDevs(limelight.getRobotPoseFieldSpaceEstimate());
+        PoseEstimateAndStDevs poseEstimate = new PoseEstimateAndStDevs(limelight.getRobotPoseFieldSpaceEstimate(), limelight.name);
         poseEstimate.addStDevs(limelight.getStdevs());
         pose2dEstimates.add(poseEstimate);
       }
@@ -129,17 +130,30 @@ public class VisionSubsys extends SubsystemBase {
 
     
       ArrayList<PoseEstimateAndStDevs> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
-      
-      for(PoseEstimateAndStDevs poseEstimate: robotPose2dFieldSpaceEstimates) {// loop through all positions given by all cameras that see an AprilTag
-        drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.2, 0.2, 9999999)); // n1 = x, n2 = y, n3 = rotation
+      if(DriverStation.isTeleop()){
+      for(PoseEstimateAndStDevs poseEstimate: robotPose2dFieldSpaceEstimates) {
         
-        //if () {
-        drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
-          new Pose2d(poseEstimate.getPoseEstimate().pose.getX(), poseEstimate.getPoseEstimate().pose.getY(), poseEstimate.getPoseEstimate().pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
-          poseEstimate.getPoseEstimate().timestampSeconds
-          // ,VecBuilder.fill(poseEstimate.getStDevs()[0], poseEstimate.getStDevs()[1], poseEstimate.getStDevs()[5]) // use the timestamp to allow different cameras to have different latency
-          );// TODO add standard deviations for the vision measurements
-      //}
+        boolean useEstimate = true;
+
+        if(DriverStation.isAutonomous()){ 
+        if(poseEstimate.getLimelightName() == "Limelight-br"){
+          useEstimate = false;
+        }
+        // if(poseEstimate.getLimelightName() == "Limelight-bl"){
+        //   useEstimate = false;
+        // }
+      }
+        // loop through all positions given by all cameras that see an AprilTag
+        //drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.2, 0.2, 9999999)); // n1 = x, n2 = y, n3 = rotation
+        
+          if (useEstimate == true) {
+          drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
+            new Pose2d(poseEstimate.getPoseEstimate().pose.getX(), poseEstimate.getPoseEstimate().pose.getY(), poseEstimate.getPoseEstimate().pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
+            poseEstimate.getPoseEstimate().timestampSeconds
+            ,VecBuilder.fill(poseEstimate.getStDevs()[0], poseEstimate.getStDevs()[1], poseEstimate.getStDevs()[5]) // use the timestamp to allow different cameras to have different latency
+            );// TODO add standard deviations for the vision measurements
+          }
+      }
     }
   }
 
@@ -147,9 +161,11 @@ public class VisionSubsys extends SubsystemBase {
 
     private PoseEstimate poseEstimate;
     private double[] stdevs;
+    private String limelightName;
     
-    public PoseEstimateAndStDevs(PoseEstimate poseEstimate){
+    public PoseEstimateAndStDevs(PoseEstimate poseEstimate, String limelightName){
       this.poseEstimate = poseEstimate;
+      this.limelightName = limelightName;
     }
 
     public PoseEstimate getPoseEstimate(){
@@ -163,6 +179,11 @@ public class VisionSubsys extends SubsystemBase {
     public double[] getStDevs(){
       return stdevs;
     }
+    
+    public String getLimelightName(){
+      return this.limelightName;
+    }
+
   }
 
   public class Limelight extends SubsystemBase {// extends subsystem base to allow for future use of limelight specific commands, 
@@ -171,7 +192,7 @@ public class VisionSubsys extends SubsystemBase {
 
     private NetworkTable table;
     private NetworkTableEntry targetX, targetY, targetArea, robotPoseFieldSpace, targetPoseRobotSpace, targetID, targetValid;
-    private String name;
+    public String name;
 
     /**
      * Creates a new Limelight
@@ -209,7 +230,20 @@ public class VisionSubsys extends SubsystemBase {
     }
 
     public double[] getStdevs(){
-      return table.getEntry("stdevs").getDoubleArray(new double[0]);
+      return table.getEntry("stdevs").getDoubleArray(new double[]{
+        0.2,
+        0.2,
+        0.2,
+        9999999,
+        9999999,
+        9999999,
+        0.1,
+        0.1,
+        0.1,
+        9999999,
+        9999999,
+        9999999
+      });
     }
 
     /**

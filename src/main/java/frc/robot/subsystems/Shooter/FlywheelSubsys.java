@@ -55,10 +55,16 @@ public class FlywheelSubsys extends SubsystemBase {
   private TalonFX leftFlywheel;
   private TalonFX rightFlywheel;
   InterpolatingTreeMap<Double, Double> flywheelMap;
+  InterpolatingTreeMap<Double, Double> feedingMap;
+
 
   public FlywheelSubsys(CommandSwerveDrivetrain drive) {
     this.drive = drive;
     flywheelMap =
+        new InterpolatingTreeMap(
+            InverseInterpolator.forDouble(),
+            Interpolator.forDouble());
+    feedingMap =
         new InterpolatingTreeMap(
             InverseInterpolator.forDouble(),
             Interpolator.forDouble());
@@ -103,15 +109,13 @@ public class FlywheelSubsys extends SubsystemBase {
     flywheelMap.put(5.0 , 28.0);  //28 rps
     flywheelMap.put(4.5, 28.0); //28 rps
     flywheelMap.put(4.0, 28.0); //28 rps
-    flywheelMap.put(3.5, 28.0); //28 rps
+    flywheelMap.put(3.5, 27.0); //28 rps
     flywheelMap.put(3.0, 26.0); //26 rps
     flywheelMap.put(2.5 , 24.0); //24 rps
     flywheelMap.put(2.0, 23.0); //23 rps
     flywheelMap.put(0.0, 23.0);
 
     // var config = new TalonFXConfiguration();
-
-    
 
     // leftFlywheelKraken.setPIDValues(0.25, 0, 0, 1.5, 0.12, 0.02, 0);
 
@@ -121,6 +125,12 @@ public class FlywheelSubsys extends SubsystemBase {
 
 
   }
+  public void setMaxSpeed(){
+    leftFlywheel.setControl(new VelocityDutyCycle(60).withUpdateFreqHz(300));
+  }
+
+  
+
 
   public void setFlywheelSpeedFromDistance(){
      Optional<Alliance> ally = DriverStation.getAlliance();
@@ -184,19 +194,19 @@ public class FlywheelSubsys extends SubsystemBase {
     // leftFlywheel.setControl(new velocity)
   }
 
-  /**
-   * Checks if flywheel is in a tolerable range of where it needs to be.
-   *
-   * @return boolean - true or false depending on if its there or not.
-   */
-  public boolean isFlywheelAtVelocity() {
-    if ((Math.abs(targetVelocity - (leftFlywheelKraken.currentVelocityInRPS()))
-        <= flywheelTolerance)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // /**
+  //  * Checks if flywheel is in a tolerable range of where it needs to be.
+  //  *
+  //  * @return boolean - true or false depending on if its there or not.
+  //  */
+  // public boolean isFlywheelAtVelocity() {
+  //   if ((Math.abs(targetVelocity - (leftFlywheelKraken.currentVelocityInRPS()))
+  //       <= flywheelTolerance)) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   public boolean flywheelAtSpeed(){
     return Math.abs(autoTargetFlywheelSpeed - leftFlywheel.getVelocity().getValueAsDouble()) <= 5; 

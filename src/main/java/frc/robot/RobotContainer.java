@@ -10,11 +10,12 @@ import org.ejml.dense.block.MatrixOps_MT_DDRB;
 
 import frc.robot.Constants;
 import frc.robot.commands.KickFuelCMD;
-import frc.robot.commands.ShootingSequenceManual;
+// import frc.robot.commands.ShootingSequenceManual;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.SpinIndexerCMD;
 import frc.robot.commands.collectorMoveVoltsIn;
 import frc.robot.commands.collectorMoveVoltsOut;
+import frc.robot.commands.feedingCommand;
 // import frc.robot.commands.collectorMoveVoltsIn;
 // import frc.robot.commands.collectorMoveVoltsOut;
 // import frc.robot.commands.retractPivotCommand;
@@ -27,6 +28,7 @@ import frc.robot.commands.runCollectorReverse;
 import frc.robot.commands.setFlywheelVelocity;
 import frc.robot.commands.setHoodAngle;
 import frc.robot.commands.shootingSequence;
+import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 // import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 // import frc.robot.commands.AutoAimingCommands.TeleopAutoSetHoodAngle;
@@ -159,9 +161,10 @@ public class RobotContainer {
     // NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
     NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
     NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
-    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).withTimeout(3));
+    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).withTimeout(4));
     NamedCommands.registerCommand("ShootCommand", new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(6));
     NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
+    NamedCommands.registerCommand("Autp Hub Alignment", new AutonAutoAimHub(drivetrain, driverController, turret, operatorController));
 
     //  NamedCommands.registerCommand("ClimbToL1Start", Commands.runOnce(() -> 
     //   climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoStartPosition), climbSubsystem)); 
@@ -272,10 +275,11 @@ public class RobotContainer {
 
     // shoot fuel
     // operatorController.rightTrigger().whileTrue(new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
-    // operatorController.rightTrigger().whileTrue(new ShootingSequenceManual(hood, flywheel, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
-    operatorController.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
-    operatorController.leftTrigger().whileTrue(new KickFuelCMD(kickerSubsys));
-    operatorController.povUp().whileTrue(new SpinIndexerCMD(m_indexerSubsystem));
+    operatorController.rightTrigger().whileTrue(new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
+    operatorController.leftTrigger().whileTrue(new feedingCommand(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
+    // operatorController.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
+    // operatorController.leftTrigger().whileTrue(new KickFuelCMD(kickerSubsys));
+    // operatorController.povUp().whileTrue(new SpinIndexerCMD(m_indexerSubsystem));
 
     // Set hood to home position. This should be done automatically but is here for manual override
     operatorController.y().whileTrue(new setHoodAngle(hood));
