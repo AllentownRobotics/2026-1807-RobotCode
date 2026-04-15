@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -42,8 +46,37 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+
+    // We're teleop enabled, compute.
+    double matchTime = DriverStation.getMatchTime();
+
+    double shiftTime;
+
+     if (matchTime > 130) {
+    // Transition shift, hub is active.
+    shiftTime = matchTime - 130;
+  } else if (matchTime > 105) {
+    // Shift 1
+    shiftTime = matchTime - 105;
+  } else if (matchTime > 80) {
+    // Shift 2
+    shiftTime = matchTime - 80;
+  } else if (matchTime > 55) {
+    // Shift 3
+    shiftTime = matchTime - 55;
+  } else if (matchTime > 30) {
+    // Shift 4
+    shiftTime = matchTime - 30;
+  } else {
+    // End game, hub always active.
+    shiftTime = matchTime;
+  }
+
     CommandScheduler.getInstance().run();
-    SmartDashboard.putBoolean("button 1", m_robotContainer.m_buttonboard.getButton(1));
+    // SmartDashboard.putBoolean("button 1", m_robotContainer.m_buttonboard.getButton(1));
+    SmartDashboard.putNumber("Shift Time", shiftTime);
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
