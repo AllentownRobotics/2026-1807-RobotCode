@@ -130,30 +130,37 @@ public class VisionSubsys extends SubsystemBase {
 
     
       ArrayList<PoseEstimateAndStDevs> robotPose2dFieldSpaceEstimates = getRobotPose2dFieldSpaceEstimates();
-      if(DriverStation.isTeleop()){
-      for(PoseEstimateAndStDevs poseEstimate: robotPose2dFieldSpaceEstimates) {
+  
+      // loop through all positions given by all cameras that see an AprilTag
+      for(PoseEstimateAndStDevs poseEstimate: robotPose2dFieldSpaceEstimates) {  
         
-        boolean useEstimate = true;
+        // boolean useEstimate = true;
 
-        if(DriverStation.isAutonomous()){ 
-        if(poseEstimate.getLimelightName() == "Limelight-br"){
-          useEstimate = false;
-        }
+        // if(DriverStation.isAutonomous()){ 
+        // if(poseEstimate.getLimelightName() == "limelight-br"){
+        //   useEstimate = false;
+        // }
         // if(poseEstimate.getLimelightName() == "Limelight-bl"){
         //   useEstimate = false;
         // }
-      }
-        // loop through all positions given by all cameras that see an AprilTag
+
         //drivetrain.setVisionMeasurementStdDevs(VecBuilder.fill(0.2, 0.2, 9999999)); // n1 = x, n2 = y, n3 = rotation
-        
-          if (useEstimate == true) {
+      
+          
+          PoseEstimate estimate = poseEstimate.getPoseEstimate();
+            
+          boolean goodEstimate = (estimate.tagCount > 0) // we see multiple tags
+                                  && (estimate.avgTagDist <= 5) // trust if distance is less than 5 meters
+                                  && !((estimate.tagCount == 1)  // if 1 tag is seen with ambiguity below 0.2, trust it. If we see 1 that has higher ambiguity dont trust it, if we see 2 or more tags trust it regardless because there is no ambiguity.
+                                        && (estimate.rawFiducials[0].ambiguity < 0.2)); 
+
+          if(goodEstimate == true){
           drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
             new Pose2d(poseEstimate.getPoseEstimate().pose.getX(), poseEstimate.getPoseEstimate().pose.getY(), poseEstimate.getPoseEstimate().pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
             poseEstimate.getPoseEstimate().timestampSeconds
             ,VecBuilder.fill(poseEstimate.getStDevs()[0], poseEstimate.getStDevs()[1], poseEstimate.getStDevs()[5]) // use the timestamp to allow different cameras to have different latency
-            );// TODO add standard deviations for the vision measurements
-          }
-      }
+            );
+        }
     }
   }
 

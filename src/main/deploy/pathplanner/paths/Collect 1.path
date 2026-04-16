@@ -64,6 +64,10 @@
     {
       "waypointRelativePos": 0.3668280871670698,
       "rotationDegrees": -90.0
+    },
+    {
+      "waypointRelativePos": 1.6107883817427218,
+      "rotationDegrees": 178.40643847789661
     }
   ],
   "constraintZones": [],
@@ -86,7 +90,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.49839829448712
+    "rotation": -179.49839829448715
   },
   "reversed": false,
   "folder": "Orbit Neutral Auto",
