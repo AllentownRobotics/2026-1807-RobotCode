@@ -214,6 +214,99 @@ public class TurretSubsys extends SubsystemBase {
     
   }
 
+  public Rotation2d getMovingTargetTurretAngle(){
+     Optional<Alliance> ally = DriverStation.getAlliance();
+
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+        alliance = Alliance.Red;
+        targetX = Constants.turretConstants.RED_HUB.getX();
+        targetY = Constants.turretConstants.RED_HUB.getY();
+      }
+      if (ally.get() == Alliance.Blue) {
+        alliance = Alliance.Blue;
+        targetX = Constants.turretConstants.BLUE_HUB.getX();
+        targetY = Constants.turretConstants.BLUE_HUB.getY();
+      }
+    }
+
+    currentRobotPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    currentRobotPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+
+    // currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
+    /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
+     * robot heading allows you to get a robot relative angle*/
+    // targetTurretState =
+    //     Math.toDegrees(
+    //         Math.atan2(targetY - drive.getState().Pose.getY(), targetX - drive.getState().Pose.getX())); 
+
+    // if(ally.get() == Alliance.Blue && drive.getState().Pose.getX() <= 4 || ally.get() == Alliance.Red && drive.getState().Pose.getX() >= 12 ){
+    // targetTurretState =
+    //     Math.toDegrees(
+    //         Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+    // }
+    // else{
+    //   targetTurretState = 0;
+    // }
+  if(alliance == Alliance.Blue && currentRobotPosX <= AimingConstants.blueAllianceTrench){
+    //  targetTurretState =
+    //     Math.toDegrees(
+    //         Math.atan2(targetY - currentRobotPosY, targetX -  currentRobotPosX));
+
+      targetTurretState = targetTurretHeading(targetX,targetY, currentRobotPosX, currentRobotPosY);
+    }else{
+      if(alliance == Alliance.Blue && currentRobotPosX >= AimingConstants.blueAllianceTrench && currentRobotPosY <= AimingConstants.middleLine){
+        targetX = AimingConstants.blueRightFeedingTargetX;
+        targetY = AimingConstants.blueRightFeedingTargetY; // orbit
+        // targetTurretState =
+        // Math.toDegrees(
+        //     Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+         targetTurretState = targetTurretHeading(targetX,targetY, currentRobotPosX, currentRobotPosY);
+        // targetTurretState = targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+      } 
+      if(alliance == Alliance.Blue && currentRobotPosX >= AimingConstants.blueAllianceTrench && currentRobotPosY >= AimingConstants.middleLine){
+        targetX = AimingConstants.blueLeftFeedingTargetX;
+        targetY = AimingConstants.blueLeftFeedingTargetY;
+        //  targetTurretState = 
+        // Math.toDegrees(
+        //     Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+        targetTurretState = targetTurretHeading(targetX,targetY, currentRobotPosX, currentRobotPosY);
+        // targetTurretState = targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+      }
+    }
+    if(alliance == Alliance.Red && currentRobotPosX >= AimingConstants.redAllianceTrench){
+    //  targetTurretState =  // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+        // Math.toDegrees(
+        //     Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+
+      targetTurretState = targetTurretHeading(targetX,targetY, currentRobotPosX, currentRobotPosY);
+    }else{
+      if(alliance == Alliance.Red && currentRobotPosX <= AimingConstants.redAllianceTrench && currentRobotPosY >= AimingConstants.middleLine){
+        targetX = AimingConstants.redRightFeedingTargetX;
+        targetY = AimingConstants.redRightFeedingTargetY;
+        // targetTurretState = // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+        // Math.toDegrees(
+        //     Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+
+        targetTurretState = targetTurretHeading(targetX,targetY, currentRobotPosX, currentRobotPosY);
+      }
+      if(alliance == Alliance.Red && currentRobotPosX <= AimingConstants.redAllianceTrench && currentRobotPosY <= AimingConstants.middleLine ){
+        targetX = AimingConstants.redLeftFeedingTargetX;
+        targetY = AimingConstants.redLeftFeedingTargetY;
+        // targetTurretState = // targetTurretState(targetY, drive.getState().Pose.getY(), targetX, drive.getState().Pose.getX());
+        // Math.toDegrees(
+        //     Math.atan2(targetY -  drive.getState().Pose.getY(), targetX -  drive.getState().Pose.getX()));
+        targetTurretState = targetTurretHeading(targetX,targetY, currentRobotPosX, currentRobotPosY);
+      }
+      
+    }
+    targetTurretState = Math.toDegrees(MathUtil.angleModulus(Math.toRadians(targetTurretState)));
+    currentTurretState = drive.getState().Pose.getRotation().getDegrees();
+    return Rotation2d.fromDegrees(targetTurretState);
+    
+  }
+  
+
   public double targetTurretHeading(Double targetX, Double TargetY, Double currentPoseX, Double currentPoseY){
      return Math.toDegrees(
             Math.atan2(targetY - currentPoseY, targetX -  currentPoseX)) + 180;

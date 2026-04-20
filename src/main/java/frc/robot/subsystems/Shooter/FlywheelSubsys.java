@@ -182,6 +182,55 @@ public class FlywheelSubsys extends SubsystemBase {
 
   }
 
+  public void setFlywheelSpeedFromMovingDistance(){
+     Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+        hubX = Constants.turretConstants.RED_HUB.getX();
+        hubY = Constants.turretConstants.RED_HUB.getY();
+      }
+      if (ally.get() == Alliance.Blue) {
+        hubX = Constants.turretConstants.BLUE_HUB.getX();
+        hubY = Constants.turretConstants.BLUE_HUB.getY();
+      }
+    }
+    double currentPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    double currentPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
+    Translation2d targetPoint = new Translation2d(hubX, hubY);
+
+    // distance formula using the hub as x2 and current drive pose as x1
+    
+    distanceToHub = currentPoint.getDistance(targetPoint);
+
+    medianDistance = medianFilter.calculate(distanceToHub);
+    smoothedDistance = filter.calculate(distanceToHub);
+
+    smoothedMedianDistance = filter2.calculate(medianDistance);
+
+
+    
+    
+
+        // Math.sqrt(
+        //     Math.pow(hubX - drive.getState().Pose.getX(), 2)
+        //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
+    autoTargetFlywheelSpeed =
+        flywheelMap.get(
+            smoothedMedianDistance); // using distanceToHub, gets the value using that "key" from the hub
+    // table
+    autoTargetFlywheelSpeed =
+        MathUtil.clamp(
+            autoTargetFlywheelSpeed,
+            0,
+            65); // clamps between 0 - 90 so if it ever breaks it will never go
+    // below 0 degrees or above 90 degrees.
+
+
+    leftFlywheel.setControl(new VelocityDutyCycle(autoTargetFlywheelSpeed).withUpdateFreqHz(300));
+    // setHoodAngle(autoTargetHoodState);
+
+  }
   /** sets flywheel to a user wanted velocity from smart dash */
   public void setFlywheelVelocity() {
     // targetVelocity = 26; // realistically reaches 25 with current KV

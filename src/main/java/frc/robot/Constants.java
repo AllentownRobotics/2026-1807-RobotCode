@@ -56,6 +56,8 @@ public final class Constants {
                         / 2), // X - mirrored for red side // 158.84          651.22 - 157.84
             Units.inchesToMeters(161.517500) // Y - same center // 161.517500
             );
+
+    public static final double velocityPositionAdjustmentScaleFactor = 1;
   }
 
   public static class AimingConstants{
