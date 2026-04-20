@@ -230,8 +230,8 @@ public class TurretSubsys extends SubsystemBase {
       }
     }
 
-    currentRobotPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
-    currentRobotPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    currentRobotPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond;// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    currentRobotPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond;// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
 
     // currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
