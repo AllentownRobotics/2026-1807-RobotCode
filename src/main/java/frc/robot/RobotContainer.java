@@ -30,6 +30,7 @@ import frc.robot.commands.setHoodAngle;
 import frc.robot.commands.shootingSequence;
 import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
+import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHubOnTheMove;
 // import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
 // import frc.robot.commands.AutoAimingCommands.TeleopAutoSetHoodAngle;
 // import frc.robot.commands.ClimbCMDs.ClimbDownManual;
@@ -252,7 +253,7 @@ public class RobotContainer {
 
         // Target HUB
 
-    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret, operatorController, LEDSubsystem));
+    driverController.rightTrigger().whileTrue(new TeleopAutoAimHubOnTheMove(drivetrain, driverController, turret, operatorController, LEDSubsystem));
 
 
 

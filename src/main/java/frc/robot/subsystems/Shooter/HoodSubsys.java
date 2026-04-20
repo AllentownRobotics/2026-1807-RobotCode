@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
@@ -284,30 +285,30 @@ public class HoodSubsys extends SubsystemBase {
     public void setMovingFeedingAngle(){
 
 
-    double currentPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
-    double currentPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    double currentPosX = drive.getState().Pose.getX();
+    double currentPosY = drive.getState().Pose.getY();
 
 
     Optional<Alliance> ally = DriverStation.getAlliance();
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
           if(ally.get() == Alliance.Red && currentPosX <= AimingConstants.redAllianceTrench && currentPosY >= AimingConstants.middleLine){
-        hubX = AimingConstants.redRightFeedingTargetX;
-        hubY = AimingConstants.redRightFeedingTargetY;
+        hubX = AimingConstants.redRightFeedingTargetX - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+        hubY = AimingConstants.redRightFeedingTargetY - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
         }
         if(ally.get() == Alliance.Red && currentPosX <= AimingConstants.redAllianceTrench && currentPosY <= AimingConstants.middleLine ){
-        hubX = AimingConstants.redLeftFeedingTargetX;
-        hubY = AimingConstants.redLeftFeedingTargetY;
+        hubX = AimingConstants.redLeftFeedingTargetX - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+        hubY = AimingConstants.redLeftFeedingTargetY - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
        }
       }
       if (ally.get() == Alliance.Blue) {
         if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY >= AimingConstants.middleLine){
-        hubX = AimingConstants.blueRightFeedingTargetX;
-        hubY = AimingConstants.blueRightFeedingTargetY;
+        hubX = AimingConstants.blueRightFeedingTargetX - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+        hubY = AimingConstants.blueRightFeedingTargetY - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
         }
         if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY <= AimingConstants.middleLine ){
-        hubX = AimingConstants.blueLeftFeedingTargetX;
-        hubY = AimingConstants.blueLeftFeedingTargetY;
+        hubX = AimingConstants.blueLeftFeedingTargetX - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+        hubY = AimingConstants.blueLeftFeedingTargetY - ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
        }
       }
     }
@@ -378,8 +379,8 @@ public class HoodSubsys extends SubsystemBase {
         hubY = Constants.turretConstants.BLUE_HUB.getY();
       }
     }
-    double currentPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
-    double currentPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    double currentPosX = drive.getState().Pose.getX() + ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    double currentPosY = drive.getState().Pose.getY() + ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
     Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
     Translation2d targetPoint = new Translation2d(hubX, hubY);
 

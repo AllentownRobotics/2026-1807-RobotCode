@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -230,9 +231,12 @@ public class TurretSubsys extends SubsystemBase {
       }
     }
 
-    currentRobotPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond;// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
-    currentRobotPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond;// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+   currentRobotPosX = drive.getState().Pose.getX();// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+   currentRobotPosY = drive.getState().Pose.getY();// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
 
+   targetX -= ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond;// * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+   targetY -= ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond;
+    
     // currentTurretState = turretEncoder.getAbsolutePosition().getValueAsDouble() * 360;
     /*calculates robot relative angle by taking the inverse tan between the hub and the robot, then by subtracting
      * robot heading allows you to get a robot relative angle*/

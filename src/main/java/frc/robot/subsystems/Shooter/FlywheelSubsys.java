@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
@@ -195,9 +196,9 @@ public class FlywheelSubsys extends SubsystemBase {
       }
     }
 
-    
-    double currentPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
-    double currentPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+
+    double currentPosX = drive.getState().Pose.getX() + ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    double currentPosY = drive.getState().Pose.getY() + ChassisSpeeds.fromRobotRelativeSpeeds(drive.getState().Speeds, drive.getState().Pose.getRotation()).vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
     Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
     Translation2d targetPoint = new Translation2d(hubX, hubY);
 
