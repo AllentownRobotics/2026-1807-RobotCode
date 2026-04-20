@@ -280,6 +280,83 @@ public class HoodSubsys extends SubsystemBase {
     SmartDashboard.putNumber("Smooted Median distance", smoothedMedianDistance);
 
   }
+
+    public void setMovingFeedingAngle(){
+
+
+    double currentPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+    double currentPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
+
+
+    Optional<Alliance> ally = DriverStation.getAlliance();
+    if (ally.isPresent()) {
+      if (ally.get() == Alliance.Red) {
+          if(ally.get() == Alliance.Red && currentPosX <= AimingConstants.redAllianceTrench && currentPosY >= AimingConstants.middleLine){
+        hubX = AimingConstants.redRightFeedingTargetX;
+        hubY = AimingConstants.redRightFeedingTargetY;
+        }
+        if(ally.get() == Alliance.Red && currentPosX <= AimingConstants.redAllianceTrench && currentPosY <= AimingConstants.middleLine ){
+        hubX = AimingConstants.redLeftFeedingTargetX;
+        hubY = AimingConstants.redLeftFeedingTargetY;
+       }
+      }
+      if (ally.get() == Alliance.Blue) {
+        if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY >= AimingConstants.middleLine){
+        hubX = AimingConstants.blueRightFeedingTargetX;
+        hubY = AimingConstants.blueRightFeedingTargetY;
+        }
+        if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY <= AimingConstants.middleLine ){
+        hubX = AimingConstants.blueLeftFeedingTargetX;
+        hubY = AimingConstants.blueLeftFeedingTargetY;
+       }
+      }
+    }
+
+    Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);
+    Translation2d targetPoint = new Translation2d(hubX, hubY);
+
+    // distance formula using the hub as x2 and current drive pose as x1
+    
+    distanceToHub = currentPoint.getDistance(targetPoint);
+
+    medianDistance = medianFilter.calculate(distanceToHub);
+    smoothedDistance = filter.calculate(distanceToHub);
+
+    smoothedMedianDistance = filter2.calculate(medianDistance);
+
+
+    
+    
+
+        // Math.sqrt(
+        //     Math.pow(hubX - drive.getState().Pose.getX(), 2)
+        //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
+    autoTargetHoodState =
+        feedingMap.get(
+            smoothedMedianDistance); // using distanceToHub, gets the value using that "key" from the hub
+    // table
+    autoTargetHoodState =
+        MathUtil.clamp(
+            autoTargetHoodState,
+            0,
+            45); // clamps between 0 - 90 so if it ever breaks it will never go
+    // below 0 degrees or above 90 degrees.
+
+
+    
+    setHoodAngle(autoTargetHoodState);
+
+    // hoodMotor.setDesiredEncoderPosition(
+    //     autoTargetHoodState / 360); // applies that position in rotations
+
+    // various smartDashboard numbers to test user wanted values
+    // SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);
+    // SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
+    SmartDashboard.putNumber("Median distance output", medianDistance);
+    SmartDashboard.putNumber("smoothed distanced", smoothedDistance);
+    SmartDashboard.putNumber("Smooted Median distance", smoothedMedianDistance);
+
+  }
   
 
   /**

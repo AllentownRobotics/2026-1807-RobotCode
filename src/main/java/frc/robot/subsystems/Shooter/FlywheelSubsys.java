@@ -194,6 +194,8 @@ public class FlywheelSubsys extends SubsystemBase {
         hubY = Constants.turretConstants.BLUE_HUB.getY();
       }
     }
+
+    
     double currentPosX = drive.getState().Pose.getX() + drive.getState().Speeds.vxMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
     double currentPosY = drive.getState().Pose.getY() + drive.getState().Speeds.vyMetersPerSecond * Constants.turretConstants.velocityPositionAdjustmentScaleFactor;
     Translation2d currentPoint = new Translation2d(currentPosX, currentPosY);

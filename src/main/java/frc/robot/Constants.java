@@ -57,7 +57,8 @@ public final class Constants {
             Units.inchesToMeters(161.517500) // Y - same center // 161.517500
             );
 
-    public static final double velocityPositionAdjustmentScaleFactor = 1;
+    public static final double velocityPositionAdjustmentScaleFactor = 1; 
+    
   }
 
   public static class AimingConstants{
