@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "973 Right Swipe"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CollectorDown"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "collectorUp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "left swipe 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Hub Alignment"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "left swipe 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CollectorDown"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "collectorUp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left swipe 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Hub Alignment"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Double Sweep",
+  "choreoAuto": false
+}

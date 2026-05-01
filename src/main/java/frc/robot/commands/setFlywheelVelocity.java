@@ -5,37 +5,34 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.GroundCollector.GroundCollector;
+// import frc.robot.subsystems.Shooter.Flywheel;
+import frc.robot.subsystems.Shooter.FlywheelSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class runCollectorCommands extends Command {
-  private final GroundCollector groundCollectionSubsystem;
-  /** Creates a new runCollectorCommands. */
-  public runCollectorCommands(GroundCollector subsystem) {
-    groundCollectionSubsystem = subsystem;
+public class setFlywheelVelocity extends Command {
+  /** Creates a new setFlywheelVelocity. */
+  FlywheelSubsys flywheel;
+
+  public setFlywheelVelocity(FlywheelSubsys flywheel) {
+    this.flywheel = flywheel;
+    addRequirements(flywheel);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
   }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  /**
-   *starts collector motor
-   */
   public void execute() {
-    groundCollectionSubsystem.setCollectorMotorSpeed();
+    flywheel.setFlywheelSpeedFromDistance();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  /**
-   *stops collector motor
-   */
   public void end(boolean interrupted) {
-    groundCollectionSubsystem.stopCollectorMotor();
+    flywheel.stopSpeed();
   }
 
   // Returns true when the command should end.

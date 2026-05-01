@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.8828674698795178,
+        "y": 5.706939759036145
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.8828674698795178,
+        "y": 5.706939759036145
+      },
+      "isLocked": false,
+      "linkedName": "neural zone from shoot center"
+    },
+    {
+      "anchor": {
+        "x": 0.8828674698795178,
+        "y": 6.297036144578313
+      },
+      "prevControl": {
+        "x": 1.8445060240963844,
+        "y": 6.275180722891566
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Link 1"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 179.30130561701654
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -178.85423716182484
+  },
+  "useDefaultConstraints": true
+}

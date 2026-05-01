@@ -1,0 +1,46 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.GroundCollector.GroundCollector;
+
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
+public class runCollectorReverse extends Command {
+  private final GroundCollector groundCollectionSubsystem;
+  /** Creates a new runCollectorCommands. */
+  public runCollectorReverse(GroundCollector subsystem) {
+    groundCollectionSubsystem = subsystem;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(subsystem);
+  }
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {}
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  /**
+   *starts collector motor
+   */
+  public void execute() {
+    groundCollectionSubsystem.setCollectorMotorSpeed(-1.0);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  /**
+   *stops collector motor
+   */
+  public void end(boolean interrupted) {
+    groundCollectionSubsystem.stopCollectorMotor();
+  }
+
+  // Returns true when the command should end.
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
+}

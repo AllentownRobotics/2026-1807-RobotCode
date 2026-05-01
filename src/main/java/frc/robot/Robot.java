@@ -4,10 +4,18 @@
 
 package frc.robot;
 
+import java.util.Optional;
+
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -17,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   private final RobotContainer m_robotContainer;
 
   /**
@@ -43,7 +52,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    SmartDashboard.putBoolean("button 1", m_robotContainer.m_buttonboard.getButton(1));
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -58,7 +66,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
+    // schedule the autonomous command (example+l)
     if (m_autonomousCommand != null) {
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
@@ -70,6 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    drivetrain.configNeutralMode(NeutralModeValue.Brake);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -77,11 +86,41 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    Optional<Alliance> alliance = DriverStation.getAlliance();
+
+    // We're teleop enabled, compute.
+    double matchTime = DriverStation.getMatchTime();
+
+    double shiftTime;
+
+     if (matchTime > 130) {
+    // Transition shift, hub is active.
+    shiftTime = matchTime - 130;
+  } else if (matchTime > 105) {
+    // Shift 1
+    shiftTime = matchTime - 105;
+  } else if (matchTime > 80) {
+    // Shift 2
+    shiftTime = matchTime - 80;
+  } else if (matchTime > 55) {
+    // Shift 3
+    shiftTime = matchTime - 55;
+  } else if (matchTime > 30) {
+    // Shift 4
+    shiftTime = matchTime - 30;
+  } else {
+    // End game, hub always active.
+    shiftTime = matchTime;
+  }
+    // SmartDashboard.putBoolean("button 1", m_robotContainer.m_buttonboard.getButton(1));
+    SmartDashboard.putNumber("Shift Time", shiftTime);
+  }
 
   @Override
   public void testInit() {

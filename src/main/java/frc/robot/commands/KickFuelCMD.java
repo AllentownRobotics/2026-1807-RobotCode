@@ -32,10 +32,11 @@ public class KickFuelCMD extends Command {
   //TODO figure out how to keep the command running even is there are discrepencies in the flow of fuel
   public void execute() {
     
-    if (kicker.isFuelInKicker()) {
-      kicker.kickFuel();
-      timer.restart();
-    } 
+    // if (kicker.isFuelInKicker()) {
+    //   kicker.kickFuel();
+    //   timer.restart();
+    // } 
+    kicker.kickFuel();
     
   }
 
@@ -43,12 +44,11 @@ public class KickFuelCMD extends Command {
   @Override
   public void end(boolean interrupted) {
     kicker.stopKickerMotors();
-    timer.stop();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(Constants.TimeConstants.kickDurationAsSec);
+    return false;
   }
 }

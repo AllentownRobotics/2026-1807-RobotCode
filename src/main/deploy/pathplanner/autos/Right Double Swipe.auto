@@ -1,0 +1,74 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Right Double Swipe"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CollectorDown"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartCollector"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "collectorUp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Double Swipe 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right double swipe 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "right double swipe 4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Hub Alignment"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Double Sweep",
+  "choreoAuto": false
+}

@@ -3,57 +3,80 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.839,
-        "y": 7.357
+        "x": 2.9557284768211916,
+        "y": 5.2691887417218535
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.565277108433736,
-        "y": 7.51001204819277
+        "x": 4.336024096385542,
+        "y": 5.728795180722891
       },
       "isLocked": false,
       "linkedName": "shoot 1"
     },
     {
       "anchor": {
-        "x": 7.854746987951808,
-        "y": 5.324469879518073
+        "x": 5.723843373493976,
+        "y": 5.379108433734939
       },
       "prevControl": {
-        "x": 7.920313253012049,
-        "y": 7.673927710843374
+        "x": 5.249056155342043,
+        "y": 5.72332916689509
+      },
+      "nextControl": {
+        "x": 6.598060240963856,
+        "y": 4.7453012048192775
+      },
+      "isLocked": false,
+      "linkedName": "brandNew"
+    },
+    {
+      "anchor": {
+        "x": 6.288038079475135,
+        "y": 3.628443708611372
+      },
+      "prevControl": {
+        "x": 6.258998344372166,
+        "y": 4.695653973508403
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "collect 2"
+      "linkedName": "woah1"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.11203319502075855,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "CollectorDown",
+      "waypointRelativePos": 0.6729528535980169,
+      "endWaypointRelativePos": 2.0,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "CollectorDown"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 8.0,
+    "maxAcceleration": 8.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -91.10170611520661
+    "velocity": 0.0,
+    "rotation": -89.51030440720493
   },
   "reversed": false,
   "folder": "Orbit Neutral Auto",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": -62.89170916446227
+    "velocity": 5.0,
+    "rotation": 135.49593180234163
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

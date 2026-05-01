@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.8828674698795178,
+        "y": 6.297036144578313
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.2325542168674695,
+        "y": 5.455602409638555
+      },
+      "isLocked": false,
+      "linkedName": "Link 1"
+    },
+    {
+      "anchor": {
+        "x": 2.5766626506024095,
+        "y": 4.067783132530121
+      },
+      "prevControl": {
+        "x": 1.9209999999999998,
+        "y": 4.843650602409639
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "end neutral zone collect"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Orbit Neutral Auto",
+  "idealStartingState": {
+    "velocity": 0.0,
+    "rotation": 179.30130561701654
+  },
+  "useDefaultConstraints": true
+}

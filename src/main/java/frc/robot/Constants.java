@@ -18,12 +18,12 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
    public static final int kDriverControllerPort  = 0;
   public static class MotorIDs {
-    public static final int indexerMotorID = 30; // Motor ID for indexer
+    public static final int indexerMotorID = 20; // Motor ID for indexer
     
   }
   public static class hoodConstants {
-    public static final double hoodkP = 1;
-    public static final double hoodkI = 0;
+    public static final double hoodkP = 4;
+    public static final double hoodkI = 0.03;
     public static final double hoodkD = 0;
     public static final double hoodkS = 0;
     public static final double hoodkV = 0;
@@ -45,7 +45,7 @@ public final class Constants {
         new Translation2d(
             Units.inchesToMeters(
                 158.250954 + 47.998092 / 2), // X - distance from blue alliance wall
-            Units.inchesToMeters(161.517500) // Y - centered on field width // 158.84
+            Units.inchesToMeters(158.84) // Y - centered on field width // 158.84 // 161.517500
             );
     // from onshape, calculated the inches in x and y and turned that into meters for pose.
     public static final Translation2d RED_HUB =
@@ -54,37 +54,44 @@ public final class Constants {
                 445.250954
                     + 47.998092
                         / 2), // X - mirrored for red side // 158.84          651.22 - 157.84
-            Units.inchesToMeters(161.517500) // Y - same center
+            Units.inchesToMeters(161.517500) // Y - same center // 161.517500
             );
   }
 
   public static class AimingConstants{
       public static final double driveHubAutoAimkP = 5;  // fine tune more
-      public static final double driveHubAutoAimkI = 1; // fine tune more 
+      public static final double driveHubAutoAimkI = 0; // fine tune more 
       public static final double driveHubAutoAimkD = 0;   // fine tune more
-      public static final double headingTargettingTolerance = 5;
+      public static final double headingTargettingTolerance = 2;
      //------------------BLUE ALLIANCE--------------------
       public static final double blueAllianceTrench = 4;
       public static final double middleLine = 3.975;
-      public static final double blueRightFeedingTargetX = 2.186;
-      public static final double blueRightFeedingTargetY = 1.690;
-      public static final double blueLeftFeedingTargetX = 2.186;
+      public static final double blueRightFeedingTargetX = -3.184; // 2.186
+      public static final double blueRightFeedingTargetY = 1.690; 
+      public static final double blueLeftFeedingTargetX = -3.184; // 2.186
       public static final double blueLeftFeedingTargetY = 6.065;
 
       // ---------------- RED ALLIANCE--------------------
       public static final double redAllianceTrench = 12;
-      public static final double redRightFeedingTargetX = 14.339;
+      public static final double redRightFeedingTargetX = 20.339;
       public static final double redRightFeedingTargetY = 6.065;
-      public static final double redLeftFeedingTargetX = 14.339;
+      public static final double redLeftFeedingTargetX = 20.339;
       public static final double redLeftFeedingTargetY = 1.690;
     
   }
   public static class IndexerConstants {
     public static final double desiredIndexerSpeed = 0.0; // PID setpoint (aka desired motor speed)
     // PID values (not calibrated yet):
-    public static final double kp = 0.0;
+    public static final double kp = 0.1;
     public static final double ki = 0;
     public static final double kd = 0;
+    public static final double ks = 0;
+    public static final double kv = 0.3;
+    public static final double ka = 0;
+    public static final double kg = 0;
+
+    public static final double indexerSpeedRPS = 20;
+
 
     // Beam break IDs
     public static final int topBeamBreakID = 40; 
@@ -95,7 +102,7 @@ public final class Constants {
     public static final int topKickerMotorID = 30;
     public static final double topKickerMotorSpeedKick = -0.8;
     public static final double topKickerMotorSpeedExpel = 0.8;
-    public static final int  bottomKickerMotorID = 33;
+    public static final int  bottomKickerMotorID = 40;
     public static final double bottomKickerSpeed = -0.8;
   }
 
@@ -114,7 +121,7 @@ public final class Constants {
   }
 
   public static class LEDConstants{
-    public static final int blinkinID = 12;
+    public static final int blinkinID = 0;
     /**
      *sets LED patterns
      */
@@ -128,9 +135,11 @@ public final class Constants {
       PIVOT_AT_INTAKE_POSITION(pivotAtIntakePosition),
       //PIVOT_AT_HOME_POSITION(pivotAtHomePosition),
       FUEL_READY_TO_SHOOT(fuelReadyToShoot),
+      ROBOT_IS_SHOOTING(robotIsShooting),
       //FUEL_IN_TWINDEXER(fuelInTwindexer),
       ALIGNED_WITH_HUMAN_PLAYER_STATION(alignedWithHumanPlayerStation),
       PANIC(panic);
+      
 
       public final double value;
       private LEDPatterns(double val){
@@ -147,6 +156,7 @@ public final class Constants {
     public static final double pivotAtIntakePosition = 0.57;//solid hot pink
     //public static final double pivotAtHomePosition = 0;//change after color is confirmed
     public static final double fuelReadyToShoot = 0.15;//strobe green(color 1)
+    public static final double robotIsShooting = 0.5;
     //public static final double fuelInTwindexer = 0;//change after color is confirmed
     public static final double alignedWithHumanPlayerStation = 0;//purple
     public static final double panic = -0.11;//strobe red
@@ -161,7 +171,7 @@ public final class Constants {
     public static final int homeLimitSwitchPort = 8;//change according to limit switch port - pivot upper limit switch port number
 
     //PID values for pivot
-    public static final double kP = 1.1211;//change according to pid value
+    public static final double kP = 0.1;//change according to pid value
     public static final double kI = 0;//change according to pid value
     public static final double kD = 0;//change according to pid value 
     public static final double kS = 0.45145;//change if needed
@@ -176,7 +186,7 @@ public final class Constants {
 
     public static final double softLimitMinPosition = 0;//min position that the pivot deploy can go
     public static final double softLimitMaxPosition = 0;//max position that the pivot deploy can go
-    public static final double currentLimit = 35;
+    public static final double currentLimit = 60;
   }
 
   public static class collectorConstants{

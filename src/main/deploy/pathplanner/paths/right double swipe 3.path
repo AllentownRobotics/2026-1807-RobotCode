@@ -1,0 +1,82 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.9263493975903616,
+        "y": 2.9640843373493975
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.494361445783131,
+        "y": 2.177289156626506
+      },
+      "isLocked": false,
+      "linkedName": "right double swipe 2"
+    },
+    {
+      "anchor": {
+        "x": 6.2265180722891555,
+        "y": 4.319120481927711
+      },
+      "prevControl": {
+        "x": 6.48878313253012,
+        "y": 2.6143975903614454
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "right double swipe 3"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": 25.029097051826675
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "CollectorDown",
+      "waypointRelativePos": 0.4158808933002486,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "CollectorDown"
+        }
+      }
+    },
+    {
+      "name": "StartCollector",
+      "waypointRelativePos": 0.5588089330024747,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "StartCollector"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 8.0,
+    "maxAcceleration": 10.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "Orbit Neutral Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -140.9061411137704
+  },
+  "useDefaultConstraints": false
+}

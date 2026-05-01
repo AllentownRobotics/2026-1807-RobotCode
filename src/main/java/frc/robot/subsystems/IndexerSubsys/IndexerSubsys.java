@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.IndexerConstants;
 import frc.utils.Kraken;
 
 public class IndexerSubsys extends SubsystemBase {
@@ -21,17 +22,17 @@ public class IndexerSubsys extends SubsystemBase {
   /** 
    * The PID controller used on the indexer motor.
    */ 
-  private final PIDController indexerPIDController; 
+  // private final PIDController indexerPIDController; 
 
   /**
    * The beam break at the top of the hopper that returns values representing whether the hopper is full of fuel or not.
    */
-  private final DigitalInput topHopperBeamBreak; 
+  // private final DigitalInput topHopperBeamBreak; 
   
   /**
    * The beam break near the bottom of the hopper that detects if there is any fuel in the hopper on this side.
    */
-  private final DigitalInput bottomHopperBeamBreak;
+  // private final DigitalInput bottomHopperBeamBreak;
 
   /**
    * Boolean that returns true if the indexer is spinning, and false if it is not spinning.
@@ -66,18 +67,20 @@ public class IndexerSubsys extends SubsystemBase {
   /** Creates a new IndexerSubsystem. */
   public IndexerSubsys() {
     // Assigns beam break IDs to their corresponding beam breaks.
-    topHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.topBeamBreakID);
-    bottomHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.bottomBeamBreakID);
+    // topHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.topBeamBreakID);
+    // bottomHopperBeamBreak = new DigitalInput(Constants.IndexerConstants.bottomBeamBreakID);
 
     // Assigns PID constants to PIDController.
-    indexerPIDController = new PIDController(
-      Constants.IndexerConstants.kp, 
-      Constants.IndexerConstants.ki, 
-      Constants.IndexerConstants.kd);
+    // indexerPIDController = new PIDController(
+    //   Constants.IndexerConstants.kp, 
+    //   Constants.IndexerConstants.ki, 
+    //   Constants.IndexerConstants.kd);
     
     // Assigns motor ID to indexer motor.
     indexerMotor = new Kraken(Constants.MotorIDs.indexerMotorID); 
     indexerMotor.setCoastMode();
+    indexerMotor.setPIDValues(IndexerConstants.kp, IndexerConstants.ki, IndexerConstants.kd, IndexerConstants.ks, IndexerConstants.kv, IndexerConstants.ka, IndexerConstants.kg);
+    indexerMotor.setMotorCurrentLimits(10);
   }
 
   /**
@@ -85,37 +88,43 @@ public class IndexerSubsys extends SubsystemBase {
    */
   public void setIndexerDesiredSpeed(double speed) {
     // Assigns setpoint value to PID controller.
-    indexerPIDController.setSetpoint(Constants.IndexerConstants.desiredIndexerSpeed);
+    // indexerPIDController.setSetpoint(Constants.IndexerConstants.desiredIndexerSpeed);
+  }
+
+  public void setIndexerSpeedRPS(){
+    // indexerMotor.setVolts(6.0);
+    indexerMotor.setVelocity(10);
   }
 
   /**
    * Sets indexer motor to a desired speed using PID with our setpoint and values.
    */
-  public void setIndexerSpeed() {
-    // Calculates motor speed by getting motor velocity and using PID.
-    indexerMotor.setMotorSpeed(
-      indexerPIDController.calculate(
-        indexerMotor.getVelocity()
-      ) + indexerMotor.getVelocity() 
-      // The PID loop returns the amount to change by to get to the setpoint (aka the amount the motor wants to increase by).
-      // In order for the motor to increase in speed, it needs to add this amount to its current velocity.
-      // NOTE: there is a simpler way of implementing this using the new Kraken utils. Should be looked into later
-    );
-  }
+  // public void setIndexerSpeed() {
+  //   // Calculates motor speed by getting motor velocity and using PID.
+  //   indexerMotor.setMotorSpeed(
+  //     indexerPIDController.calculate(
+  //       indexerMotor.getVelocity()
+  //     ) + indexerMotor.getVelocity() 
+  //     // The PID loop returns the amount to change by to get to the setpoint (aka the amount the motor wants to increase by).
+  //     // In order for the motor to increase in speed, it needs to add this amount to its current velocity.
+  //     // NOTE: there is a simpler way of implementing this using the new Kraken utils. Should be looked into later
+  //   );
+  // }
+  
 
   /**
    * Sets indexer motor to a desired speed using PID ONLY if one of the beam breaks detects fuel. Used in auto.
    */
   public void autosSetIndexerSpeed() {
-    if (bottomHopperBeamBreak.get()) {
-      indexerMotor.setMotorSpeed(
-        indexerPIDController.calculate(
-          indexerMotor.getVelocity()
-        ) + indexerMotor.getVelocity()
-      );
-    } else {
-      indexerMotor.setMotorSpeed(0);
-    }
+    // if (bottomHopperBeamBreak.get()) {
+    //   indexerMotor.setMotorSpeed(
+    //     indexerPIDController.calculate(
+    //       indexerMotor.getVelocity()
+    //     ) + indexerMotor.getVelocity()
+    //   );
+    // } else {
+    //   indexerMotor.setMotorSpeed(0);
+    // }
   }
 
   /**
@@ -168,10 +177,10 @@ public class IndexerSubsys extends SubsystemBase {
     // This method will be called once per scheduler run
 
     // Gets the value of the top hopper beam break. 
-    hopperFullBeamBreak = topHopperBeamBreak.get(); 
+    // hopperFullBeamBreak = topHopperBeamBreak.get(); 
 
     //Gets the value of the bottom hopper beam break.
-    bottomFuelBeamBreak = bottomHopperBeamBreak.get();
+    // bottomFuelBeamBreak = bottomHopperBeamBreak.get();
 
     // Sets the variables to the opposite value to represent on SmartDashboard if there is fuel,
     // rather than if the beam break sensor detects the beam.
