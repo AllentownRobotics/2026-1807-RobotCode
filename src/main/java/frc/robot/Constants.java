@@ -62,13 +62,13 @@ public final class Constants {
       public static final double driveHubAutoAimkP = 5;  // fine tune more
       public static final double driveHubAutoAimkI = 0; // fine tune more 
       public static final double driveHubAutoAimkD = 0;   // fine tune more
-      public static final double headingTargettingTolerance = 0.5;
+      public static final double headingTargettingTolerance = 2;
      //------------------BLUE ALLIANCE--------------------
       public static final double blueAllianceTrench = 4;
       public static final double middleLine = 3.975;
-      public static final double blueRightFeedingTargetX = 2.186;
-      public static final double blueRightFeedingTargetY = 1.690;
-      public static final double blueLeftFeedingTargetX = 2.186;
+      public static final double blueRightFeedingTargetX = -3.184; // 2.186
+      public static final double blueRightFeedingTargetY = 1.690; 
+      public static final double blueLeftFeedingTargetX = -3.184; // 2.186
       public static final double blueLeftFeedingTargetY = 6.065;
 
       // ---------------- RED ALLIANCE--------------------

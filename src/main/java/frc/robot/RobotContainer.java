@@ -13,6 +13,7 @@ import frc.robot.commands.KickFuelCMD;
 // import frc.robot.commands.ShootingSequenceManual;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.SpinIndexerCMD;
+import frc.robot.commands.autonShootCommand;
 import frc.robot.commands.collectorMoveVoltsIn;
 import frc.robot.commands.collectorMoveVoltsOut;
 import frc.robot.commands.feedingCommand;
@@ -70,7 +71,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import com.ctre.phoenix6.SignalLogger;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.fasterxml.jackson.databind.util.Named;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -121,7 +124,7 @@ public class RobotContainer {
   // private final ExpelFuelCMD m_expelFuel = new ExpelFuelCMD(m_kicker);
   // private final KickFuelCMD m_kickFuel = new KickFuelCMD(m_kicker);
 
-  final ButtonBoard m_buttonboard = new ButtonBoard(0);
+ // final ButtonBoard m_buttonboard = new ButtonBoard(0);
   private double MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate =  RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
     private double slowSpeed = 0.5 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond);
@@ -149,22 +152,23 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     //registers commands for every pattern
-    NamedCommands.registerCommand("LEDPatternOff", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.OFF), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternIdle", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.IDLE), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternAlignedWithHub", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUB), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternClimbComplete", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE), LEDSubsystem));
-    // NamedCommands.registerCommand("LED PatternClimbCompleteRed", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED), LEDSubsystem));
-    // NamedCommands.registerCommand("LED PatternClimbCompleteBlue", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternPivotAtIntakePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION), LEDSubsystem));
-    // NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternFuelReadyToShoot", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT), LEDSubsystem));
-    // NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
-    NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternOff", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.OFF), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternIdle", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.IDLE), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternAlignedWithHub", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUB), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternClimbComplete", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE), LEDSubsystem));
+    // // NamedCommands.registerCommand("LED PatternClimbCompleteRed", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_RED), LEDSubsystem));
+    // // NamedCommands.registerCommand("LED PatternClimbCompleteBlue", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.CLIMB_COMPLETE_BLUE), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternPivotAtIntakePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_INTAKE_POSITION), LEDSubsystem));
+    // // NamedCommands.registerCommand("LEDPatternPivotAtHomePosition", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.PIVOT_AT_HOME_POSITION), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternFuelReadyToShoot", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_READY_TO_SHOOT), LEDSubsystem));
+    // // NamedCommands.registerCommand("LEDPatternFuelInTwindexer", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.FUEL_IN_TWINDEXER), LEDSubsystem));
+    // NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
+    NamedCommands.registerCommand("Coast Mode", new InstantCommand( () -> drivetrain.configNeutralMode(NeutralModeValue.Coast)));
     NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
     NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).withTimeout(4));
-    NamedCommands.registerCommand("ShootCommand", new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(6));
+    NamedCommands.registerCommand("ShootCommand", new autonShootCommand(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(4));
     NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
-    NamedCommands.registerCommand("Autp Hub Alignment", new AutonAutoAimHub(drivetrain, driverController, turret, operatorController));
+    NamedCommands.registerCommand("Auto Hub Alignment", new AutonAutoAimHub(drivetrain, turret).withTimeout(2));
 
     //  NamedCommands.registerCommand("ClimbToL1Start", Commands.runOnce(() -> 
     //   climbSubsystem.setClimbSetpoint(ClimbConstants.L1AutoStartPosition), climbSubsystem)); 
@@ -185,7 +189,7 @@ public class RobotContainer {
 
     autoChooser = AutoBuilder.buildAutoChooser("Tests");
         SmartDashboard.putData("Auto Mode", autoChooser);
-    SmartDashboard.putData(LEDSubsystem);//puts data into smart dashboard
+    // SmartDashboard.putData(LEDSubsystem);//puts data into smart dashboard
         
     // Configure the trigger bindings
     configureBindings();
@@ -252,7 +256,7 @@ public class RobotContainer {
 
         // Target HUB
 
-    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret, operatorController, LEDSubsystem));
+    driverController.rightTrigger().whileTrue(new TeleopAutoAimHub(drivetrain, driverController, turret, operatorController));
 
 
 
@@ -275,6 +279,8 @@ public class RobotContainer {
 
     // shoot fuel
     // operatorController.rightTrigger().whileTrue(new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
+    operatorController.b().whileTrue(new setFlywheelVelocity(flywheel));
+    operatorController.y().whileTrue(new SpinIndexerCMD(m_indexerSubsystem));
     operatorController.rightTrigger().whileTrue(new shootingSequence(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
     operatorController.leftTrigger().whileTrue(new feedingCommand(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem));
     // operatorController.rightTrigger().whileTrue(new setFlywheelVelocity(flywheel));
@@ -282,7 +288,7 @@ public class RobotContainer {
     // operatorController.povUp().whileTrue(new SpinIndexerCMD(m_indexerSubsystem));
 
     // Set hood to home position. This should be done automatically but is here for manual override
-    operatorController.y().whileTrue(new setHoodAngle(hood));
+    // operatorController.y().whileTrue(new setHoodAngle(hood));
     operatorController.start().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(0.1)));
     operatorController.back().onTrue(Commands.runOnce(() -> hood.incrementHoodAngle(-0.1)));
     // operatorController.b().whileTrue(Commands.runOnce(() -> hood.setHoodSpeed())).onFalse(Commands.runOnce(() -> hood.stopHoodMotors()));
@@ -350,7 +356,11 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    System.out.println("Autonomous command was recieved " + autoChooser.getSelected().getName());
+    
     return autoChooser.getSelected();
+
+    
     // An example command will be run in autonomous
   }
 }

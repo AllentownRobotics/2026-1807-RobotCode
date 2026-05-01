@@ -1,0 +1,87 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.680590361445783,
+        "y": 4.963855421686747
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.680590361445783,
+        "y": 4.963855421686747
+      },
+      "isLocked": false,
+      "linkedName": "sd3"
+    },
+    {
+      "anchor": {
+        "x": 2.740578313253012,
+        "y": 0.5927710843373495
+      },
+      "prevControl": {
+        "x": 1.7405783132530122,
+        "y": 0.5927710843373495
+      },
+      "nextControl": {
+        "x": 3.7405783132530086,
+        "y": 0.5927710843373495
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.188156626506022,
+        "y": 0.5927710843373495
+      },
+      "prevControl": {
+        "x": 6.1910602409638535,
+        "y": 0.5108132530120486
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0738589211618286,
+      "rotationDegrees": 179.91463708752983
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Coast Mode",
+      "waypointRelativePos": 1.772704714640194,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Coast Mode"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 153.99665415548847
+  },
+  "useDefaultConstraints": true
+}

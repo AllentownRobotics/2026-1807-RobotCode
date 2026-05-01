@@ -1,0 +1,80 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "center shot thne depot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Hub Alignment"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "New shot center 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CollectorDown"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartCollector"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shot center 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Hub Alignment"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "shot center 4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

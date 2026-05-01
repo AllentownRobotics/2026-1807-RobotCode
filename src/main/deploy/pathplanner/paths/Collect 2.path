@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2587748344370855,
-        "y": 7.955364238410596
+        "x": 4.336024096385542,
+        "y": 5.728795180722891
       },
       "isLocked": false,
       "linkedName": "shoot 1"
     },
     {
       "anchor": {
-        "x": 5.191788079470197,
-        "y": 7.45442880794702
+        "x": 5.723843373493976,
+        "y": 5.379108433734939
       },
       "prevControl": {
-        "x": 4.605369007738588,
-        "y": 7.4495823693376675
+        "x": 5.249056155342043,
+        "y": 5.72332916689509
       },
       "nextControl": {
-        "x": 6.94869205298013,
-        "y": 7.468948675496689
+        "x": 6.598060240963856,
+        "y": 4.7453012048192775
       },
       "isLocked": false,
       "linkedName": "brandNew"
@@ -44,22 +44,25 @@
       "linkedName": "woah1"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.11203319502075855,
-      "rotationDegrees": 0.0
-    },
-    {
-      "waypointRelativePos": 0.8740920096852284,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "CollectorDown",
+      "waypointRelativePos": 0.6729528535980169,
+      "endWaypointRelativePos": 2.0,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "CollectorDown"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 8.0,
+    "maxAcceleration": 8.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -73,7 +76,7 @@
   "folder": "Orbit Neutral Auto",
   "idealStartingState": {
     "velocity": 5.0,
-    "rotation": 129.80557109226527
+    "rotation": 135.49593180234163
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

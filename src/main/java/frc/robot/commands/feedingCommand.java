@@ -47,7 +47,7 @@ public class feedingCommand extends Command {
     flywheel.setMaxSpeed();
     hood.setFeedingAngle();
 
-    if(hood.HoodWithinTolerance()){
+    if(flywheel.flywheelAtMax()){
         kicker.kickFuel();
         indexer.setIndexerSpeedRPS();
         // LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ROBOT_IS_SHOOTING);

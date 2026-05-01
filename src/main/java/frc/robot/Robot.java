@@ -6,12 +6,16 @@ package frc.robot;
 
 import java.util.Optional;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -21,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
+  public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
   private final RobotContainer m_robotContainer;
 
   /**
@@ -46,6 +51,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -72,6 +78,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    drivetrain.configNeutralMode(NeutralModeValue.Brake);
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -111,8 +118,6 @@ public class Robot extends TimedRobot {
     // End game, hub always active.
     shiftTime = matchTime;
   }
-
-    CommandScheduler.getInstance().run();
     // SmartDashboard.putBoolean("button 1", m_robotContainer.m_buttonboard.getButton(1));
     SmartDashboard.putNumber("Shift Time", shiftTime);
   }

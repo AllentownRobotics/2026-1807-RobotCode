@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 3.2869638554216865,
+        "y": 5.073132530120482
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.7240722891566262,
+        "y": 5.980132530120482
+      },
+      "isLocked": false,
+      "linkedName": "peddie 3"
+    },
+    {
+      "anchor": {
+        "x": 6.215590361445784,
+        "y": 4.035
+      },
+      "prevControl": {
+        "x": 6.783831325301205,
+        "y": 6.165903614457831
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "peddie 4"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -91.24536426676842
+  },
+  "reversed": false,
+  "folder": "Orbit Neutral Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 139.99374398582336
+  },
+  "useDefaultConstraints": true
+}

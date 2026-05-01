@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.0079638554216865,
+        "y": 3.652530120481928
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.510638554216867,
+        "y": 1.936879518072288
+      },
+      "isLocked": false,
+      "linkedName": "peddie right 4"
+    },
+    {
+      "anchor": {
+        "x": 3.101192771084338,
+        "y": 2.9203734939759034
+      },
+      "prevControl": {
+        "x": 3.5710843373493972,
+        "y": 2.2974939759036137
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.21991701244813552,
+      "rotationDegrees": -133.85766636820003
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -142.35237935989232
+  },
+  "reversed": false,
+  "folder": null,
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.60309119438058
+  },
+  "useDefaultConstraints": true
+}

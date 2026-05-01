@@ -16,44 +16,44 @@
     },
     {
       "anchor": {
-        "x": 8.248220198675497,
-        "y": 4.891672185430463
+        "x": 8.346493975903615,
+        "y": 4.712518072289157
       },
       "prevControl": {
-        "x": 8.528450949984974,
-        "y": 8.090973262880269
+        "x": 8.619686746987952,
+        "y": 7.586506024096385
       },
       "nextControl": {
-        "x": 8.161100993377483,
-        "y": 3.8970612582781454
+        "x": 8.252013116612645,
+        "y": 3.7185794325481574
       },
       "isLocked": false,
       "linkedName": "collect1"
     },
     {
       "anchor": {
-        "x": 6.433236754966887,
-        "y": 4.644834437086092
+        "x": 6.477855421686746,
+        "y": 4.242626506024096
       },
       "prevControl": {
-        "x": 6.9777317880794705,
-        "y": 4.009590231788078
+        "x": 7.072379243009499,
+        "y": 3.6320344733142416
       },
       "nextControl": {
-        "x": 5.888741721854304,
-        "y": 5.280078642384106
+        "x": 6.0735301204819265,
+        "y": 4.6578795180722885
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.309817880794702,
-        "y": 7.461688741721854
+        "x": 5.865903614457832,
+        "y": 5.597662650602409
       },
       "prevControl": {
-        "x": 6.099279801324504,
-        "y": 5.726564569536424
+        "x": 5.865903614457832,
+        "y": 5.040349397590361
       },
       "nextControl": null,
       "isLocked": false,
@@ -72,14 +72,7 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "StartCollector",
-      "waypointRelativePos": 0.32367491166077833,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 15.0,
     "maxAcceleration": 15.0,
@@ -90,7 +83,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.49839829448715
+    "rotation": 130.5251034937539
   },
   "reversed": false,
   "folder": "Orbit Neutral Auto",

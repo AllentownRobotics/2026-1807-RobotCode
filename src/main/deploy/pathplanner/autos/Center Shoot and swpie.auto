@@ -5,52 +5,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Collect 1"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "CollectorDown"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StartCollector"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "collectorUp"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Shoot 1"
+            "pathName": "shoot center "
           }
         },
         {
@@ -66,9 +23,22 @@
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "collectorUp"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "neural zone from shoot center"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "StartCollector"
+                }
+              }
+            ]
           }
         },
         {
@@ -78,19 +48,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Collect 2"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "CollectorDown"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 1.0
+                  "pathName": "shot center woah"
                 }
               },
               {
@@ -111,13 +69,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shoot 2"
+            "pathName": "neutral zone collect"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Hub Alignment"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "ShootCommand"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "netral zone double swipe"
           }
         }
       ]

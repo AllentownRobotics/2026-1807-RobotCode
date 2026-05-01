@@ -167,7 +167,7 @@ public class HoodSubsys extends SubsystemBase {
 
     hoodMap.put(5.4 , 17.0);  //30 rps
     hoodMap.put(5.0 , 15.8);  //28 rps
-    hoodMap.put(4.5, 14.0); //28 rps
+    hoodMap.put(4.5, 13.4); //28 rps // 14 before 10:06 right before Q60
     hoodMap.put(4.0, 11.6); //28 rps
     hoodMap.put(3.5, 7.0); //28 rps
     hoodMap.put(3.0, 6.7); //26 rps
@@ -178,15 +178,15 @@ public class HoodSubsys extends SubsystemBase {
 
 
 
-    feedingMap.put(5.0, 4.0);
-    feedingMap.put(7.0, 8.0);
-    feedingMap.put(9.0, 10.0);
-    feedingMap.put(11.0, 15.0);
-    feedingMap.put(12.0, 20.0);
-    feedingMap.put(13.5, 25.0);
-    feedingMap.put(15.0, 30.0);
-    feedingMap.put(17.5, 35.0);
-    feedingMap.put(19.0, 40.0);
+    feedingMap.put(5.0, 8.0);
+    feedingMap.put(7.0, 10.0);
+    feedingMap.put(9.0, 15.0);
+    feedingMap.put(11.0, 20.0);
+    feedingMap.put(12.0, 25.0);
+    feedingMap.put(13.5, 30.0);
+    feedingMap.put(15.0, 35.0);
+    feedingMap.put(17.5, 40.0);
+    feedingMap.put(19.0, 45.0);
 
 
 
@@ -224,11 +224,11 @@ public class HoodSubsys extends SubsystemBase {
        }
       }
       if (ally.get() == Alliance.Blue) {
-        if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY >= AimingConstants.middleLine){
+        if(ally.get() == Alliance.Blue && currentPosX >= AimingConstants.blueAllianceTrench && currentPosY >= AimingConstants.middleLine){
         hubX = AimingConstants.blueRightFeedingTargetX;
         hubY = AimingConstants.blueRightFeedingTargetY;
         }
-        if(ally.get() == Alliance.Blue && currentPosX <= AimingConstants.blueAllianceTrench && currentPosY <= AimingConstants.middleLine ){
+        if(ally.get() == Alliance.Blue && currentPosX >= AimingConstants.blueAllianceTrench && currentPosY <= AimingConstants.middleLine ){
         hubX = AimingConstants.blueLeftFeedingTargetX;
         hubY = AimingConstants.blueLeftFeedingTargetY;
        }
@@ -275,9 +275,9 @@ public class HoodSubsys extends SubsystemBase {
     // various smartDashboard numbers to test user wanted values
     // SmartDashboard.putNumber("Distance in meters to da HUB", distanceToHub);
     // SmartDashboard.putNumber("Autonomous Target Hood State", autoTargetHoodState);
-    SmartDashboard.putNumber("Median distance output", medianDistance);
-    SmartDashboard.putNumber("smoothed distanced", smoothedDistance);
-    SmartDashboard.putNumber("Smooted Median distance", smoothedMedianDistance);
+    // SmartDashboard.putNumber("Median distance output", medianDistance);
+    // SmartDashboard.putNumber("smoothed distanced", smoothedDistance);
+    SmartDashboard.putNumber("feeding smoothed", smoothedMedianDistance);
 
   }
   

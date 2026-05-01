@@ -46,7 +46,7 @@ public class TeleopAutoAimHub extends Command {
   CommandXboxController driverController;
   CommandXboxController operatorController;
   TurretSubsys turret;
-  LEDSubsystem LEDs; 
+  // LEDSubsystem LEDs; 
   // PIDController thetaController;
   double targetHubAngle;
   private final SwerveRequest.FieldCentric drive;
@@ -56,12 +56,11 @@ public class TeleopAutoAimHub extends Command {
   // private TrapezoidProfile headingControl;
   private ProfiledPIDController thetaController;
 
-  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController, LEDSubsystem LEDs) {
+  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController) {
     this.drivetrain = drivetrain;
     this.driverController = driverController;
     this.turret = turret;
     this.operatorController = operatorController;
-    this.LEDs = LEDs;
     
     MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -134,15 +133,15 @@ public class TeleopAutoAimHub extends Command {
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
     
         // add Driver feedback here
-     if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 2){
-         LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUB);
-    }
+    //  if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 2){
+    //      LEDs.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUB);
+    // }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    LEDs.setPattern(LEDPatterns.IDLE);
+    // LEDs.setPattern(LEDPatterns.IDLE);
     // make LEDS go VROOOOM
     // if(turret.isTurretWithinTolerance()){
     //     operatorController.setRumble(RumbleType.kBothRumble, 0.5);

@@ -26,6 +26,7 @@ import frc.robot.subsystems.Vision.LimelightHelpers.PoseEstimate;
 
 public class VisionSubsys extends SubsystemBase {
   private Limelight[] limelights;
+  private int limelightCounter;
 
   CommandSwerveDrivetrain drivetrain;// this is irregilar to use a different subsystem inside of a subsystem, 
   // this is because the vision subsystem needs to update the drivetrain's position with the vision measurements,
@@ -42,6 +43,7 @@ public class VisionSubsys extends SubsystemBase {
       new Limelight("limelight-br")
     //   new Limelight("limelight-collect")
     };
+
 
 
     this.drivetrain = drivetrain;//sets the drivetrain in the subsystem to the actual drivetrain.
@@ -154,12 +156,15 @@ public class VisionSubsys extends SubsystemBase {
                                   && !((estimate.tagCount == 1)  // if 1 tag is seen with ambiguity below 0.2, trust it. If we see 1 that has higher ambiguity dont trust it, if we see 2 or more tags trust it regardless because there is no ambiguity.
                                         && (estimate.rawFiducials[0].ambiguity < 0.2)); 
 
-          if(goodEstimate == true){
+          if(goodEstimate){
           drivetrain.addVisionMeasurement( // update the drivetrain's position on the field with each camera's value
             new Pose2d(poseEstimate.getPoseEstimate().pose.getX(), poseEstimate.getPoseEstimate().pose.getY(), poseEstimate.getPoseEstimate().pose.getRotation()), // convert the x, y, and yaw values into a Pose2d
             poseEstimate.getPoseEstimate().timestampSeconds
             ,VecBuilder.fill(poseEstimate.getStDevs()[0], poseEstimate.getStDevs()[1], poseEstimate.getStDevs()[5]) // use the timestamp to allow different cameras to have different latency
             );
+            
+            limelightCounter += limelightCounter;
+            SmartDashboard.putNumber("Limelight updates", limelightCounter);
         }
     }
   }

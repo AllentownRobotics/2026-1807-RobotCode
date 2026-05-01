@@ -27,7 +27,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 // import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+// import edu.wpi.first.wpilibj2.command.button.CommandXboxController
 // import frc.robot.Constants;
 import frc.robot.Constants.AimingConstants;
 import frc.robot.generated.TunerConstants;
@@ -38,8 +38,8 @@ import frc.robot.subsystems.Shooter.TurretSubsys;
 public class AutonAutoAimHub extends Command {
   /** Creates a new autoAimHUB. */
   CommandSwerveDrivetrain drivetrain;
-  CommandXboxController driverController;
-  CommandXboxController operatorController;
+  // CommandXboxController driverController;
+  // CommandXboxController operatorController;
   TurretSubsys turret;
   // PIDController thetaController;
   double targetHubAngle;
@@ -50,11 +50,11 @@ public class AutonAutoAimHub extends Command {
   // private TrapezoidProfile headingControl;
   private ProfiledPIDController thetaController;
 
-  public AutonAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController) {
+  public AutonAutoAimHub(CommandSwerveDrivetrain drivetrain, TurretSubsys turret) {
     this.drivetrain = drivetrain;
-    this.driverController = driverController;
+    // this.driverController = driverController;
     this.turret = turret;
-    this.operatorController = operatorController;
+    // this.operatorController = operatorController;
     
     MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -120,8 +120,8 @@ public class AutonAutoAimHub extends Command {
       rotationRate = 0;
     }
     // applies the request to be able to drive while aiming
-    drivetrain.applyRequest(() -> drive.withVelocityX(-driverController.getLeftY() * MaxSpeed)
-                                      .withVelocityY(-driverController.getLeftX() * MaxSpeed)
+    drivetrain.applyRequest(() -> drive.withVelocityX(0)
+                                      .withVelocityY(0)
                                       .withRotationalRate(thetaController.getSetpoint().velocity + rotationRate)).execute();
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
