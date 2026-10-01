@@ -98,6 +98,8 @@ public class AutonAutoAimHub extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    System.out.println("This is doing something");
     // compensate for robot facing the right direction.
     targetHubAngle = turret.getTargetTurretAngle().getRadians();
     // Rotation2d.fromRotations(targetHubAngle).minus(Rotation2d.kZero);
@@ -145,6 +147,6 @@ public class AutonAutoAimHub extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees()) <= AimingConstants.headingTargettingTolerance;
+    return Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getRadians()) <= AimingConstants.headingTargettingTolerance;
   }
 }

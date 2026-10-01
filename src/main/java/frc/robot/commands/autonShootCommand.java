@@ -13,7 +13,6 @@ import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.HoodSubsys;
 import frc.robot.subsystems.Shooter.TurretSubsys;
-import frc.robot.Constants;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class autonShootCommand extends Command {
@@ -25,15 +24,14 @@ public class autonShootCommand extends Command {
   LEDSubsystem LEDs;
 
   /** Creates a new shootingSequence. */
-  public autonShootCommand(HoodSubsys hood, FlywheelSubsys flywheel, TurretSubsys turret, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
+  public autonShootCommand(HoodSubsys hood, FlywheelSubsys flywheel, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
     this.hood = hood;
     this.flywheel = flywheel;
-    this.turret = turret;
     this.LEDs = LEDs;
     this.kicker = kicker;
     this.indexer = indexer;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turret, LEDs, kicker, indexer, hood);
+    addRequirements(hood, flywheel, LEDs, kicker, indexer);
   }
 
   // Called when the command is initially scheduled.

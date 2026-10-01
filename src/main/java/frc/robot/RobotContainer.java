@@ -6,7 +6,6 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import org.ejml.dense.block.MatrixOps_MT_DDRB;
 
 import frc.robot.Constants;
 import frc.robot.commands.KickFuelCMD;
@@ -14,16 +13,8 @@ import frc.robot.commands.KickFuelCMD;
 // import frc.robot.commands.KickFuelCMD;
 import frc.robot.commands.SpinIndexerCMD;
 import frc.robot.commands.autonShootCommand;
-import frc.robot.commands.collectorMoveVoltsIn;
-import frc.robot.commands.collectorMoveVoltsOut;
+
 import frc.robot.commands.feedingCommand;
-// import frc.robot.commands.collectorMoveVoltsIn;
-// import frc.robot.commands.collectorMoveVoltsOut;
-// import frc.robot.commands.retractPivotCommand;
-// import frc.robot.commands.runCollectorCommands;
-// import frc.robot.commands.stop;
-// import frc.robot.commands.collectorVoltage;
-// import frc.robot.commands.extendPivotCommand;
 import frc.robot.commands.runCollectorForward;
 import frc.robot.commands.runCollectorReverse;
 import frc.robot.commands.setFlywheelVelocity;
@@ -31,27 +22,12 @@ import frc.robot.commands.setHoodAngle;
 import frc.robot.commands.shootingSequence;
 import frc.robot.commands.AutoAimingCommands.AutonAutoAimHub;
 import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
-// import frc.robot.commands.AutoAimingCommands.TeleopAutoAimHub;
-// import frc.robot.commands.AutoAimingCommands.TeleopAutoSetHoodAngle;
-// import frc.robot.commands.ClimbCMDs.ClimbDownManual;
-// import frc.robot.commands.ClimbCMDs.ClimbUpManual;
-// import frc.robot.commands.setFlywheelVelocity;
-// import frc.robot.commands.shootingSequence;
 import frc.robot.generated.TunerConstants;
 import frc.robot.Constants.ClimbConstants;
-// import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.LEDConstants;
-// import frc.robot.Constants.operatorConstants;
-// import frc.robot.commands.ExpelFuelCMD;
-// import frc.robot.commands.AutosSpinIndexerCMD;
-// import frc.robot.commands.KickFuelCMD;
 import frc.robot.subsystems.LEDSubsystem;
-// import frc.robot.subsystems.Climb.ClimbSubsys;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
-// import frc.robot.commands.SpinIndexerCMD;
-// import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.utils.ButtonBoard;
-// import frc.utils.PowerMonitor;
 import frc.robot.subsystems.GroundCollector.GroundCollector;
 import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import frc.robot.subsystems.Kicker.KickerSubsys;
@@ -59,15 +35,7 @@ import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.HoodSubsys;
 import frc.robot.subsystems.Shooter.TurretSubsys;
 import frc.robot.subsystems.Vision.VisionSubsys;
-// import frc.robot.subsystems.Kicker.KickerSubsys;
-// import frc.robot.subsystems.Shooter.FlywheelSubsys;
-// import frc.robot.subsystems.Shooter.HoodSubsys;
-// import frc.robot.subsystems.Shooter.TurretSubsys;
-// import frc.robot.subsystems.GroundCollector.GroundCollector;
-// import frc.robot.subsystems.GroundCollector.newCollector;
-// import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import edu.wpi.first.wpilibj2.command.Command;
-// import frc.robot.commands.runCollectorReverse;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
 import com.ctre.phoenix6.SignalLogger;
@@ -166,7 +134,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("Coast Mode", new InstantCommand( () -> drivetrain.configNeutralMode(NeutralModeValue.Coast)));
     NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
     NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).withTimeout(4));
-    NamedCommands.registerCommand("ShootCommand", new autonShootCommand(hood, flywheel, turret, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(4));
+    NamedCommands.registerCommand("ShootCommand", new autonShootCommand(hood, flywheel, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(4));
     NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
     NamedCommands.registerCommand("Auto Hub Alignment", new AutonAutoAimHub(drivetrain, turret).withTimeout(2));
 
