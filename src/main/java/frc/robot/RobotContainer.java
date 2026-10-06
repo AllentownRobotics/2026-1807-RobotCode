@@ -133,7 +133,7 @@ public class RobotContainer {
     // NamedCommands.registerCommand("LEDPatternAlignedWithHumanPlayerStation", new InstantCommand(()-> LEDSubsystem.setPattern(Constants.LEDConstants.LEDPatterns.ALIGNED_WITH_HUMAN_PLAYER_STATION), LEDSubsystem));
     NamedCommands.registerCommand("Coast Mode", new InstantCommand( () -> drivetrain.configNeutralMode(NeutralModeValue.Coast)));
     NamedCommands.registerCommand("CollectorDown", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(-68)));
-    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem).withTimeout(4));
+    NamedCommands.registerCommand("StartCollector", new runCollectorForward(m_GroundCollectionSubsystem));
     NamedCommands.registerCommand("ShootCommand", new autonShootCommand(hood, flywheel, LEDSubsystem, kickerSubsys, m_indexerSubsystem).withTimeout(4));
     NamedCommands.registerCommand("collectorUp", m_GroundCollectionSubsystem.runOnce(() -> m_GroundCollectionSubsystem.setPivotPosition(0)));
     NamedCommands.registerCommand("Auto Hub Alignment", new AutonAutoAimHub(drivetrain, turret).withTimeout(2));

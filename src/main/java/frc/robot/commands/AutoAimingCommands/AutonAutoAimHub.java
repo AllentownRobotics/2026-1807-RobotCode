@@ -125,7 +125,7 @@ public class AutonAutoAimHub extends Command {
     // applies the request to be able to drive while aiming
     drivetrain.applyRequest(() -> drive.withVelocityX(0)
                                       .withVelocityY(0)
-                                      .withRotationalRate(thetaController.getSetpoint().velocity + rotationRate));
+                                      .withRotationalRate(thetaController.getSetpoint().velocity + rotationRate)).execute();
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
     
@@ -142,6 +142,7 @@ public class AutonAutoAimHub extends Command {
     // if(turret.isTurretWithinTolerance()){
     //     operatorController.setRumble(RumbleType.kBothRumble, 0.5);
     //     new WaitCommand(1).andThen(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0));
+    drivetrain.setControl(new SwerveRequest.SwerveDriveBrake());
     // }
   }
 

@@ -42,6 +42,9 @@ public class autonShootCommand extends Command {
   @Override
   public void execute() {
 
+
+    
+
     flywheel.setFlywheelSpeedFromDistance();
     hood.setHoodAutomaticallyFromDistance();
 
@@ -55,6 +58,8 @@ public class autonShootCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
+    
     hood.setHoodAngle(1);
     flywheel.stopSpeed();
     kicker.stopKickerMotors();
