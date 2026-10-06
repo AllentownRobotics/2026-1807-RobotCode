@@ -116,6 +116,7 @@ public class AutonAutoAimHub extends Command {
     // double thetaCalculation = thetaController.calculate(drivetrain.getState().Pose.getRotation().getDegrees(), nextPosition.position);
     // variable used for tolerance
     rotationRate = profiledPIDControllerOutput; 
+    SmartDashboard.putNumber("Spinning test", targetHubAngle);
 
     // if statement saying if the difference between our target and current is below 5 degrees, we can stop rotating
     if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180)  <= 5){
@@ -124,7 +125,7 @@ public class AutonAutoAimHub extends Command {
     // applies the request to be able to drive while aiming
     drivetrain.applyRequest(() -> drive.withVelocityX(0)
                                       .withVelocityY(0)
-                                      .withRotationalRate(thetaController.getSetpoint().velocity + rotationRate)).execute();
+                                      .withRotationalRate(thetaController.getSetpoint().velocity + rotationRate));
     // smart dash to see current error
     SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
     
