@@ -38,17 +38,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "CollectorDown",
-      "waypointRelativePos": 0.4158808933002486,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "CollectorDown"
-        }
-      }
-    },
-    {
       "name": "StartCollector",
       "waypointRelativePos": 0.5588089330024747,
       "endWaypointRelativePos": null,
