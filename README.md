@@ -19,11 +19,11 @@ Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 
 
 ## Controls
 **Driver (port 0)**
-Left stick / right stick:    Drive / rotate (field-centric)
-Left bumper: Slow mode
-Right trigger: Auto-aim at hub
-X : Brake (X-lock) 
-Back (2 rectangles): Re-seed field-centric heading (Reset Gyro)
+- Left stick / right stick:    Drive / rotate (field-centric)
+- Left bumper: Slow mode
+- Right trigger: Auto-aim at hub
+- X : Brake (X-lock) 
+- Back (2 rectangles): Re-seed field-centric heading (Reset Gyro)
 
 **Operator (port 1)**
 
@@ -35,17 +35,6 @@ B: Flywheel only
 Y: Spin indexer
 Start / Back: Hood angle +/- increment
 
-## Code layout
-```
-frc/robot
-  Robot, RobotContainer, Constants, Telemetry
-  commands/            shooting, feeding, pivot, collector
-    AutoAimingCommands/  teleop + auton hub aim
-  subsystems/
-    Drive/  GroundCollector/  IndexerSubsys/  Kicker/
-    Shooter/ (Flywheel, Hood, Turret)  Vision/  LEDSubsystem
-frc/utils              Kraken wrapper, ButtonBoard
-```
 
 ## Key concepts
 
