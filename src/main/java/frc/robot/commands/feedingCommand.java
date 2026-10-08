@@ -12,19 +12,19 @@ import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.HoodSubsys;
-import frc.robot.subsystems.Shooter.TurretSubsys;
+import frc.robot.subsystems.Shooter.TargettingSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class feedingCommand extends Command {
   HoodSubsys hood;
   FlywheelSubsys flywheel;
-  TurretSubsys turret;
+  TargettingSubsys turret;
   KickerSubsys kicker;
   IndexerSubsys indexer;
   LEDSubsystem LEDs;
 
   /** Creates a new shootingSequence. */
-  public feedingCommand(HoodSubsys hood, FlywheelSubsys flywheel, TurretSubsys turret, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
+  public feedingCommand(HoodSubsys hood, FlywheelSubsys flywheel, TargettingSubsys turret, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
     this.hood = hood;
     this.flywheel = flywheel;
     this.turret = turret;
