@@ -1,4 +1,5 @@
 # RA | Team 1807 Redbird Robotics | 2026 REBUILT
+![RA robot](2026-Robot-RA.jpg)
 
 Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 6.
 
@@ -27,13 +28,13 @@ Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 
 
 **Operator (port 1)**
 
-A / X: Collector rollers forward / reverse
-Left / right bumper: Pivot to stowed / deployed
-Right trigger: Shoot (auto hood + flywheel from distance)
-Left trigger: Feeding shot (max flywheel, feeding hood angle)
-B: Flywheel only
-Y: Spin indexer
-Start / Back: Hood angle +/- increment
+- A / X: Collector rollers forward / reverse
+- Left / right bumper: Pivot to stowed / deployed
+- Right trigger: Shoot (auto hood + flywheel from distance)
+- Left trigger: Feeding shot (max flywheel, feeding hood angle)
+- B: Flywheel only
+- Y: Spin indexer
+- Start / Back: Hood angle +/- increment
 
 
 ## Key concepts
