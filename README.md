@@ -1,2 +1,56 @@
-# 2026 Redbird Robotics robot code
-More text about the robot will go here.
+# RA | Team 1807 Redbird Robotics | 2026 REBUILT
+
+Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 6.
+
+## What it does
+- Swerve drive (Phoenix 6 swerve, generated `TunerConstants`)
+- Ground collector with a pivot and roller
+- Indexer + kicker feeding a static double shooter
+- Auto-aim at the hub using pose, with alliance aware feeding targets
+- 4 Limelights fused into the pose estimate (MegaTag1 with our own filtering)
+- Blinkin LEDs for driver feedback
+- Capable of On the Fly path making before games
+
+## Setup
+1. Install WPILib 2026 (TODO: exact version) and clone the repo
+2. `./gradlew build`
+3. Deploy with `./gradlew deploy` or the WPILib "Deploy Robot Code" button
+4. Vendordeps: PathplannerLib, Phoenix 6, Revlib, WPILib commands
+
+## Controls
+**Driver (port 0)**
+Left stick / right stick:    Drive / rotate (field-centric)
+Left bumper: Slow mode
+Right trigger: Auto-aim at hub
+X : Brake (X-lock) 
+Back (2 rectangles): Re-seed field-centric heading (Reset Gyro)
+
+**Operator (port 1)**
+
+A / X: Collector rollers forward / reverse
+Left / right bumper: Pivot to stowed / deployed
+Right trigger: Shoot (auto hood + flywheel from distance)
+Left trigger: Feeding shot (max flywheel, feeding hood angle)
+B: Flywheel only
+Y: Spin indexer
+Start / Back: Hood angle +/- increment
+
+## Code layout
+```
+frc/robot
+  Robot, RobotContainer, Constants, Telemetry
+  commands/            shooting, feeding, pivot, collector
+    AutoAimingCommands/  teleop + auton hub aim
+  subsystems/
+    Drive/  GroundCollector/  IndexerSubsys/  Kicker/
+    Shooter/ (Flywheel, Hood, Turret)  Vision/  LEDSubsystem
+frc/utils              Kraken wrapper, ButtonBoard
+```
+
+## Key concepts
+
+- **Vision:** each Limelight estimate is rejected unless tag count, distance, and ambiguity pass checks, then added with per-camera stdevs.
+- **Shooting:** flywheel speed and hood angle come from `InterpolatingTreeMap`s keyed on distance to hub. Tune the tables in `FlywheelSubsys` / `HoodSubsys`.
+
+## Team
+Built by Redbird Robotics 1807
