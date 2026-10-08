@@ -13,14 +13,14 @@ Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 
 - Capable of On the Fly path making before games
 
 ## Setup
-1. Install WPILib 2026 (TODO: exact version) and clone the repo
+1. Install WPILib 2026 and clone the repo
 2. `./gradlew build`
 3. Deploy with `./gradlew deploy` or the WPILib "Deploy Robot Code" button
 4. Vendordeps: PathplannerLib, Phoenix 6, Revlib, WPILib commands
 
 ## Controls
 **Driver (port 0)**
-- Left stick / right stick:    Drive / rotate (field-centric)
+- Left stick / right stick: Drive / rotate (field-centric)
 - Left bumper: Slow mode
 - Right trigger: Auto-aim at hub
 - X : Brake (X-lock) 
