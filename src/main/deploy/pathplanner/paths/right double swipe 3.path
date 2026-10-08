@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "StartCollector",
-      "waypointRelativePos": 0.5588089330024747,
+      "waypointRelativePos": 0.4693396226415122,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

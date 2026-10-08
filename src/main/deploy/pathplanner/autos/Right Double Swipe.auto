@@ -67,6 +67,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "collectorUp"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "right double swipe 4"
