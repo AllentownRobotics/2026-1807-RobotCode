@@ -66,9 +66,7 @@ public class GroundCollector extends SubsystemBase {
   // private PIDController tempController = new PIDController(Constants.pivotConsants.kP, pivotConsants.kI, pivotConsants.kD);
 
   public GroundCollector(){
-
-
-
+    
     motorPivot = new TalonFX(16);
     encoderPivot = new CANcoder(17);
     
@@ -95,68 +93,7 @@ public class GroundCollector extends SubsystemBase {
     // slot0Configs.kD = 0; // A velocity error of 1 rps results in 0.1 V output
     motorPivot.getConfigurator().apply(config);
 
-    // motorPivot.setPosition(0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    // pivotMotor = new Kraken(pivotConsants.pivotMotorID);//make a new motor
-    // pivotEncoder = new CANcoder(pivotConsants.pivotEncoderID);//make a new encoder
-    // voltage = 0;
-    // var config = new TalonFXConfiguration();
-    // // intakeLimitSwitch = new DigitalInput(pivotConsants.intakeLimitSwitchPort);//make a new intake limit switch
-    // // homeLimitSwitch = new DigitalInput(pivotConsants.homeLimitSwitchPort);//make a new home limit switch
-
-    // pivotMotor.addEncoder(pivotEncoder);//add the encoder to the motor
-
     collectorMotor = new Kraken(collectorConstants.collectorMotorID);//makes a new collector motor
-
-    // pivotMotor.setBrakeMode();//stop motor 
-    
-    // pivotMotor.setPIDValues( Constants.pivotConsants.kP, pivotConsants.kI, pivotConsants.kD, pivotConsants.kS, pivotConsants.kV, pivotConsants.kA, pivotConsants.kG);
-
-    // // config.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-
-    
-    // // pivotMotor.setMotorCurrentLimits(pivotConsants.currentLimit);
-    // collectorMotor.setMotorCurrentLimits(pivotConsants.currentLimit);
-
-    // //desiredSetpoint = pivotConsants.homePosition;//sets desiredSetpoint to the needed position
-
-    // pivotEncoder.setPosition(0);//change if needed - sets position of the encoder
-    // pivotMotor.setInverted();
-    
-    // //pivotMotor.setDesiredEncoderPosition(desiredSetpoint);//sets the encoder to desiredSetpoint
-
-
-    // pivotMotor.setRotorToSensorRatio(20);
-    // pivotMotor.setSensorToMechanismRatio(1/360);//gear ratio 1:20
-
-    // maxVelocity = 0.4;
-    // // pivotMotor.krakenConfiguration.Slot0.GravityType = GravityTypeValue.Arm_Cosine;
-    // pivotMotor.kraken.getConfigurator().apply(pivotMotor.krakenConfiguration);
-    // pivotMotor.kraken.getConfigurator().apply(config);
-    //pivotMotor.setInverted();
-    // pivotSysID = new SysIdRoutine(new Config(Volts.of(0.3).per(Second),Volts.of(1), null, (state) -> SignalLogger.writeString("Collector Sys Id", state.toString())), new Mechanism(pivotMotor::setVolts, null, this));
-
-    // rotationController = new ProfiledPIDController(0.4,0,0, new Constraints(maxVelocity, maxVelocity * 5));
-
-    // pivotMotor.setSoftLimits(-0.25, // prevent us from overdriving the motor
-    // 0.01);
-
-
-    // SignalLogger.start();
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction){
@@ -168,12 +105,6 @@ public class GroundCollector extends SubsystemBase {
   }
   
    public void setCollectorMotorReverse(){
-
-    // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
-    //   collectorMotor.getPosition()
-    // );//uses PID loop to calculate motor speed
-
-    // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
     collectorMotor.setMotorSpeed(-1);
   }
 
@@ -184,24 +115,12 @@ public class GroundCollector extends SubsystemBase {
    *pid loop for motor speed
    */
   public void pivotMotorSpin(){
-    //pivotMotor.setMotorSpeed(
-      //feedbackLoop.calculate(
-        //pivotMotor.getPosition()
-      //)
-    //);
 
     valueOfPIDLoop = pivotFeedbackLoop.calculate(
       pivotMotor.getPosition()
     );//uses PID loop to calculate motor speed
 
     pivotMotor.setMotorSpeed(valueOfPIDLoop);//sets speed to value given by PID loop
-
-    /*
-     if lower limit or upper limit switch is reached, set pivot motor speed to 0
-     */
-    // if (isIntakeLimitSwitchReached() || isHomeLimitSwitchReached()){
-    //   pivotMotor.setMotorSpeed(0);
-    // }
   }
 
   /**
@@ -217,16 +136,8 @@ public class GroundCollector extends SubsystemBase {
    */
   public void setPivotPosition(double setpoint){
     final PositionVoltage m_request = new PositionVoltage(setpoint).withSlot(0);
-// set position to 10 rotations
     motorPivot.setControl(m_request);
-    // pivotFeedbackLoop.setSetpoint(setpoint);//gives the PID loop the needed setpoint
-  } //update to setPivotRotations, say what setpoint is in comments
-
-  // public void setPivotPositionFeedforwards(double setpoint, double feedforwards){
-  //   desiredSetpoint = setpoint;
-  //   pivotMotor.setDesiredEncoderPosition(desiredSetpoint, voltage);
-  // }
-
+  } 
 
  /**
   * gets angle of the pivot in degrees
@@ -243,18 +154,12 @@ public class GroundCollector extends SubsystemBase {
     pivotMotor.setVolts(voltage);
   }
   
-  /**
-   * returns true/false if the intake limit switch is reached
-   * @return true or false if limit switch is pressed
-   */
-  // public boolean isIntakeLimitSwitchReached(){
-  //   return intakeLimitSwitch.get();//gets state of digital imput as boolean
-  // }
-  
+
   /**
    * gets true/false if the home limit switch is reached
    * @return true or false if limit switch is pressed
    */
+
   // public boolean isHomeLimitSwitchReached(){
   //   return homeLimitSwitch.get();//gets state of digital imput as boolean
   // }
@@ -269,24 +174,6 @@ public class GroundCollector extends SubsystemBase {
     return (targetPosition - Constants.pivotConsants.positionTolerance >= currentPosition)
     &&(targetPosition + Constants.pivotConsants.positionTolerance <= currentPosition);
   }  
-
-  public boolean collectorAtPos(){
-    return motorPivot.getPosition().getValueAsDouble() >= 68.0;
-  }
-
-  /**
-   * sets collector motor speed
-   */
-  public void setCollectorVoltage(Double speed){
-
-    collectorVoltage = speed;
-    // collectorValueOfPIDLoop = collectorFeedbackLoop.calculate(
-    //   collectorMotor.getPosition()
-    // );//uses PID loop to calculate motor speed
-
-    // collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);
-    // collectorMotor.setMotorSpeed(collectorVoltage);
-  }
 
   /**
    * stops collector motor
@@ -303,12 +190,6 @@ public class GroundCollector extends SubsystemBase {
     * when pivot is at the intake position, the collector starts spinning
     */
     public void startCollectorMotor(){
-      /*if (!isIntakeLimitSwitchReached()){//checking if the intake limit switch is not pressed
-        collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);//sets the collector speed if its pressed
-      } else {
-        collectorMotor.setMotorSpeed(0);//otherwise keep as 0 - stops motor
-      }*/
-
       if (Math.abs(Constants.pivotConsants.pivotOutPosition - pivotMotor.getPosition()) <= pivotConsants.positionTolerance){
         collectorMotor.setMotorSpeed(collectorValueOfPIDLoop);//sets collector speed if at the intake psoition
       } else {
@@ -330,24 +211,6 @@ public class GroundCollector extends SubsystemBase {
     SmartDashboard.putNumber("collector motor current", collectorMotor.getSupplyCurrent());
     SmartDashboard.putNumber("Pivot motor current", motorPivot.getSupplyCurrent().getValueAsDouble());
     SmartDashboard.putNumber("Collector Pivot", motorPivot.getPosition().getValueAsDouble());
-
-
-    // State goalState = new State(desiredSetpoint, 0);
-    // State currenState = new State(pivotEncoder.getPosition().getValueAsDouble(), pivotEncoder.getVelocity().getValueAsDouble());
-
-    // double correction = rotationController.calculate(pivotEncoder.getPosition().getValueAsDouble(), desiredSetpoint);
-    // double targetVelocity = correction + rotationController.getSetpoint().velocity;
-
-    // SmartDashboard.putNumber("target vel", targetVelocity);
-    // double closedLoopVoltage = tempController.calculate(pivotEncoder.getVelocity().getValueAsDouble(), targetVelocity);
-
-    // // closedLoopVoltage + pivotConsants.kS + targetVelocity * pivotConsants.kV
-    // double finalVoltage = closedLoopVoltage + (pivotConsants.kS * Math.signum(targetVelocity) + targetVelocity * pivotConsants.kV);
-
-    // SmartDashboard.putNumber("computed voltage", finalVoltage);
-    // pivotMotor.setVolts(finalVoltage);
-
-    // drivePivotVolts(collectorVoltage);
   }
 
 

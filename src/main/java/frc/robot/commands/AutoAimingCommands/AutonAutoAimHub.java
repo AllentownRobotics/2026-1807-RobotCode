@@ -32,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.AimingConstants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Shooter.TurretSubsys;
+import frc.robot.subsystems.Shooter.TargettingSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutonAutoAimHub extends Command {
@@ -40,7 +40,7 @@ public class AutonAutoAimHub extends Command {
   CommandSwerveDrivetrain drivetrain;
   // CommandXboxController driverController;
   // CommandXboxController operatorController;
-  TurretSubsys turret;
+  TargettingSubsys targettingSubsys;
   // PIDController thetaController;
   double targetHubAngle;
   private final SwerveRequest.FieldCentric drive;
@@ -50,10 +50,10 @@ public class AutonAutoAimHub extends Command {
   // private TrapezoidProfile headingControl;
   private ProfiledPIDController thetaController;
 
-  public AutonAutoAimHub(CommandSwerveDrivetrain drivetrain, TurretSubsys turret) {
+  public AutonAutoAimHub(CommandSwerveDrivetrain drivetrain, TargettingSubsys targettingSubsys) {
     this.drivetrain = drivetrain;
     // this.driverController = driverController;
-    this.turret = turret;
+    this.targettingSubsys = targettingSubsys;
     // this.operatorController = operatorController;
     
     MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -98,8 +98,10 @@ public class AutonAutoAimHub extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+    System.out.println("This is doing something");
     // compensate for robot facing the right direction.
-    targetHubAngle = turret.getTargetTurretAngle().getRadians();
+    targetHubAngle = targettingSubsys.getTargetHubAngle().getRadians();
     // Rotation2d.fromRotations(targetHubAngle).minus(Rotation2d.kZero);
 
     // State currentState = new State(MathUtil.angleModulus(drivetrain.getState().Pose.getRotation().getRadians()), drivetrain.getState().Speeds.omegaRadiansPerSecond);
@@ -113,18 +115,15 @@ public class AutonAutoAimHub extends Command {
     // calculate the PID gains we need, feed that in for our turning rate to turn to a specific position
     // double thetaCalculation = thetaController.calculate(drivetrain.getState().Pose.getRotation().getDegrees(), nextPosition.position);
     // variable used for tolerance
+
     rotationRate = profiledPIDControllerOutput; 
 
-    // if statement saying if the difference between our target and current is below 5 degrees, we can stop rotating
-    if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180)  <= 5){
-      rotationRate = 0;
-    }
     // applies the request to be able to drive while aiming
     drivetrain.applyRequest(() -> drive.withVelocityX(0)
                                       .withVelocityY(0)
                                       .withRotationalRate(thetaController.getSetpoint().velocity + rotationRate)).execute();
     // smart dash to see current error
-    SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180));
+    SmartDashboard.putNumber("auto hub error", Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getRadians()));
     
         // add Driver feedback here
     // if(Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees() - 180) <= 5){
@@ -139,12 +138,13 @@ public class AutonAutoAimHub extends Command {
     // if(turret.isTurretWithinTolerance()){
     //     operatorController.setRumble(RumbleType.kBothRumble, 0.5);
     //     new WaitCommand(1).andThen(() -> operatorController.getHID().setRumble(RumbleType.kBothRumble, 0));
+    drivetrain.setControl(new SwerveRequest.SwerveDriveBrake());
     // }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getDegrees()) <= AimingConstants.headingTargettingTolerance;
+    return Math.abs(targetHubAngle  - drivetrain.getState().Pose.getRotation().getRadians()) <= AimingConstants.headingTargettingTolerance;
   }
 }

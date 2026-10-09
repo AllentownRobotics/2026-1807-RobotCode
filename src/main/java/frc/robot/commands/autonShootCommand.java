@@ -12,28 +12,26 @@ import frc.robot.subsystems.IndexerSubsys.IndexerSubsys;
 import frc.robot.subsystems.Kicker.KickerSubsys;
 import frc.robot.subsystems.Shooter.FlywheelSubsys;
 import frc.robot.subsystems.Shooter.HoodSubsys;
-import frc.robot.subsystems.Shooter.TurretSubsys;
-import frc.robot.Constants;
+import frc.robot.subsystems.Shooter.TargettingSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class autonShootCommand extends Command {
   HoodSubsys hood;
   FlywheelSubsys flywheel;
-  TurretSubsys turret;
+  TargettingSubsys turret;
   KickerSubsys kicker;
   IndexerSubsys indexer;
   LEDSubsystem LEDs;
 
   /** Creates a new shootingSequence. */
-  public autonShootCommand(HoodSubsys hood, FlywheelSubsys flywheel, TurretSubsys turret, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
+  public autonShootCommand(HoodSubsys hood, FlywheelSubsys flywheel, LEDSubsystem LEDs, KickerSubsys kicker, IndexerSubsys indexer) {
     this.hood = hood;
     this.flywheel = flywheel;
-    this.turret = turret;
     this.LEDs = LEDs;
     this.kicker = kicker;
     this.indexer = indexer;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(turret, LEDs, kicker, indexer, hood);
+    addRequirements(hood, flywheel, LEDs, kicker, indexer);
   }
 
   // Called when the command is initially scheduled.
@@ -43,6 +41,9 @@ public class autonShootCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
+
+    
 
     flywheel.setFlywheelSpeedFromDistance();
     hood.setHoodAutomaticallyFromDistance();
@@ -57,6 +58,8 @@ public class autonShootCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
+    
     hood.setHoodAngle(1);
     flywheel.stopSpeed();
     kicker.stopKickerMotors();

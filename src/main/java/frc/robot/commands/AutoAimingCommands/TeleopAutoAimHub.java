@@ -26,18 +26,13 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 // import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 // import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.Constants;
 // import frc.robot.Constants;
 import frc.robot.Constants.AimingConstants;
-import frc.robot.Constants.LEDConstants.LEDPatterns;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Drive.CommandSwerveDrivetrain;
-import frc.robot.subsystems.Shooter.TurretSubsys;
+import frc.robot.subsystems.Shooter.TargettingSubsys;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TeleopAutoAimHub extends Command {
@@ -45,7 +40,7 @@ public class TeleopAutoAimHub extends Command {
   CommandSwerveDrivetrain drivetrain;
   CommandXboxController driverController;
   CommandXboxController operatorController;
-  TurretSubsys turret;
+  TargettingSubsys targettingSubsys;
   // LEDSubsystem LEDs; 
   // PIDController thetaController;
   double targetHubAngle;
@@ -56,10 +51,10 @@ public class TeleopAutoAimHub extends Command {
   // private TrapezoidProfile headingControl;
   private ProfiledPIDController thetaController;
 
-  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TurretSubsys turret, CommandXboxController operatorController) {
+  public TeleopAutoAimHub(CommandSwerveDrivetrain drivetrain, CommandXboxController driverController, TargettingSubsys targettingSubsys, CommandXboxController operatorController) {
     this.drivetrain = drivetrain;
     this.driverController = driverController;
-    this.turret = turret;
+    this.targettingSubsys = targettingSubsys;
     this.operatorController = operatorController;
     
     MaxSpeed = 1.0 * TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -105,7 +100,7 @@ public class TeleopAutoAimHub extends Command {
   @Override
   public void execute() {
     // compensate for robot facing the right direction.
-    targetHubAngle = turret.getTargetTurretAngle().getRadians();
+    targetHubAngle = targettingSubsys.getTargetHubAngle().getRadians();
     // Rotation2d.fromRotations(targetHubAngle).minus(Rotation2d.kZero);
 
     // State currentState = new State(MathUtil.angleModulus(drivetrain.getState().Pose.getRotation().getRadians()), drivetrain.getState().Speeds.omegaRadiansPerSecond);

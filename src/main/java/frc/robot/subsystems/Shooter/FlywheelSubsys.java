@@ -122,26 +122,33 @@ public class FlywheelSubsys extends SubsystemBase {
     SmartDashboard.putNumber("Target Velocity", 0);
     // flywheelMap.put(1 , );
     // flywheelMap.put("", );
-
-
   }
+  
+
+
+  /**
+   * sets flywheel to the theoretical max speed.
+   */
   public void setMaxSpeed(){
     leftFlywheel.setControl(new VelocityDutyCycle(60).withUpdateFreqHz(300));
   }
 
-  
 
 
+
+  /**
+   * Sets flywheel to a speed calculated from a interpolating table scaled by distance from target for static shots.
+   */
   public void setFlywheelSpeedFromDistance(){
      Optional<Alliance> ally = DriverStation.getAlliance();
     if (ally.isPresent()) {
       if (ally.get() == Alliance.Red) {
-        hubX = Constants.turretConstants.RED_HUB.getX();
-        hubY = Constants.turretConstants.RED_HUB.getY();
+        hubX = Constants.TargettingConstants.RED_HUB.getX();
+        hubY = Constants.TargettingConstants.RED_HUB.getY();
       }
       if (ally.get() == Alliance.Blue) {
-        hubX = Constants.turretConstants.BLUE_HUB.getX();
-        hubY = Constants.turretConstants.BLUE_HUB.getY();
+        hubX = Constants.TargettingConstants.BLUE_HUB.getX();
+        hubY = Constants.TargettingConstants.BLUE_HUB.getY();
       }
     }
     double currentPosX = drive.getState().Pose.getX();
@@ -155,16 +162,8 @@ public class FlywheelSubsys extends SubsystemBase {
 
     medianDistance = medianFilter.calculate(distanceToHub);
     smoothedDistance = filter.calculate(distanceToHub);
-
     smoothedMedianDistance = filter2.calculate(medianDistance);
 
-
-    
-    
-
-        // Math.sqrt(
-        //     Math.pow(hubX - drive.getState().Pose.getX(), 2)
-        //         + Math.pow(hubY -  drive.getState().Pose.getY(), 2));
     autoTargetFlywheelSpeed =
         flywheelMap.get(
             smoothedMedianDistance); // using distanceToHub, gets the value using that "key" from the hub
@@ -175,64 +174,50 @@ public class FlywheelSubsys extends SubsystemBase {
             0,
             65); // clamps between 0 - 90 so if it ever breaks it will never go
     // below 0 degrees or above 90 degrees.
-
-
     leftFlywheel.setControl(new VelocityDutyCycle(autoTargetFlywheelSpeed).withUpdateFreqHz(300));
-    // setHoodAngle(autoTargetHoodState);
-
   }
 
-  /** sets flywheel to a user wanted velocity from smart dash */
+
+
+  /** sets flywheel to a set velocity for testing */
   public void setFlywheelVelocity() {
-    // targetVelocity = 26; // realistically reaches 25 with current KV
-    //     // SmartDashboard.getNumber("Target Velocity", 0); // gets velocity from smart dash
-    // targetVelocity =
-    //     MathUtil.clamp(
-    //         targetVelocity, 0, 1000); // clamps so velocity can't ever be below 0 or above 5 rps.
-    // leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to
     leftFlywheel.setControl(new VelocityDutyCycle(22).withUpdateFreqHz(300));
-    // leftFlywheel.setControl(new velocity)
   }
 
-  // /**
-  //  * Checks if flywheel is in a tolerable range of where it needs to be.
-  //  *
-  //  * @return boolean - true or false depending on if its there or not.
-  //  */
-  // public boolean isFlywheelAtVelocity() {
-  //   if ((Math.abs(targetVelocity - (leftFlywheelKraken.currentVelocityInRPS()))
-  //       <= flywheelTolerance)) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
+
+  /**
+   * checks if the target flywheel speed is within a 5 rps tolerance of current flywheel speed.
+   * @return true or false of tolerance status
+   */
   public boolean flywheelAtSpeed(){
     return Math.abs(autoTargetFlywheelSpeed - leftFlywheel.getVelocity().getValueAsDouble()) <= 5; 
   }
 
+
+
+
+  /**
+   * Checks if flywheel is at max speed of 60 rps
+   * @return boolean if at max speed or not
+   */
   public boolean flywheelAtMax(){
     return Math.abs(60 - leftFlywheel.getVelocity().getValueAsDouble()) <= 5;
   }
 
-  public void setIdleSpeed() {
-    // targetVelocity =
-    //     SmartDashboard.getNumber("Target Velocity", 0); // gets velocity from smart dash
-    // leftFlywheelKraken.setVelocity(targetVelocity); // sets the velocity for the motor to get to
-    leftFlywheel.setControl(new VelocityDutyCycle(0));
-  }
 
+
+
+  /**
+   * Sets the flyweel speed to 0
+   */
   public void stopSpeed(){
     leftFlywheel.stopMotor();
   }
 
 
-  public void flywheelSpeedIncrement(double Increment){
-
-  }
-
   
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

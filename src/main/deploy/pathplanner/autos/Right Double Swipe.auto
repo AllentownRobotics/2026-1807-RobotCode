@@ -19,12 +19,6 @@
                 "data": {
                   "name": "CollectorDown"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "StartCollector"
-                }
               }
             ]
           }
@@ -42,9 +36,40 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "right double swipe 3"
+            "name": "Auto Hub Alignment"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootCommand"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "right double swipe 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "CollectorDown"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "collectorUp"
           }
         },
         {

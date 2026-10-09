@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.794759036144578,
-        "y": 2.0461566265060243
+        "x": 7.610128388017117,
+        "y": 2.100670470756063
       },
       "isLocked": false,
       "linkedName": "right double swipe 3"
@@ -20,8 +20,8 @@
         "y": 3.0733614457831333
       },
       "prevControl": {
-        "x": 3.363457831325302,
-        "y": 1.8822409638554236
+        "x": 3.45681883024251,
+        "y": 2.1136091298145514
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,19 +36,7 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "ShootCommand",
-      "waypointRelativePos": 0.8148883374689806,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ShootCommand"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 8.0,
     "maxAcceleration": 10.0,

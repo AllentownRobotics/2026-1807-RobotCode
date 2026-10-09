@@ -31,14 +31,7 @@ public final class Constants {
     public static final double hoodkG = 0;
   }
 
-  public static class turretConstants {
-    public static final double turretkP = 0;
-    public static final double turretkI = 0;
-    public static final double turretkD = 0;
-    public static final double turretkS = 0;
-    public static final double turretkV = 0;
-    public static final double turretkA = 0;
-    public static final double turretkG = 0;
+  public static class TargettingConstants {
 
     // from onshape, calculated the inches in x and y and turned that into meters for pose.
     public static final Translation2d BLUE_HUB =
@@ -62,7 +55,7 @@ public final class Constants {
       public static final double driveHubAutoAimkP = 5;  // fine tune more
       public static final double driveHubAutoAimkI = 0; // fine tune more 
       public static final double driveHubAutoAimkD = 0;   // fine tune more
-      public static final double headingTargettingTolerance = 2;
+      public static final double headingTargettingTolerance = 0.001;
      //------------------BLUE ALLIANCE--------------------
       public static final double blueAllianceTrench = 4;
       public static final double middleLine = 3.975;
@@ -179,7 +172,7 @@ public final class Constants {
     public static final double kA = 2.9024;//change if needed
     public static final double kG = 0;//change if needed // 1.9482
 
-    public static final double pivotOutPosition = -0.21;//change according to intake position - pivot intake position
+    public static final double pivotOutPosition = -68;//change according to intake position - pivot intake position
 
     public static final double pivotInPosition = 0;//change according to position - start position of the pivot
     public static final double positionTolerance = 0;//change according to position tolerance - pivot position tolerance
