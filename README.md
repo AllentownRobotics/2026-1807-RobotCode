@@ -42,5 +42,9 @@ Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 
 - **Vision:** each Limelight estimate is rejected unless tag count, distance, and ambiguity pass checks, then added with per-camera stdevs.
 - **Shooting:** flywheel speed and hood angle come from `InterpolatingTreeMap`s keyed on distance to hub. Tune the tables in `FlywheelSubsys` / `HoodSubsys`.
 
-## Team
-Built by Redbird Robotics 1807
+## Credits
+
+-**Programming Team**  Zarif Ahmed, Alex Morgan, Diya Parikh, Colin Granaghan, Leah Gaddy, Anthony Adegbege
+
+-**Thankyou to our mentors and alumni** 
+- Written with the support and encouragement of our wonderful mentors and alumni: Jim Kaba, Joey Forte, Evan Kaba, Gavin Elwell, Evangaline Huey, T.J. Vosseler, Dr. Becky, Erin Vosseler, and Don Elwell.
