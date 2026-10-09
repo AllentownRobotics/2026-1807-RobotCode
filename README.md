@@ -44,7 +44,6 @@ Robot code for RA, our 2026 FRC robot. Java, WPILib command-based, CTRE Phoenix 
 
 ## Credits
 
--**Programming Team**  Zarif Ahmed, Alex Morgan, Diya Parikh, Colin Granaghan, Leah Gaddy, Anthony Adegbege
+- **Programming Team:**  Zarif Ahmed, Alexander Morgan, Diya Parikh, Colin Granaghan, Leah Gaddy and Anthony Adegbege
 
--**Thankyou to our mentors and alumni** 
-- Written with the support and encouragement of our wonderful mentors and alumni: Jim Kaba, Joey Forte, Evan Kaba, Gavin Elwell, Evangaline Huey, T.J. Vosseler, Dr. Becky, Erin Vosseler, and Don Elwell.
+- **Thank you to our mentors and alumni:** Written with the support and encouragement of our wonderful mentors and alumni: Jim Kaba, Joey Forte, Evan Kaba, Gavin Elwell, Evangaline Huey, T.J. Vosseler, Dr. Becky, Erin Vosseler, and Don Elwell.
